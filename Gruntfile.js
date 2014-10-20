@@ -689,12 +689,53 @@ module.exports = function (grunt) {
 //    ]);
 //  });
 
-  grunt.registerTask('test', [
-    'clean:server',
-    'concurrent:test',
-    'autoprefixer',
-    'connect:test',
-    'karma:unitBuild'
+//  grunt.registerTask('test', [
+//    'clean:server',
+//    'concurrent:test',
+//    'autoprefixer',
+//    'connect:test',
+//    'karma:unitBuild'
+//  ]);
+
+
+
+  grunt.registerTask('test', function (target) {
+    var setUpTasks = [
+        'clean:server',
+        'connect:test'
+      ],
+      unitTasks = [
+        'karma:unitBuild'
+      ],
+      integrationTasks = [
+        'karma:integrationBuild'
+      ],
+      e2eTasks = [
+        'protractor:build'
+      ],
+      travisTasks = [
+        'karma:unitTravis'
+//        'karma:integrationTravis'
+      ],
+      tasks;
+    if (target === 'unit') {
+      tasks = setUpTasks.concat(unitTasks);
+    } else if (target === 'integration') {
+      tasks = setUpTasks.concat(integrationTasks);
+    } else if (target === 'e2e') {
+      tasks = setUpTasks.concat(e2eTasks);
+    } else if (target === 'travis') {
+      tasks = setUpTasks.concat(travisTasks);
+    } else {
+//      tasks = setUpTasks.concat(unitTasks).concat(integrationTasks).concat(e2eTasks);
+      tasks = setUpTasks.concat(unitTasks).concat(integrationTasks);
+    }
+
+    grunt.task.run(tasks);
+  });
+
+  grunt.registerTask('travis', [
+    'test:travis'
   ]);
 
 //  grunt.registerTask('build', [
