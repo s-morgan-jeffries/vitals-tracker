@@ -1,4 +1,6 @@
-define(['moment'], function (moment) {
+define(['moment'], function (/*moment*/) {
+  'use strict';
+
   var customParsers = {};
 
   // Datetime

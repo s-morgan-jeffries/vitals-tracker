@@ -1,4 +1,6 @@
 define([], function () {
+  'use strict';
+
   var customSanitizers = {};
 
   // Maybe call these parsers?
@@ -33,9 +35,9 @@ define([], function () {
   customSanitizers.sanitizeDatetime = function (valueStr) {
     return new Date(valueStr);
   };
-  customSanitizers.sanitizeDatetimeLocal = function (valueStr, validity) {
-
-  };
+//  customSanitizers.sanitizeDatetimeLocal = function (valueStr, validity) {
+//
+//  };
   customSanitizers.sanitizeMonth = function (valueStr, validity) {
     // If there's a validity object and this is a badInput
     if (validity && validity.badInput) {
@@ -74,8 +76,8 @@ define([], function () {
 
   customSanitizers.sanitizePassword = function () {};
   customSanitizers.sanitizeRange = function () {};
-  customSanitizers.sanitizeSearch = function (valueStr, validity) {};
-  customSanitizers.sanitizeTel = function (valueStr, validity) {};
+//  customSanitizers.sanitizeSearch = function (valueStr, validity) {};
+//  customSanitizers.sanitizeTel = function (valueStr, validity) {};
 
   customSanitizers.sanitizeText = function (str) {
     return str;

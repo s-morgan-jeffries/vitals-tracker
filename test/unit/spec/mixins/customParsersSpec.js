@@ -18,7 +18,6 @@ define(['Squire'], function (Squire) {
     var mockMoment = {};
 
     beforeEach(function () {
-//      console.log(this.addMatchers);
       this.addMatchers({
         toBeNaN: function (actual) {
           return isNaN(actual);

@@ -3,6 +3,8 @@ define([
   'backbone',
   'moment'
 ], function (_, Backbone, moment) {
+  'use strict';
+
   var modelProps = {};
 
   modelProps.initialize = function () {
@@ -91,7 +93,7 @@ define([
     };
   };
 
-  modelProps.parse = function (response, options) {
+  modelProps.parse = function (response/*, options*/) {
     // createdAt
     if (response.createdAt) {
       response.createdAt = moment(response.createdAt);

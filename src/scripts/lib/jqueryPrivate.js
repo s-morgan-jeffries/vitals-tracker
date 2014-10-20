@@ -1,4 +1,5 @@
 define(['jquery'], function (jQuery) {
-//  return jQuery.noConflict(true);
+  'use strict';
+
   return jQuery;
 });

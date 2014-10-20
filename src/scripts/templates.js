@@ -4,6 +4,8 @@ define([
   'text!../templates/measurement-input-template.html',
   'text!../templates/measurement-new.html'
 ], function (_, measurementDisplayTemplate, measurementInputTemplate, MeasurementNew) {
+  'use strict';
+
   return {
 //    measurementDisplayTemplate: measurementDisplayTemplate,
     measurementDisplayTemplate: _.template(measurementDisplayTemplate),

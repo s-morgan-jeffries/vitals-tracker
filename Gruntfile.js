@@ -169,8 +169,8 @@ module.exports = function (grunt) {
       },
       dist: {
         options: {
-            open: true,
-            base: '<%= yeoman.dist %>'
+          open: true,
+          base: '<%= yeoman.dist %>'
         }
       }
     },
@@ -324,10 +324,10 @@ module.exports = function (grunt) {
           './test/testMain.js',
           // Anything defined as an AMD module goes below. You have to use the file object notation so you can
           // explicitly set included to false.
-          // Utilities (if any)
           {pattern: './node_modules/squirejs/src/Squire.js', included: false},
-//          {pattern: './src/bower_components/requirejs/require.js', included: false},
-//          '../../<%= yeoman.src %>/bower_components/lodash/dist/lodash.js',
+          // Utilities (if any)
+          {pattern: './src/bower_components/moment/moment.js', included: false},
+          {pattern: './src/bower_components/underscore/underscore.js', included: false},
           // The source files for the scripts under test
           {pattern: './src/scripts/**/*.js', included: false},
           // These are all the tests.
@@ -402,9 +402,9 @@ module.exports = function (grunt) {
       }
     },
 
-    
 
-    
+
+
     'sprite': {
       'all': {
         // Sprite files to read in
@@ -431,8 +431,8 @@ module.exports = function (grunt) {
 //        'engine': 'canvas',
 
         // OPTIONAL: Specify CSS format (inferred from destCSS' extension by default)
-    // (stylus, scss, scss_maps, sass, less, json, json_array, css)
-    //        'cssFormat': 'json',
+        // (stylus, scss, scss_maps, sass, less, json, json_array, css)
+        //        'cssFormat': 'json',
 
         // OPTIONAL: Specify a function or Mustache template to use for rendering destCSS
         // Mutually exclusive to cssFormat
@@ -461,7 +461,7 @@ module.exports = function (grunt) {
         // OPTIONAL: Specify img options
 //        'imgOpts': {
 //          // Format of the image (inferred from destImg' extension by default) (jpg, png)
-    //          'format': 'png',
+        //          'format': 'png',
 //
 //          // gm only: Quality of image
 //          'quality': 90,
@@ -482,9 +482,9 @@ module.exports = function (grunt) {
 //        }
       }
     },
-    
 
-    
+
+
     stylus: {
       options: {
         paths: [
@@ -524,7 +524,7 @@ module.exports = function (grunt) {
         }
       }
     },
-    
+
 
     svgmin: {
       build: {

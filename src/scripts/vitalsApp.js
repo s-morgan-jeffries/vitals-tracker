@@ -7,6 +7,8 @@ define([
   'backbone',
   'vitalsMeasurementsView'
 ], function ($, _, Backbone, VitalsMeasurementsView) {
+  'use strict';
+
   var app = new Backbone.Marionette.Application();
 
 

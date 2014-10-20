@@ -3,6 +3,8 @@ define([
   'underscore',
   'backbone'
 ], function ($, _, Backbone) {
+  'use strict';
+
   var updateValidEvent = 'updateValid',
     updateInvalidEvent = 'updateInvalid',
     viewProps = {};

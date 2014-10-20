@@ -6,6 +6,8 @@ define([
   'Measurement',
   'InputView'
 ], function (_, Backbone, moment, templates, Measurement, InputView) {
+  'use strict';
+
   var viewProps = {},
     inputEvents = {};
   inputEvents.blur = 'update';

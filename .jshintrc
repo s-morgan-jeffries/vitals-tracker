@@ -20,6 +20,10 @@
   "smarttabs": true,
   "white": true,
   "globals": {
-    "angular": false
+    "angular": false,
+    "console": true,
+    "define": true,
+    "require": true,
+    "requirejs": true
   }
 }

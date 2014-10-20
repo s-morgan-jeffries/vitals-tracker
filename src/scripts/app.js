@@ -2,7 +2,7 @@ var vitalsMeasurementsView;
 var app;
 var channel;
 var measurement;
-var measurementView;
+//var measurementView;
 
 define([
   'jquery',
@@ -11,7 +11,9 @@ define([
   'vitalsMeasurementsView',
   'Measurement',
   'MeasurementNew'
-], function ($, _, Backbone, VitalsMeasurementsView, Measurement, MeasurementNew) {
+], function ($, _, Backbone, VitalsMeasurementsView, Measurement) {
+  'use strict';
+
   var App,
     appConfig = {};
 

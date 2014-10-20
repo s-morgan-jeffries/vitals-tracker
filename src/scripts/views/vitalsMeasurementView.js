@@ -5,6 +5,8 @@ define([
   'templates',
   'vitalsMeasurement'
 ], function (_, Backbone, moment, templates) {
+  'use strict';
+
   var vitalsMeasurementViewProps = {};
 
   vitalsMeasurementViewProps.tagName = 'tr';

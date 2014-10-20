@@ -13,5 +13,7 @@ define([
   'bootstrap.transition',
   'bootstrap-datetimepicker'
 ], function () {
+  'use strict';
+
   // Nothing
 });

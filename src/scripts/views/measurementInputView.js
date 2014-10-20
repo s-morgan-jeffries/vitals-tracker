@@ -1,4 +1,4 @@
-var vitals;
+//var vitals;
 
 define([
   'underscore',
@@ -9,6 +9,8 @@ define([
   'vitalsMeasurement',
   'bootstrap'
 ], function (_, Backbone, $, templates, VitalsMeasurement) {
+  'use strict';
+
   var measurementInputViewProps = {};
 
   var ENTER_KEY = 13;
@@ -18,7 +20,7 @@ define([
   measurementInputViewProps.tagName = 'tr';
   measurementInputViewProps.template = templates.measurementInputTemplate;
 
-  measurementInputViewProps.initialize = function (options) {
+  measurementInputViewProps.initialize = function (/*options*/) {
 
     // Add the collection
 //    this.collection = options.collection;

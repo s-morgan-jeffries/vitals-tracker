@@ -2,6 +2,8 @@ define([
   'underscore',
   'underscore.string'
 ], function (_, _s) {
+  'use strict';
+
   // For the sake of parity, calling this `root`
   var root = this;
   // First call underscore's noConflict method. This may or may not lead to root._ being set to the _ defined by
