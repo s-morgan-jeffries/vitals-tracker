@@ -87,7 +87,7 @@ requirejs.config({
     'bootstrap.transition': '../bower_components/bootstrap-stylus/js/transition',
     'bootstrap-datetimepicker': '../bower_components/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker',
     customParsers: 'mixins/customParsers',
-    customSanitizers: 'mixins/customSanitizers',
+//    customSanitizers: 'mixins/customSanitizers',
     customValidators: 'mixins/customValidators',
     InputView: 'views/InputView',
     jquery: '../bower_components/jquery/dist/jquery',

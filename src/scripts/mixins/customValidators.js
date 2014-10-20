@@ -8,6 +8,9 @@ define([
 
   var makePredicate = function (predicateFnName, predicateName) {
     return function (value, attr, expected /*, model*/) {
+      if (_.isUndefined(value)) {
+        return;
+      }
       if (_[predicateFnName](value) !== expected) {
         return attr + ' must ' + (expected ? '' : 'not ') + 'be ' + predicateName;
       }
@@ -17,7 +20,10 @@ define([
   customValidators.isBoolean = makePredicate('isBoolean', 'a boolean');
 
   customValidators.isDate = function (value, attr, expected /*, model*/) {
-    if (!((_.isDate(value) === expected) || (moment.isMoment(value) === expected))) {
+    if (_.isUndefined(value)) {
+      return;
+    }
+    if ((_.isDate(value) || moment.isMoment(value)) !== expected) {
       return attr + ' must ' + (expected ? '' : 'not ') + 'be a date';
     }
   };
@@ -32,14 +38,14 @@ define([
 
   customValidators.gtAttr = function (value, attr, otherAttr, model) {
     var other = model.get(otherAttr);
-    if (!_.isUndefined(other) && value <= other) {
+    if (value <= other) {
       return attr + ' must be greater than ' + otherAttr;
     }
   };
 
   customValidators.gteAttr = function (value, attr, otherAttr, model) {
     var other = model.get(otherAttr);
-    if (other && value < other) {
+    if (value < other) {
       return attr + ' must be greater than or equal to ' + otherAttr;
     }
   };
