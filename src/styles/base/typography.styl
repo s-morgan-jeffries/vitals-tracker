@@ -1,0 +1,27 @@
+$use-typeplate ?= true
+
+if $use-typeplate
+  typeplate()
+else
+  base()
+  typography()
+  bold-italic()
+  headers()
+  hyphenation()
+  lists()
+  text-selection()
+  code-blocks()
+  p
+    paragraph()
+  small
+    small-text()
+  blockquote
+    blockquo()
+  .hyphenate
+    hyphenation()
+  +mobile()
+    body
+      font-size 16px
+
+a
+  link()

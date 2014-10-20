@@ -1,0 +1,179 @@
+//////////////////////////////////////////////////////////
+// Global settings - adjust these to your heart's desire//
+//////////////////////////////////////////////////////////
+
+// font stack (add your own!)
+helvetica-neue ?= "Helvetica Neue", HelveticaNeue, Helvetica, Arial, sans-serif
+helvetica ?= "Helvetica Neue", Helvetica, Arial, sans-serif
+georgia ?= Georgia, Cambria, "Times New Roman", Times, serif
+lucidia-grande ?= "Lucida Grande", Tahoma, Verdana, Arial, sans-serif
+monospace ?= unquote("'Bitstream Vera Sans Mono', Consolas, Courier, monospace")
+verdana ?= Verdana, Geneva, sans-serif
+
+// colors
+red ?= #B44326
+orange ?= #F2A34F
+yellow ?= #F8CA5C
+green ?= #7FC028
+light-blue ?= #52D7FE
+blue ?= #00a6fc
+purple ?= #8E48C2
+white ?= #fff
+black ?= #272727
+
+////////////////////////////////////////////////////////////
+// Axis
+////////////////////////////////////////////////////////////
+// default font stack
+font-stack ?= georgia
+font-size ?= 16
+font-color ?= #555
+
+// ligatures
+ligatures ?= false
+
+// vertical rhythm
+base-line-height ?= 24px
+default-rhythm-border-style ?= solid
+relative-font-sizing ?= true
+round-to-nearest-half-line ?= false
+min-line-padding ?= 2px
+
+// default color
+default-color ?= purple
+
+// text highlight color
+highlight-color ?= purple
+
+// custom image base path for roots mixins
+img-path ?= '/images'
+
+// Support for Internet Explorer flag
+support-for-ie ?= true
+
+// progressive internet explorer (http://css3pie.com/)
+pie-enabled ?= false
+pie-path ?= '/pie.htc'
+
+// box-sizing for internet explorer (https://github.com/Schepp/box-sizing-polyfill)
+box-sizing-enabled ?= false
+box-sizing-path ?= '/boxsizing.htc'
+
+// grid system settings (http://jeetframework.com)
+gutter ?= 3
+parent_first ?= false
+layout_direction ?= LTR
+
+////////////////////////////////////////////////////////////
+// Rupture
+////////////////////////////////////////////////////////////
+$rupture-mobile-cutoff ?= 400px
+$rupture-desktop-cutoff ?= 1050px
+$rupture-enable-em-breakpoints ?= false
+$rupture-base-font-size ?= base-font-size
+$rupture-anti-overlap ?= false
+$rupture-density-queries ?= 'dppx' 'webkit' 'moz' 'dpi'
+$rupture-retina-density ?= 1.5
+
+////////////////////////////////////////////////////////////
+// Jeet
+////////////////////////////////////////////////////////////
+$use-jeet ?= true
+$jeet-gutter ?= 3
+$jeet-parent-first ?= false
+$jeet-layout-direction ?= LTR
+
+////////////////////////////////////////////////////////////
+// Typeplate
+////////////////////////////////////////////////////////////
+$use-typeplate ?= true
+// ===================================================
+// TYPEPLATE : Custom Sass Variables
+// ===================================================
+// $BaseType
+// -------------------------------------//
+$font-weight ?= normal
+$line-height ?= 1.65
+$font-size ?= 112.5 // percentage value (16 * 112.5% = 18px)
+$font-base ?= 16 * ($font-size/100) // converts our percentage to a pixel value
+$font-family ?= georgia // Non-font-face font-stack
+$custom-font-family ?= false // Custom font-face stack, if set will be added to the $font-family
+// $Paragraphs
+// -------------------------------------//
+// Text Indentation Value
+$indent-val ?= 1.5em
+// Paragraph Styling Boolean
+// 'false' means no vertical whitespace
+// between subsequent paragraphs.
+$paragraph-vertical-whitespace ?= false
+// $Small Print
+// -------------------------------------//
+$small-print-size ?= 65%
+// $Color
+// -------------------------------------//
+$body-copy-color ?= #444
+$heading-color ?= #222
+// $Ampersand
+// -------------------------------------//
+$amp-fontface-name ?= Ampersand
+$amp-fontface-source ?= local('Georgia'), local('Garamond'), local('Palatino'), local('Book Antiqua')
+$amp-fontface-fallback ?= local('Georgia')
+// Allows for our ampersand element to have differing
+// font-family from the ampersand unicode font-family.
+$amp-font-family ?= Verdana, sans-serif
+// $Icon-Font-Helper
+// -------------------------------------//
+// ex.1) $icon-fonts: (icon-name);
+// ex.2) $icon-fonts: (icon-name1, icon-name2, icon-name3);
+/*$icon-fonts ?= null*/
+// $TypeScale
+// -------------------------------------//
+$tera ?= 117 // 117 = 18 × 6.5
+$giga ?= 90 // 90 = 18 × 5
+$mega ?= 72 // 72 = 18 × 4
+$alpha ?= 60 // 60 = 18 × 3.3333
+$beta ?= 48 // 48 = 18 × 2.6667
+$gamma ?= 36 // 36 = 18 × 2
+$delta ?= 24 // 24 = 18 × 1.3333
+$epsilon ?= 21 // 21 = 18 × 1.1667
+$zeta ?= 18 // 18 = 18 × 1
+// $TypeScale-Unit
+// -------------------------------------//
+$type-scale-unit-value ?= rem
+// $Pull-Quotes
+// -------------------------------------//
+$pull-quote-fontsize ?= 4em
+$pull-quote-opacity ?= 0.5
+$pull-quote-color ?= #dc976e
+// $Citation
+// -------------------------------------//
+$cite-display ?= block
+$cite-text-align ?= right
+$cite-font-size ?= inherit
+// $SmallCaps
+// -------------------------------------//
+$small-caps-color ?= gray
+$small-caps-weight ?= 600
+// $DropCap
+// -------------------------------------//
+$dropcap-float-position ?= left
+$dropcap-font-size ?= 4em
+$dropcap-font-family ?= inherit
+$dropcap-txt-indent ?= 0
+$dropcap-margin ?= .25em
+$dropcap-padding ?= inherit
+$dropcap-color ?= inherit
+$dropcap-line-height ?= 1
+$dropcap-bg ?= transparent
+
+////////////////////////////////////////////////////////////
+// Spritesmith
+////////////////////////////////////////////////////////////
+$use-spritesmith ?= true
+$sprite_map_file ?= '/components/sprite_map'
+$sprite_img_file ?= '/images/sprite.png'
+
+////////////////////////////////////////////////////////////
+// Bootstrap
+////////////////////////////////////////////////////////////
+$icon-font-path ?= '/bower_components/bootstrap-stylus/fonts/'

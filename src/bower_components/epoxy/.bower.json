@@ -1,0 +1,28 @@
+{
+  "name": "epoxy",
+  "version": "0.2.0",
+  "authors": [
+    "Markus Ast <npm.m@rkusa.st>"
+  ],
+  "description": "Declarative template data binding.",
+  "main": "epoxy.js",
+  "license": "MIT",
+  "homepage": "https://github.com/rkusa/epoxy",
+  "ignore": [
+    "**/.*",
+    "gulpfile.js",
+    "index.js",
+    "package.json",
+    "test"
+  ],
+  "_release": "0.2.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "0.2.0",
+    "commit": "b3a19622b688f60b766a77dbeb9d2a5bc76ac60c"
+  },
+  "_source": "git://github.com/rkusa/epoxy.git",
+  "_target": "~0.2.0",
+  "_originalSource": "epoxy",
+  "_direct": true
+}

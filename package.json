@@ -1,0 +1,62 @@
+{
+  "name": "vitals-tracker",
+  "version": "0.0.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/s.morgan.jeffries/vitals-tracker.git"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "assemble": "^0.4.41",
+    "axis-css-adapter": "git+https://github.com/s-morgan-jeffries/axis-css-adapter.git",
+    "grunt": "~0.4.1",
+    "grunt-autoprefixer": "~0.4.0",
+    "grunt-bump": "0.0.14",
+    "grunt-concurrent": "~0.5.0",
+    "grunt-contrib-clean": "~0.5.0",
+    "grunt-contrib-concat": "~0.3.0",
+    "grunt-contrib-connect": "~0.5.0",
+    "grunt-contrib-copy": "~0.4.1",
+    "grunt-contrib-cssmin": "~0.7.0",
+    "grunt-contrib-htmlmin": "~0.1.3",
+    "grunt-contrib-imagemin": "~0.3.0",
+    "grunt-contrib-jshint": "~0.7.1",
+    "grunt-contrib-stylus": "^0.18.0",
+    "grunt-contrib-uglify": "~0.2.0",
+    "grunt-contrib-watch": "~0.5.2",
+    "grunt-google-cdn": "~0.2.0",
+    "grunt-karma": "^0.9.0",
+    "grunt-replace": "^0.7.8",
+    "grunt-rev": "~0.1.0",
+    "grunt-spritesmith": "^2.1.1",
+    "grunt-svgmin": "~0.2.0",
+    "grunt-usemin": "~2.0.0",
+    "grunt-wiredep": "^1.8.0",
+    "jasmine-expect": "^1.22.2",
+    "jeet-adapter": "git+https://github.com/s-morgan-jeffries/jeet-adapter.git",
+    "jshint-stylish": "~0.1.3",
+    "karma": "^0.12.24",
+    "karma-chrome-launcher": "^0.1.5",
+    "karma-coverage": "^0.2.6",
+    "karma-firefox-launcher": "^0.1.3",
+    "karma-jasmine": "^0.1.5",
+    "karma-junit-reporter": "^0.2.2",
+    "karma-opera-launcher": "^0.1.0",
+    "karma-phantomjs-launcher": "^0.1.4",
+    "karma-requirejs": "^0.2.2",
+    "karma-safari-launcher": "^0.1.1",
+    "load-grunt-tasks": "~0.4.0",
+    "requirejs": "^2.1.15",
+    "rupture-adapter": "git+https://github.com/s-morgan-jeffries/rupture-adapter.git",
+    "spritesmith-stylus": "git+https://github.com/s-morgan-jeffries/spritesmith-stylus.git",
+    "squirejs": "^0.2.0",
+    "time-grunt": "~0.2.1",
+    "typeplate-stylus": "git+https://github.com/s-morgan-jeffries/typeplate-stylus.git"
+  },
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "scripts": {
+    "test": "grunt test"
+  }
+}
