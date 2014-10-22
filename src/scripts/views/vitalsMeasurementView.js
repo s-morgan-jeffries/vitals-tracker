@@ -2,8 +2,8 @@ define([
   'underscore',
   'backbone',
   'moment',
-  'templates',
-  'vitalsMeasurement'
+  'templates'
+//  'vitalsMeasurement'
 ], function (_, Backbone, moment, templates) {
   'use strict';
 

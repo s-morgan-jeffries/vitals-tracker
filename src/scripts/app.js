@@ -9,8 +9,8 @@ define([
   'underscore',
   'backbone',
   'vitalsMeasurementsView',
-  'Measurement',
-  'MeasurementNew'
+  'Measurement'
+//  'MeasurementNew'
 ], function ($, _, Backbone, VitalsMeasurementsView, Measurement) {
   'use strict';
 

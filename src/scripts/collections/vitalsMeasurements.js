@@ -1,8 +1,8 @@
 define([
   'underscore',
   'backbone',
-  'vitalsMeasurement'
-], function (_, Backbone, VitalsMeasurement) {
+  'Measurement'
+], function (_, Backbone, Measurement) {
   'use strict';
 
   var vitalsMeasurementsProps = {},
@@ -40,7 +40,7 @@ define([
 //  'route' (router, route, params) — Fired by history when any route has been matched.
 //  'all' — this special event fires for any triggered event, passing the event name as the first argument.
 
-  vitalsMeasurementsProps.model = VitalsMeasurement;
+  vitalsMeasurementsProps.model = Measurement;
   vitalsMeasurementsProps.initialize = function (models, options) {
 
 

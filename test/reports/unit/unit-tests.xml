@@ -1,20 +1,2 @@
 <?xml version="1.0"?>
-<testsuites>
-  <testsuite name="PhantomJS 1.9.7 (Mac OS X)" package="" timestamp="2014-10-20T15:16:55" id="0" hostname="S-Morgan-Jeffries-MacBook-Air.local" tests="9" errors="0" failures="0" time="0.134">
-    <properties>
-      <property name="browser.fullName" value="Mozilla/5.0 (Macintosh; PPC Mac OS X) AppleWebKit/534.34 (KHTML, like Gecko) PhantomJS/1.9.7 Safari/534.34"/>
-    </properties>
-    <testcase name="should return a Date created by calling the Date constructor with the passed in string" time="0.015" classname="PhantomJS 1.9.7 (Mac OS X).customParsers parseDatetimeInput method"/>
-    <testcase name="should return NaN when validity.badInput is set to true" time="0.011" classname="PhantomJS 1.9.7 (Mac OS X).customParsers parseNumberInput method"/>
-    <testcase name="should return NaN when the passed in string cannot be converted to a valid number" time="0.011" classname="PhantomJS 1.9.7 (Mac OS X).customParsers parseNumberInput method"/>
-    <testcase name="should return undefined when passed an empty string" time="0.012" classname="PhantomJS 1.9.7 (Mac OS X).customParsers parseNumberInput method"/>
-    <testcase name="should return the numerical representation of any string that can be coerced to a number" time="0.011" classname="PhantomJS 1.9.7 (Mac OS X).customParsers parseNumberInput method"/>
-    <testcase name="should return the passed in string unchanged" time="0.01" classname="PhantomJS 1.9.7 (Mac OS X).customParsers parseTextInput method"/>
-    <testcase name="should return nothing if the passed in value is greater than the value of the named attribute" time="0.042" classname="PhantomJS 1.9.7 (Mac OS X).customValidators gtAttr method"/>
-    <testcase name="should return nothing if the named attribute does not exist" time="0.011" classname="PhantomJS 1.9.7 (Mac OS X).customValidators gtAttr method"/>
-    <testcase name="should return an error message if the passed in value is LTE the value of the named attribute" time="0.011" classname="PhantomJS 1.9.7 (Mac OS X).customValidators gtAttr method"/>
-    <system-out><![CDATA[
-]]></system-out>
-    <system-err/>
-  </testsuite>
-</testsuites>
+<testsuites/>

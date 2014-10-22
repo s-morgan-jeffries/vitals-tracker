@@ -5,7 +5,8 @@ define([
   'use strict';
 
   // For the sake of parity, calling this `root`
-  var root = this;
+  var root = window;
+//  console.log(this);
   // First call underscore's noConflict method. This may or may not lead to root._ being set to the _ defined by
   // underscore.string (some kind of race condition when that script runs, probably because of the asynchronous loading
   // used by RequireJS).

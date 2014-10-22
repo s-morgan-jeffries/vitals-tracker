@@ -96,12 +96,13 @@ requirejs.config({
     marionette: '../bower_components/marionette/lib/backbone.marionette',
     marionettePrivate: './lib/marionettePrivate',
     Measurement: 'models/measurement',
-    measurementInputView: 'views/measurementInputView',
+//    measurementInputView: 'views/measurementInputView',
     MeasurementNew: 'views/MeasurementNew',
     moment: '../bower_components/moment/moment',
 //    momentPrivate: './lib/jqueryPrivate',
+    sinon: '../bower_components/sinonjs/sinon',
     text: '../bower_components/text/text',
-    vitalsMeasurement: 'models/vitalsMeasurement',
+//    vitalsMeasurement: 'models/vitalsMeasurement',
     vitalsMeasurements: 'collections/vitalsMeasurements',
     vitalsMeasurementView: 'views/vitalsMeasurementView',
     vitalsMeasurementsView: 'views/vitalsMeasurementsView',
@@ -129,6 +130,8 @@ requirejs.config({
     'bootstrap.tab': { deps: ['jquery'] },
     'bootstrap.tooltip': { deps: ['jquery'] },
     'bootstrap.transition': { deps: ['jquery'] }
+//    ,
+//    sinon: {deps: []}
   }
 });
 
@@ -136,4 +139,8 @@ require(['app'], function (app) {
   'use strict';
 
   app.start();
+});
+
+require(['sinon'], function () {
+  'use strict';
 });

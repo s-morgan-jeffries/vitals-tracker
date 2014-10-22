@@ -1,5 +1,5 @@
 var vitals,
-  measurementInputView,
+//  measurementInputView,
   measurementDisplayView,
   measurementNew;
 
@@ -8,13 +8,13 @@ define([
   'backbone',
   'jquery',
 //  'templates',
-  'vitalsMeasurement',
+//  'vitalsMeasurement',
   'vitalsMeasurements',
   'vitalsMeasurementView',
-  'measurementInputView',
+//  'measurementInputView',
   'MeasurementNew',
   'bootstrap'
-], function (_, Backbone, $/*, templates*/, VitalsMeasurement, VitalsMeasurements, VitalsMeasurementView, MeasurementInputView, MeasurementNew) {
+], function (_, Backbone, $/*, templates, VitalsMeasurement*/, VitalsMeasurements, VitalsMeasurementView/*, MeasurementInputView*/, MeasurementNew) {
   'use strict';
 
   var vitalsMeasurementsViewProps = {},
@@ -73,10 +73,12 @@ define([
 
     // Get the vitals
     vitals = this.vitals = new VitalsMeasurements(null, {collectionName: 'vitals'});
-    var inputView = new MeasurementInputView();
-    measurementInputView = inputView;
+//    var inputView = new MeasurementInputView();
+//    measurementInputView = inputView;
     measurementNew = new MeasurementNew();
-    this.$el.find('tbody').append(inputView.el).append(measurementNew.el);
+    this.$el.find('tbody')
+//      .append(inputView.el)
+      .append(measurementNew.el);
 
     this.listenTo(this.vitals, 'add', this.addMeasurementView);
     this.vitals.fetch();

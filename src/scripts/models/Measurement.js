@@ -7,7 +7,7 @@ define([
 
   var modelProps = {};
 
-  modelProps.initialize = function () {
+//  modelProps.initialize = function () {
 
 //    // Add a createdAt property with the current time
 //    // So dates. When you create a Date in JS, it's represented using the timezone on your local machine. Presumably
@@ -32,7 +32,7 @@ define([
 //      this.destroy();
 //    }, this);
 
-  };
+//  };
 
   modelProps.validation = {
     createdAt: {
@@ -41,7 +41,8 @@ define([
     },
     measuredAt: {
       required: true,
-      isDate: true
+      isDate: true,
+      lteAttr: 'updatedAt'
     },
     updatedAt: {
       required: true,

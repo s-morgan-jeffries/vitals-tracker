@@ -37,14 +37,14 @@ requirejs.config({
     'bootstrap.transition': '../bower_components/bootstrap-stylus/js/transition',
     'bootstrap-datetimepicker': '../bower_components/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker',
     customParsers: 'mixins/customParsers',
-//    customSanitizers: 'mixins/customSanitizers',
+    customMatchers: '../../test/helpers/customMatchers',
     customValidators: 'mixins/customValidators',
     InputView: 'views/InputView',
     jquery: '../bower_components/jquery/dist/jquery',
     jqueryPrivate: './lib/jqueryPrivate',
     marionette: '../bower_components/marionette/lib/backbone.marionette',
     marionettePrivate: './lib/marionettePrivate',
-    Measurement: 'models/measurement',
+    Measurement: 'models/Measurement',
     measurementInputView: 'views/measurementInputView',
     MeasurementNew: 'views/MeasurementNew',
     moment: '../bower_components/moment/moment',
@@ -58,9 +58,7 @@ requirejs.config({
     'underscore.string': '../bower_components/underscore.string/lib/underscore.string',
     underscorePrivate: './lib/underscorePrivate'
   }
-
 });
-
 
 require(tests, function () {
   window.__karma__.start();
