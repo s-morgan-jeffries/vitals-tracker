@@ -7,7 +7,9 @@ define([
 
   var modelProps = {};
 
-//  modelProps.initialize = function () {
+  modelProps.localStorage = new Backbone.LocalStorage('Measurement');
+
+  modelProps.initialize = function () {
 
 //    // Add a createdAt property with the current time
 //    // So dates. When you create a Date in JS, it's represented using the timezone on your local machine. Presumably
@@ -32,7 +34,13 @@ define([
 //      this.destroy();
 //    }, this);
 
-//  };
+    // This means the measurement will update the updatedAt attribute anytime something changes
+    this.on('change', function () {
+      // Passing {silent: true} prevents an infinite loop
+      this.set({updatedAt: moment()}, {silent: true});
+    });
+
+  };
 
   modelProps.validation = {
     createdAt: {
@@ -110,6 +118,7 @@ define([
 
     return response;
   };
+
 
   return Backbone.Model.extend(modelProps);
 });

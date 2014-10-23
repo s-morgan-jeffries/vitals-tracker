@@ -10,11 +10,11 @@ define([
 //  'templates',
 //  'vitalsMeasurement',
   'vitalsMeasurements',
-  'vitalsMeasurementView',
+  'MeasurementShowView',
 //  'measurementInputView',
-  'MeasurementNew',
+  'MeasurementEditView',
   'bootstrap'
-], function (_, Backbone, $/*, templates, VitalsMeasurement*/, VitalsMeasurements, VitalsMeasurementView/*, MeasurementInputView*/, MeasurementNew) {
+], function (_, Backbone, $/*, templates, VitalsMeasurement*/, VitalsMeasurements, MeasurementShowView/*, MeasurementInputView*/, MeasurementNew) {
   'use strict';
 
   var vitalsMeasurementsViewProps = {},
@@ -85,7 +85,7 @@ define([
   };
 
   vitalsMeasurementsViewProps.addMeasurementView = function (measurement/*, collection, options*/) {
-    var measurementView = new VitalsMeasurementView({model: measurement});
+    var measurementView = new MeasurementShowView({model: measurement});
     measurementDisplayView = measurementView;
     this.$el.append(measurementView.render().el);
   };

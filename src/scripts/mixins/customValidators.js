@@ -8,6 +8,7 @@ define([
 
   var makePredicate = function (predicateFnName, predicateName) {
     return function (value, attr, expected /*, model*/) {
+      //console.log(arguments[4]);
       if (_.isUndefined(value)) {
         return;
       }
@@ -36,30 +37,30 @@ define([
 
   customValidators.isString = makePredicate('isString', 'a string');
 
-  customValidators.gtAttr = function (value, attr, otherAttr, model) {
-    var other = model.get(otherAttr);
-    if (value <= other) {
+  customValidators.gtAttr = function (value, attr, otherAttr, model, computed) {
+    //var other = model.get(otherAttr);
+    if (value <= computed[otherAttr]) {
       return attr + ' must be greater than ' + otherAttr;
     }
   };
 
-  customValidators.gteAttr = function (value, attr, otherAttr, model) {
-    var other = model.get(otherAttr);
-    if (value < other) {
+  customValidators.gteAttr = function (value, attr, otherAttr, model, computed) {
+    //var other = model.get(otherAttr);
+    if (value < computed[otherAttr]) {
       return attr + ' must be greater than or equal to ' + otherAttr;
     }
   };
 
-  customValidators.ltAttr = function (value, attr, otherAttr, model) {
-    var other = model.get(otherAttr);
-    if (other && value >= other) {
+  customValidators.ltAttr = function (value, attr, otherAttr, model, computed) {
+    //var other = model.get(otherAttr);
+    if (value >= computed[otherAttr]) {
       return attr + ' must be less than ' + otherAttr;
     }
   };
 
-  customValidators.lteAttr = function (value, attr, otherAttr, model) {
-    var other = model.get(otherAttr);
-    if (other && value > other) {
+  customValidators.lteAttr = function (value, attr, otherAttr, model, computed) {
+    //var other = model.get(otherAttr);
+    if (value > computed[otherAttr]) {
       return attr + ' must be less than or equal to ' + otherAttr;
     }
   };

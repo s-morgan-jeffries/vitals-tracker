@@ -1,15 +1,15 @@
 define([
   'underscore',
-  'text!../templates/measurement-display-template.html',
-  'text!../templates/measurement-input-template.html',
-  'text!../templates/measurement-new.html'
-], function (_, measurementDisplayTemplate, measurementInputTemplate, MeasurementNew) {
+  'text!../templates/measurement-show-template.html',
+  //'text!../templates/measurement-input-template.html',
+  'text!../templates/measurement-edit-template.html'
+], function (_, measurementShowTemplate, MeasurementEditTemplate) {
   'use strict';
 
   return {
 //    measurementDisplayTemplate: measurementDisplayTemplate,
-    measurementDisplayTemplate: _.template(measurementDisplayTemplate),
-    measurementInputTemplate: _.template(measurementInputTemplate),
-    MeasurementNew: _.template(MeasurementNew)
+    measurementShow: _.template(measurementShowTemplate),
+    //measurementInputTemplate: _.template(measurementInputTemplate),
+    MeasurementEdit: _.template(MeasurementEditTemplate)
   };
 });

@@ -89,19 +89,24 @@ requirejs.config({
     customParsers: 'mixins/customParsers',
 //    customSanitizers: 'mixins/customSanitizers',
     customValidators: 'mixins/customValidators',
+    DatePickerView: 'views/DatePickerView',
     InputView: 'views/InputView',
     jquery: '../bower_components/jquery/dist/jquery',
 //    jquery: '//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min',
     jqueryPrivate: './lib/jqueryPrivate',
     marionette: '../bower_components/marionette/lib/backbone.marionette',
     marionettePrivate: './lib/marionettePrivate',
-    Measurement: 'models/measurement',
+    Measurement: 'models/Measurement',
+    Measurements: 'collections/Measurements',
 //    measurementInputView: 'views/measurementInputView',
-    MeasurementNew: 'views/MeasurementNew',
+    MeasurementEditView: 'views/MeasurementEditView',
+    MeasurementShowView: 'views/MeasurementShowView',
+    MeasurementsListView: 'views/MeasurementsListView',
     moment: '../bower_components/moment/moment',
 //    momentPrivate: './lib/jqueryPrivate',
     sinon: '../bower_components/sinonjs/sinon',
     text: '../bower_components/text/text',
+    TimePickerView: 'views/TimePickerView',
 //    vitalsMeasurement: 'models/vitalsMeasurement',
     vitalsMeasurements: 'collections/vitalsMeasurements',
     vitalsMeasurementView: 'views/vitalsMeasurementView',
@@ -143,4 +148,12 @@ require(['app'], function (app) {
 
 require(['sinon'], function () {
   'use strict';
+});
+
+var Measurement, measurements;
+require(['Measurement', 'Measurements'], function (MeasurementModule, MeasurementsModule) {
+  'use strict';
+  Measurement = MeasurementModule;
+  measurements = new MeasurementsModule([], {collectionName: 'toyMeasurements'});
+  measurements.fetch();
 });

@@ -21,8 +21,7 @@ define(['Squire', 'customMatchers'], function (Squire, customMatchers) {
     // Mocks
     var mockUnderscore,
       mockBackbone,
-      mockMoment,
-      now;
+      mockMoment;
 
     beforeEach(function () {
       // Add custom matchers
@@ -45,8 +44,6 @@ define(['Squire', 'customMatchers'], function (Squire, customMatchers) {
       sinon.spy(mockBackbone.Model, 'extend');
       // Moment
       mockMoment = sinon.stub();
-      now = (new Date()).toISOString();
-      mockMoment.returns(now);
 
       // You have to create a new injector between each test. Otherwise, you're using the same injector over and over,
       // and Squire will cache your module. If you regenerate mock dependencies between each test, they won't get
@@ -133,9 +130,12 @@ define(['Squire', 'customMatchers'], function (Squire, customMatchers) {
 
     describe('defaults instance property', function () {
       var defaultsProp,
-        defaults;
+        defaults,
+        now;
 
       beforeEach(function () {
+        now = (new Date()).toISOString();
+        mockMoment.returns(now);
         defaultsProp = Measurement.instanceProps.defaults;
       });
 
@@ -175,19 +175,67 @@ define(['Squire', 'customMatchers'], function (Squire, customMatchers) {
 
     describe('parse instance property', function () {
       var parseProp,
-        responseObj;
+        responseObj,
+        createdAt,
+        momentizedCreatedAt,
+        updatedAt,
+        momentizedUpdatedAt,
+        measuredAt,
+        momentizedMeasuredAt;
 
       beforeEach(function () {
         parseProp = Measurement.instanceProps.parse;
+        createdAt = new Date();
+        momentizedCreatedAt = {
+          _date: createdAt
+        };
+        updatedAt = new Date();
+        momentizedUpdatedAt = {
+          _date: updatedAt
+        };
+        measuredAt = new Date();
+        momentizedMeasuredAt = {
+          _date: measuredAt
+        };
         responseObj = {
-          createdAt: function () {},
-          updatedAt: function () {},
-          measuredAt: function () {}
+          temperature: 99,
+          sbp: 120,
+          dbp: 80
         };
       });
 
       it('should be a function', function () {
         expect(parseProp).toBeFunction();
+      });
+
+      it('should create a moment object from the createdAt property of the response object', function () {
+        responseObj.createdAt = createdAt;
+        mockMoment.withArgs(createdAt).returns(momentizedCreatedAt);
+
+        responseObj = parseProp(responseObj);
+
+        expect(mockMoment).toHaveBeenCalledWithExactly(createdAt);
+        expect(responseObj.createdAt).toBe(momentizedCreatedAt);
+      });
+
+      it('should create a moment object from the updatedAt property of the response object', function () {
+        responseObj.updatedAt = updatedAt;
+        mockMoment.withArgs(updatedAt).returns(momentizedUpdatedAt);
+
+        responseObj = parseProp(responseObj);
+
+        expect(mockMoment).toHaveBeenCalledWithExactly(updatedAt);
+        expect(responseObj.updatedAt).toBe(momentizedUpdatedAt);
+      });
+
+      it('should create a moment object from the measuredAt property of the response object', function () {
+        responseObj.measuredAt = measuredAt;
+        mockMoment.withArgs(measuredAt).returns(momentizedMeasuredAt);
+
+        responseObj = parseProp(responseObj);
+
+        expect(mockMoment).toHaveBeenCalledWithExactly(measuredAt);
+        expect(responseObj.measuredAt).toBe(momentizedMeasuredAt);
       });
     });
   });

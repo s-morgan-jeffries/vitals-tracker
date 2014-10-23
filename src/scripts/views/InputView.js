@@ -1,34 +1,56 @@
 define([
-  'jquery',
   'underscore',
   'backbone'
-], function ($, _, Backbone) {
+], function (_, Backbone) {
   'use strict';
 
-  var updateValidEvent = 'updateValid',
-    updateInvalidEvent = 'updateInvalid',
-    viewProps = {};
+  var instanceProps = {},
+    staticProps = {};
 
-  viewProps.initialize = function () {
+  instanceProps.initialize = function () {
     // The name, which tells you what to update
     this.name = this.$el.attr('name');
-    // Cache the sanitizer function
-    this.parser = this.getParser();
-//    this.on('foo', function () {});
-//    this.listenTo(this.model, 'bar', function () {});
   };
 
-  viewProps.close = function () {
+  // Utility method for getting the parser
+  instanceProps.getParser = function () {
+    var type = this.$el.attr('type'),
+      parser = this[this.$el.data('parser')] || this[_.str.camelize('parse-' + type + '-input')];
+    return _.isFunction(parser) ? parser : this.parseTextInput;
+  };
+
+  // Method for parsing raw string values
+  instanceProps.parse = function (value, validity) {
+    // jshint expr: true
+    this._parser || (this._parser = this.getParser());
+    // jshint expr: false
+    return this._parser(value, validity);
+  };
+
+  // A generic getter (can be overridden for Views that inherit from this one)
+  instanceProps.get = function () {
+    return this.parse(this.el.value, this.el.validity);
+  };
+
+  // A generic setter (can be overridden for Views that inherit from this one)
+  instanceProps.set = function (value) {
+    this.$el.val(value);
+  };
+
+  // A generic close method (can be overridden for Views that inherit from this one)
+  instanceProps.close = function () {
     // Don't remove this from the DOM.
     this.off();
     this.stopListening();
   };
 
-  viewProps.update = function () {
-    var newVal = this.value(),
+  instanceProps.update = function () {
+    var newVal = this.get(),
       oldVal = this.model.get(this.name),
       changeEvent = 'change:' + this.name,
       invalidEvent = 'invalid',
+      updateValidEvent = 'updateValid',
+      updateInvalidEvent = 'updateInvalid',
       updateAttrs = {};
 
     // Now we'll build our event handlers, `onChange` and `onInvalid`. The context for both of these will be the view.
@@ -51,13 +73,16 @@ define([
       // Detach handler for invalid event
       this.stopListening(this.model, invalidEvent, onInvalid);
       // Revert to the old value
-      this.$el.val(oldVal);
+      this.set(oldVal);
       // Trigger an event indicating that the update didn't work
       this.trigger(updateInvalidEvent);
     };
 
+    // First, check if the new value is the same as the old value. If it is, reset the value in the input to the value
+    // from the model and trigger the `updateValid` event.
     if (newVal === oldVal) {
-      this.$el.val(oldVal);
+      this.set(oldVal);
+      this.trigger(updateValidEvent);
     } else {
       // If we've made it this far, we're going to try to update the model. The only way this won't work is if the
       // updated value fails validation. First, we'll set up the attributes hash.
@@ -80,16 +105,5 @@ define([
     }
   };
 
-  // Wrapper around jQuery.prototype.val that coerces the string to an appropriate type
-  viewProps.value = function () {
-    return this.parser(this.el.value, this.el.validity);
-  };
-
-  viewProps.getParser = function () {
-    var type = this.$el.attr('type'),
-      parser = this[this.$el.data('parser')] || this[_.str.camelize('parse-' + type + '-input')];
-    return _.isFunction(parser) ? parser : this.parseTextInput;
-  };
-
-  return Backbone.View.extend(viewProps);
+  return Backbone.View.extend(instanceProps, staticProps);
 });

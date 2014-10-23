@@ -1,17 +1,15 @@
 var vitalsMeasurementsView;
-var app;
-var channel;
-var measurement;
+//var app;
+//var channel;
+//var measurement;
 //var measurementView;
 
 define([
   'jquery',
   'underscore',
   'backbone',
-  'vitalsMeasurementsView',
-  'Measurement'
-//  'MeasurementNew'
-], function ($, _, Backbone, VitalsMeasurementsView, Measurement) {
+  'vitalsMeasurementsView'
+], function ($, _, Backbone, VitalsMeasurementsView) {
   'use strict';
 
   var App,
@@ -25,9 +23,10 @@ define([
   };
 
   App = Backbone.Marionette.Application.extend(appConfig);
-  app = new App();
-  channel = Backbone.Wreqr.radio.channel('vitalsApp');
-  measurement = new Measurement();
+  //app = new App();
+  //channel = Backbone.Wreqr.radio.channel('vitalsApp');
+  //measurement = new Measurement();
 
-  return app;
+  //return app;
+  return new App();
 });

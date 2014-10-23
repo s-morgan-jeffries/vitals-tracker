@@ -290,12 +290,12 @@ module.exports = function (grunt) {
 //        },
 //        src: ['test/e2e/spec/{,*/}*.js']
 //      },
-//      integrationTests: {
-//        options: {
-//          jshintrc: 'test/integration/.jshintrc'
-//        },
-//        src: ['test/integration/spec/{,*/}*.js']
-//      },
+      integrationTests: {
+        options: {
+          jshintrc: 'test/integration/.jshintrc'
+        },
+        src: ['test/integration/spec/**/*.js']
+      },
       unitTests: {
         options: {
           jshintrc: 'test/unit/.jshintrc'
@@ -318,7 +318,7 @@ module.exports = function (grunt) {
           // Add sinon
           './src/bower_components/sinonjs/sinon.js',
           './src/bower_components/jasmine-sinon/lib/jasmine-sinon.js',
-          './test/testMain.js',
+          './test/karmaMain.js',
           // Anything defined as an AMD module goes below. You have to use the file object notation so you can
           // explicitly set included to false.
           {pattern: './node_modules/squirejs/src/Squire.js', included: false},
@@ -378,66 +378,7 @@ module.exports = function (grunt) {
       };
 
       return config;
-//      return {
-//        options: {
-//          // Crucial for getting Karma to work with RequireJS. For whatever reason, if you set it up this way and use the
-//          // file globbing patterns below, Karma will generate paths relative to /base, which is what you want.
-//          basePath: '../../',
-//          files: [
-//            // The files up top
-//            // Add polyfill for bind, which is missing from PhantomJS
-//            './test/bindPolyfill.js',
-//            // Add jasmine-matchers
-//            './node_modules/jasmine-expect/dist/jasmine-matchers.js',
-//            // Add sinon
-//            './src/bower_components/sinonjs/sinon.js',
-//            './src/bower_components/jasmine-sinon/lib/jasmine-sinon.js',
-//            // The RequireJS configuration file for testing
-////          {pattern: './test/testMain.js', included: true},
-//            './test/unit/testMain.js',
-//            // Anything defined as an AMD module goes below. You have to use the file object notation so you can
-//            // explicitly set included to false.
-//            {pattern: './node_modules/squirejs/src/Squire.js', included: false},
-//            // Utilities (if any)
-//            {pattern: './src/bower_components/backbone/backbone.js', included: false},
-//            {pattern: './src/bower_components/moment/moment.js', included: false},
-//            {pattern: './src/bower_components/underscore/underscore.js', included: false},
-//            // The source files for the scripts under test
-//            {pattern: './src/scripts/**/*.js', included: false},
-//            // These are all the tests.
-//            {pattern: './test/unit/spec/**/*.js', included: false},
-//            // And the helpers (NB: All of the files in here need to be defined as AMD modules)
-//            {pattern: './test/helpers/**/*.js', included: false}
-//          ],
-//          exclude: ['./src/scripts/main.js']
-////        ,
-////        browserNoActivityTimeout: 5000
-//        },
-//        unitCI: {
-//          configFile: 'test/unit/karma.unit.ci.conf.js',
-//          singleRun: true
-//        },
-//        unitBuild: {
-//          configFile: 'test/unit/karma.unit.build.conf.js',
-//          singleRun: true
-//        },
-//        unitTravis: {
-//          configFile: 'test/unit/karma.unit.travis.conf.js',
-//          singleRun: true
-//        },
-//        integrationCI: {
-//          configFile: 'test/integration/karma.integration.ci.conf.js',
-//          singleRun: true
-//        },
-//        integrationBuild: {
-//          configFile: 'test/integration/karma.integration.build.conf.js',
-//          singleRun: true
-//        },
-//        integrationTravis: {
-//          configFile: 'test/integration/karma.integration.travis.conf.js',
-//          singleRun: true
-//        }
-//      };
+
     }()),
 
     replace: {
@@ -475,9 +416,6 @@ module.exports = function (grunt) {
         }
       }
     },
-
-
-
 
     'sprite': {
       'all': {
@@ -556,8 +494,6 @@ module.exports = function (grunt) {
 //        }
       }
     },
-
-
 
     stylus: {
       options: {
@@ -691,10 +627,14 @@ module.exports = function (grunt) {
       },
       scripts: {
         files: ['<%= yeoman.src %>/scripts/**/*.js'],
-        tasks: ['jshint:scripts', 'karma:unitCI'],
+        tasks: ['jshint:scripts'],
         options: {
           livereload: true
         }
+      },
+      integrationTests: {
+        files: ['test/integration/spec/**/*.js'],
+        tasks: ['jshint:integrationTests', 'karma:integrationCI']
       },
       unitTests: {
         files: ['test/unit/spec/**/*.js'],
@@ -788,8 +728,8 @@ module.exports = function (grunt) {
         'protractor:build'
       ],
       travisTasks = [
-        'karma:unitTravis'
-//        'karma:integrationTravis'
+        'karma:unitTravis',
+        'karma:integrationTravis'
       ],
       tasks;
     if (target === 'unit') {

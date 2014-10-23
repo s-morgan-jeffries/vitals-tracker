@@ -12,6 +12,7 @@ define(['Squire'], function (Squire) {
       otherAttr,
       expected,
       model,
+      computed,
       result;
 
     var moduleLoaded = function () {
@@ -28,11 +29,12 @@ define(['Squire'], function (Squire) {
 //          return isNaN(actual);
 //        }
 //      });
-      model = {
-        get: function (attrName) {
-          return this[attrName];
-        }
-      };
+//      model = {
+//        get: function (attrName) {
+//          return this[attrName];
+//        }
+//      };
+      computed = {};
 
       injector
         .require([
@@ -315,36 +317,40 @@ define(['Squire'], function (Squire) {
         otherAttr = 'bar';
       });
 
-      it('should return nothing if the passed in value is greater than the value of the named attribute', function () {
-        value = 5;
-        model[otherAttr] = 4;
-        result = customValidators.gtAttr(value, attr, otherAttr, model);
-        expect(result).toBeUndefined();
-      });
-
-      it('should return an error message if the passed in value is LTE the value of the named attribute', function () {
-        value = 5;
-        model[otherAttr] = 5;
-        result = customValidators.gtAttr(value, attr, otherAttr, model);
-        expect(result).toBeString();
-        value = -1;
-        model[otherAttr] = 0;
-        result = customValidators.gtAttr(value, attr, otherAttr, model);
-        expect(result).toBeString();
-      });
-
       it('should return nothing if the value is undefined', function () {
         value = undefined;
-        model[otherAttr] = 5;
-        result = customValidators.gtAttr(value, attr, otherAttr, model);
+        computed[otherAttr] = 5;
+        result = customValidators.gtAttr(value, attr, otherAttr, model, computed);
         expect(result).toBeUndefined();
       });
 
       it('should return nothing if the named attribute does not exist', function () {
         value = 5;
-        delete model[otherAttr];
-        result = customValidators.gtAttr(value, attr, otherAttr, model);
+        computed[attr] = value;
+        delete computed[otherAttr];
+        result = customValidators.gtAttr(value, attr, otherAttr, model, computed);
         expect(result).toBeUndefined();
+      });
+
+      it('should return nothing if the passed in value is greater than the value of the named attribute', function () {
+        value = 5;
+        computed[attr] = value;
+        computed[otherAttr] = 4;
+        result = customValidators.gtAttr(value, attr, otherAttr, model, computed);
+        expect(result).toBeUndefined();
+      });
+
+      it('should return an error message if the passed in value is LTE the value of the named attribute', function () {
+        value = 5;
+        computed[attr] = value;
+        computed[otherAttr] = 5;
+        result = customValidators.gtAttr(value, attr, otherAttr, model, computed);
+        expect(result).toBeString();
+        value = -1;
+        computed[attr] = value;
+        computed[otherAttr] = 0;
+        result = customValidators.gtAttr(value, attr, otherAttr, model, computed);
+        expect(result).toBeString();
       });
     });
 
@@ -357,32 +363,36 @@ define(['Squire'], function (Squire) {
 
       it('should return nothing if the value is undefined', function () {
         value = undefined;
-        model[otherAttr] = 5;
-        result = customValidators.gteAttr(value, attr, otherAttr, model);
+        computed[otherAttr] = 5;
+        result = customValidators.gteAttr(value, attr, otherAttr, model, computed);
         expect(result).toBeUndefined();
       });
 
       it('should return nothing if the named attribute is undefined', function () {
         value = 5;
-        delete model[otherAttr];
-        result = customValidators.gteAttr(value, attr, otherAttr, model);
+        computed[attr] = value;
+        delete computed[otherAttr];
+        result = customValidators.gteAttr(value, attr, otherAttr, model, computed);
         expect(result).toBeUndefined();
       });
 
       it('should return nothing if the passed in value is greater than or equal to the value of the named attribute', function () {
         value = 4;
-        model[otherAttr] = 4;
-        result = customValidators.gteAttr(value, attr, otherAttr, model);
+        computed[attr] = value;
+        computed[otherAttr] = 4;
+        result = customValidators.gteAttr(value, attr, otherAttr, model, computed);
         expect(result).toBeUndefined();
         value = 5;
-        result = customValidators.gteAttr(value, attr, otherAttr, model);
+        computed[attr] = value;
+        result = customValidators.gteAttr(value, attr, otherAttr, model, computed);
         expect(result).toBeUndefined();
       });
 
       it('should return an error message if the passed in value is LT the value of the named attribute', function () {
         value = 4;
-        model[otherAttr] = 5;
-        result = customValidators.gteAttr(value, attr, otherAttr, model);
+        computed[attr] = value;
+        computed[otherAttr] = 5;
+        result = customValidators.gteAttr(value, attr, otherAttr, model, computed);
         expect(result).toBeString();
       });
     });
@@ -396,32 +406,36 @@ define(['Squire'], function (Squire) {
 
       it('should return nothing if the value is undefined', function () {
         value = undefined;
-        model[otherAttr] = 5;
-        result = customValidators.ltAttr(value, attr, otherAttr, model);
+        computed[otherAttr] = 5;
+        result = customValidators.ltAttr(value, attr, otherAttr, model, computed);
         expect(result).toBeUndefined();
       });
 
       it('should return nothing if the named attribute does not exist', function () {
         value = 5;
-        delete model[otherAttr];
-        result = customValidators.ltAttr(value, attr, otherAttr, model);
+        computed[attr] = value;
+        delete computed[otherAttr];
+        result = customValidators.ltAttr(value, attr, otherAttr, model, computed);
         expect(result).toBeUndefined();
       });
 
       it('should return nothing if the passed in value is less than the value of the named attribute', function () {
         value = 4;
-        model[otherAttr] = 5;
-        result = customValidators.ltAttr(value, attr, otherAttr, model);
+        computed[attr] = value;
+        computed[otherAttr] = 5;
+        result = customValidators.ltAttr(value, attr, otherAttr, model, computed);
         expect(result).toBeUndefined();
       });
 
       it('should return an error message if the passed in value is GTE the value of the named attribute', function () {
         value = 5;
-        model[otherAttr] = 5;
-        result = customValidators.ltAttr(value, attr, otherAttr, model);
+        computed[attr] = value;
+        computed[otherAttr] = 5;
+        result = customValidators.ltAttr(value, attr, otherAttr, model, computed);
         expect(result).toBeString();
         value = 6;
-        result = customValidators.ltAttr(value, attr, otherAttr, model);
+        computed[attr] = value;
+        result = customValidators.ltAttr(value, attr, otherAttr, model, computed);
         expect(result).toBeString();
       });
     });
@@ -435,32 +449,36 @@ define(['Squire'], function (Squire) {
 
       it('should return nothing if the value is undefined', function () {
         value = undefined;
-        model[otherAttr] = 5;
-        result = customValidators.lteAttr(value, attr, otherAttr, model);
+        computed[otherAttr] = 5;
+        result = customValidators.lteAttr(value, attr, otherAttr, model, computed);
         expect(result).toBeUndefined();
       });
 
       it('should return nothing if the named attribute does not exist', function () {
         value = 5;
-        delete model[otherAttr];
-        result = customValidators.lteAttr(value, attr, otherAttr, model);
+        computed[attr] = value;
+        delete computed[otherAttr];
+        result = customValidators.lteAttr(value, attr, otherAttr, model, computed);
         expect(result).toBeUndefined();
       });
 
       it('should return nothing if the passed in value is less than or equal to the value of the named attribute', function () {
         value = 4;
-        model[otherAttr] = 5;
-        result = customValidators.lteAttr(value, attr, otherAttr, model);
+        computed[attr] = value;
+        computed[otherAttr] = 5;
+        result = customValidators.lteAttr(value, attr, otherAttr, model, computed);
         expect(result).toBeUndefined();
         value = 5;
-        result = customValidators.lteAttr(value, attr, otherAttr, model);
+        computed[attr] = value;
+        result = customValidators.lteAttr(value, attr, otherAttr, model, computed);
         expect(result).toBeUndefined();
       });
 
       it('should return an error message if the passed in value is GT the value of the named attribute', function () {
         value = 6;
-        model[otherAttr] = 5;
-        result = customValidators.lteAttr(value, attr, otherAttr, model);
+        computed[attr] = value;
+        computed[otherAttr] = 5;
+        result = customValidators.lteAttr(value, attr, otherAttr, model, computed);
         expect(result).toBeString();
       });
     });
