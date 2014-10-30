@@ -5,38 +5,36 @@ define([
 ], function (_, moment, InputView) {
   'use strict';
 
-  var instanceProps = {},
+  var protoProps = {},
     staticProps = {};
 
-  instanceProps.initialize = function () {
-    // The name, which tells you what to update
-    this.name = this.$el.attr('name');
-    // Set up the datetimepicker
+  protoProps.initialize = function () {
     this.$el.datetimepicker({
       pickDate: true,
       pickTime: false
     });
+    InputView.prototype.initialize.apply(this, arguments);
   };
 
-  // Override the getter
-  instanceProps.get = function () {
+  // Override the parent getter
+  protoProps.get = function () {
     var datePicker = this.$el.data('DateTimePicker'),
-      newDate = datePicker.getDate();
-    return newDate;
+      modelDate = _.clone(this.model.get(this.name)),
+      pickerDate = datePicker.getDate() || moment(NaN);
+    modelDate.month(pickerDate.month());
+    modelDate.date(pickerDate.date());
+    modelDate.year(pickerDate.year());
+    return modelDate;
   };
 
-  // A generic setter (can be overridden for Views that inherit from this one)
-  instanceProps.set = function (value) {
+  // Override the parent setter
+  protoProps.set = function (value) {
     var datePicker = this.$el.data('DateTimePicker');
-    datePicker.setDate(value);
+    datePicker.setDate(moment(new Date(value)));
   };
 
-  // A generic close method (can be overridden for Views that inherit from this one)
-  instanceProps.close = function () {
-    // Don't remove this from the DOM.
-    this.off();
-    this.stopListening();
-  };
+  // Not yet implemented
+  protoProps.onDestroy = function () {};
 
-  return InputView.extend(instanceProps, staticProps);
+  return InputView.extend(protoProps, staticProps);
 });

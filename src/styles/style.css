@@ -9919,9 +9919,28 @@ button.close {
 
 /* line 2 : /Users/Morgan/Desktop/development/javascript/backbone/vitals-tracker/src/styles/components/index.styl */
 
-/* line 2 : /Users/Morgan/Desktop/development/javascript/backbone/vitals-tracker/src/styles/layout/index.styl */
+/* line 7 : /Users/Morgan/Desktop/development/javascript/backbone/vitals-tracker/src/styles/layout/index.styl */
 
-/* line 4 : /Users/Morgan/Desktop/development/javascript/backbone/vitals-tracker/src/styles/layout/index.styl */
+/* line 7 : /Users/Morgan/Desktop/development/javascript/backbone/vitals-tracker/src/styles/layout/index.styl */
+
+/* line 7 : /Users/Morgan/Desktop/development/javascript/backbone/vitals-tracker/src/styles/layout/patient-table-layout.styl */
+
+/* line 1 : /Users/Morgan/Desktop/development/javascript/backbone/vitals-tracker/src/styles/layout/patient-table-layout.styl */
+.vitals-table {
+  table-layout: fixed;
+}
+
+/* line 7 : /Users/Morgan/Desktop/development/javascript/backbone/vitals-tracker/src/styles/layout/patient-table-layout.styl */
+.date-input {
+  width: 10%;
+}
+
+/* line 10 : /Users/Morgan/Desktop/development/javascript/backbone/vitals-tracker/src/styles/layout/patient-table-layout.styl */
+.measurement-input {
+  width: 100%;
+}
+
+/* line 3 : /Users/Morgan/Desktop/development/javascript/backbone/vitals-tracker/src/styles/layout/index.styl */
 main {
   max-width: 1000px;
 /*width 900px*/

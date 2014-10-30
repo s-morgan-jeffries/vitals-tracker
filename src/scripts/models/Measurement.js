@@ -5,11 +5,12 @@ define([
 ], function (_, Backbone, moment) {
   'use strict';
 
-  var modelProps = {};
+  var instanceProps = {},
+    staticProps = {};
 
-  modelProps.localStorage = new Backbone.LocalStorage('Measurement');
+  //instanceProps.localStorage = new Backbone.LocalStorage('Measurement');
 
-  modelProps.initialize = function () {
+  instanceProps.initialize = function () {
 
 //    // Add a createdAt property with the current time
 //    // So dates. When you create a Date in JS, it's represented using the timezone on your local machine. Presumably
@@ -34,6 +35,8 @@ define([
 //      this.destroy();
 //    }, this);
 
+    //this.isEditing = false;
+
     // This means the measurement will update the updatedAt attribute anytime something changes
     this.on('change', function () {
       // Passing {silent: true} prevents an infinite loop
@@ -42,19 +45,25 @@ define([
 
   };
 
-  modelProps.validation = {
+  //instanceProps.toggleEdit = function (editingState) {
+  //  editingState = _.isUndefined(editingState) ? !this.isEditing : !!editingState;
+  //  this.isEditing = editingState;
+  //  this.trigger('toggleEdit', this);
+  //};
+
+  instanceProps.validation = {
     createdAt: {
       required: true,
-      isDate: true
+      isValidDate: true
     },
     measuredAt: {
       required: true,
-      isDate: true,
+      isValidDate: true,
       lteAttr: 'updatedAt'
     },
     updatedAt: {
       required: true,
-      isDate: true
+      isValidDate: true
     },
     temperature: {
       isNumber: true,
@@ -93,7 +102,7 @@ define([
     }
   };
 
-  modelProps.defaults = function () {
+  instanceProps.defaults = function () {
     var now = moment();
     return {
       createdAt: now,
@@ -102,7 +111,18 @@ define([
     };
   };
 
-  modelProps.parse = function (response/*, options*/) {
+  instanceProps.reset = function (attrs) {
+    var defaults = _.result(this, 'defaults');
+    // jshint expr: true
+    attrs || (attrs = {});
+    // jshint expr: false
+    attrs = _.defaults(attrs, defaults);
+    this.clear();
+    this.set(attrs);
+    this.trigger('measurement:reset', this);
+  };
+
+  instanceProps.parse = function (response/*, options*/) {
     // createdAt
     if (response.createdAt) {
       response.createdAt = moment(response.createdAt);
@@ -120,5 +140,5 @@ define([
   };
 
 
-  return Backbone.Model.extend(modelProps);
+  return Backbone.Model.extend(instanceProps, staticProps);
 });

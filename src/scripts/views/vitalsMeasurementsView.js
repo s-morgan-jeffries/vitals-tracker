@@ -68,7 +68,7 @@ define([
 
     this.eventBus = Backbone.Wreqr.radio.channel('vitalsApp').vent;
     this.eventBus.on('saveMeasurement', function (measurementData) {
-      self.vitals.addMeasurement(measurementData);
+      self.vitals.createMeasurement(measurementData);
     });
 
     // Get the vitals

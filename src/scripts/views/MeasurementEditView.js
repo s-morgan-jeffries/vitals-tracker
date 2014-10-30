@@ -1,3 +1,4 @@
+//var evt;
 define([
   'jquery',
   'underscore',
@@ -12,154 +13,137 @@ define([
 
   var ENTER_KEY = 13;
 
-  var viewProps = {};
+  var protoProps = {},
+    staticProps = {};
 
-  viewProps.tagName = 'tr';
+  protoProps.tagName = 'tr';
 
   // This is the way templates have to work when you're working with Marionette
-  viewProps.template = function (serializedModel) {
+  protoProps.template = function (serializedModel) {
     return templates.MeasurementEdit(serializedModel);
   };
 
-  viewProps.initialize = function () {
+  protoProps.initialize = function () {
     // Make the model
-    // jshint expr: true
-    this.model || (this.model = new Measurement());
-    // jshint expr: false
-    this.render();
+    if (this.model) {
+      console.log('has a model');
+      this.initialAttrs = this.model.toJSON();
+    } else {
+      console.log('no model');
+      this.model = new Measurement();
+    }
+    // Create an object for storing InputView instances (used to access them by name)
+    this.inputViews = {};
+    // Create an array for storing the subViews (used later to close them)
+    this.subViews = [];
+  };
 
-    // Create the child views
-    // Capture the current context
-    var measurementEditView = this;
-    // Get a reference to the model
-    var model = this.model;
-    // Create an array for storing the childViews (used later to close them)
-    this.childViews = [];
+  protoProps.onRender = function () {
+    this.createSubViews();
+  };
 
-    // Set up events for the child views
-    var inputEvents = {};
-    // Update the model on blur
-    inputEvents.blur = 'update';
-    // Update and save when the `Enter` key is pressed
-    inputEvents.keydown = function (e) {
-      // If it's not the `Enter` key, return now
-      if (e.which !== ENTER_KEY) {
-        return;
+  protoProps.updateModelAttr = function (e) {
+    var $input = $(e.target),
+      viewName = $input.data('viewName'),
+      inputView = this.inputViews[viewName];
+    inputView.updateModel();
+  };
+
+  protoProps.submitOnEnter = function (e) {
+    if (e.which !== ENTER_KEY) {
+      return;
+    }
+
+    // submission logic
+    var $input = $(e.target),
+      viewName = $input.data('viewName'),
+      inputView = this.inputViews[viewName],
+      updateEvent = inputView.name + ':update',
+      successStatuses = ['success', 'nochange'];
+    this.listenToOnce(inputView, updateEvent, function (data) {
+      if (_.contains(successStatuses, data.status)) {
+        this.submitModel();
       }
+    });
+    inputView.updateModel();
+  };
 
-      // Event strings
-      var updateValidEvent = 'updateValid',
-        updateInvalidEvent = 'updateInvalid',
-        // Reference to the child view
-        inputView = this;
-
-      // What to do when the update is valid
-      var onUpdateValid = function () {
-        // Unregister the handlers
-        measurementEditView.stopListening(inputView, updateValidEvent, onUpdateValid);
-        measurementEditView.stopListening(inputView, updateInvalidEvent, onUpdateInvalid);
-        // Publish the updates that have been made to the model
-        measurementEditView.publishUpdates();
-      };
-
-      // What to do when the update is invalid
-      var onUpdateInvalid = function () {
-        // Unregister the handlers
-        measurementEditView.stopListening(inputView, updateValidEvent, onUpdateValid);
-        measurementEditView.stopListening(inputView, updateInvalidEvent, onUpdateInvalid);
-      };
-
-      // Register the event handlers
-      measurementEditView.listenTo(inputView, updateValidEvent, onUpdateValid);
-      measurementEditView.listenTo(inputView, updateInvalidEvent, onUpdateInvalid);
-
-      // Call the update method and let the handlers do the rest
-      inputView.update();
-    };
+  protoProps.createSubViews = function () {
+    //// Capture the current context
+    var measurementEditView = this,
+    // Get a reference to the model
+      model = this.model;
 
     this.$('input').each(function () {
       var Constructor,
         viewInstance,
         $this = $(this),
-        isDate = $this.attr('name') === 'date',
-        isTime = $this.attr('name') === 'time';
+        isDate = $this.data('picker') === 'date',
+        isTime = $this.data('picker') === 'time',
+        viewName;
       if (isDate) {
         Constructor = DatePickerView;
+        viewName = 'date';
       } else if (isTime) {
         Constructor = TimePickerView;
+        viewName = 'time';
       } else {
         Constructor = InputView;
       }
-      viewInstance = new Constructor({el: this, model: model, events: inputEvents});
-      measurementEditView['$' + viewInstance.name] = viewInstance;
-      measurementEditView.childViews.push(viewInstance);
+      viewInstance = new Constructor({el: this, model: model});
+      // This has to be available on the element so we can get it from events on that element
+      viewName = viewInstance.$el.data('viewName');
+      // So we can find the inputView by name
+      measurementEditView.inputViews[viewName] = viewInstance;
+      // So we can destroy the inputView when the measurementEditView is destroyed
+      measurementEditView.subViews.push(viewInstance);
     });
   };
 
-  //// Logic for saving the model
-  //viewProps.save = function () {
-  //  var saveSuccessEvent = 'sync',
-  //    saveErrorEvent = 'error',
-  //    successEvent = 'modelSaved',
-  //    errorEvent = 'modelSaveError';
-  //
-  //  // We're saving the model here. What should happen from that point depends on context, so the way to handle this is
-  //  // just to trigger an event.
-  //  var onSuccess = function (model, response/*, options*/) {
-  //    // Unregister listeners for `sync` and `error` events
-  //    this.stopListening(this.model, saveSuccessEvent, onSuccess);
-  //    this.stopListening(this.model, saveErrorEvent, onError);
-  //    this.trigger(successEvent, this, model, response);
-  //    console.log('model saved');
-  //    console.log('\tview:');
-  //    console.log(this);
-  //    console.log('\tmodel:');
-  //    console.log(model);
-  //    console.log('\tresponse:');
-  //    console.log(response);
-  //  };
-  //
-  //  var onError = function (model, response/*, options*/) {
-  //    // Unregister listeners for `sync` and `error` events
-  //    this.stopListening(this.model, saveSuccessEvent, onSuccess);
-  //    this.stopListening(this.model, saveErrorEvent, onError);
-  //    this.trigger(errorEvent, this, model, response);
-  //    console.log('model save error');
-  //    console.log('\tview:');
-  //    console.log(this);
-  //    console.log('\tmodel:');
-  //    console.log(model);
-  //    console.log('\tresponse:');
-  //    console.log(response);
-  //  };
-  //
-  //  // Register listeners for `sync` and `error` events
-  //  this.listenTo(this.model, saveSuccessEvent, onSuccess);
-  //  this.listenTo(this.model, saveErrorEvent, onError);
-  //
-  //  console.log('saving model');
-  //  this.model.save();
+  protoProps.onBeforeDestroy = function () {
+    this.destroySubViews();
+  };
+
+  protoProps.destroySubViews = function () {
+    while (this.subViews.length) {
+      this.subViews.pop().destroy();
+    }
+  };
+
+  protoProps.submitModel = function () {
+    console.log('measurement:submit');
+    this.trigger('measurement:submit', this.model, this);
+  };
+
+  protoProps.reset = function () {
+    this.model.reset(this.initialAttrs);
+    this.updateInputViews();
+  };
+
+  protoProps.updateInputViews = function () {
+    _.each(this.inputViews, function (inputView) {
+      inputView.updateView();
+    });
+  };
+
+  //protoProps.triggerFocusLost = function () {
+  //  if (this.netFocus === 0) {
+  //    this.trigger('focuslost:MeasurementEditView');
+  //    console.log('focuslost:MeasurementEditView');
+  //  }
   //};
 
-  viewProps.publishUpdates = function () {
-    var editCompletedEvent = 'modelUpdated';
-
-    this.trigger(editCompletedEvent, this, this.model);
+  protoProps.events = {
+    'blur input': 'updateModelAttr',
+    'keydown input': 'submitOnEnter'
+    //focusout: function () {
+    //  this.netFocus -= 1;
+    //  setTimeout(this.triggerFocusLost.bind(this), 0);
+    //},
+    //focusin: function () {
+    //  this.netFocus += 1;
+    //}
   };
 
-  // Logic for closing the view
-  viewProps.close = function () {
-    // Remove any event listeners
-    this.off();
-    // Stop listening to any external events
-    this.stopListening();
-    // Close all the child views
-    while (this.childViews.length) {
-      this.childViews.pop().close();
-    }
-    // Remove from the DOM
-    this.remove();
-  };
-
-  return Backbone.Marionette.ItemView.extend(viewProps);
+  return Backbone.Marionette.ItemView.extend(protoProps, staticProps);
 });

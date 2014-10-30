@@ -1,15 +1,14 @@
 define([
+  'jquery',
   'underscore',
   'backbone',
   'marionette',
   'customParsers',
-//  'customSanitizers',
   'customValidators',
-//  'backbone.dualstorage'
   'backbone.localstorage',
-//  'backbone.forms'
-  'backbone.validation'
-], function (_, Backbone, Marionette, customParsers, customValidators) {
+  'backbone.validation',
+  'bootstrap'
+], function ($, _, Backbone, Marionette, customParsers, customValidators) {
   'use strict';
 
   // Add custom validators
@@ -20,10 +19,6 @@ define([
   // Add parsers to views
   _.extend(Backbone.View.prototype, customParsers);
 
-//  // Add sanitizers to views
-//  _.extend(Backbone.View.prototype, customSanitizers);
-
-  Marionette.noConflict();
-
+  // Get rid of the global reference to Backbone and return Backbone as the module
   return Backbone.noConflict();
 });

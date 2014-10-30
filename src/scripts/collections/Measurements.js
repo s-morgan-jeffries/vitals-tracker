@@ -4,33 +4,35 @@ define([
 ], function (Backbone, Measurement) {
   'use strict';
 
-  var collectionProps = {},
-    Measurements;
+  var instanceProps = {},
+    staticProps = {};
 
-  collectionProps.model = Measurement;
-  collectionProps.initialize = function (models, options) {
+  instanceProps.model = Measurement;
 
-    // jshint expr: true
-    options || (options = {});
-    // jshint expr: false
-
-    var collectionName = options.collectionName || 'Measurements';
-    this.localStorage = new Backbone.LocalStorage(collectionName);
+  instanceProps.initialize = function (/*models, options*/) {
 
     // Sort when the comparator changes
-    this.on('change:measuredAt', function () {
+    this.on('sync', function () {
+      //console.log('synced');
       this.sort();
     });
   };
 
-  // This is used
-  collectionProps.comparator = 'measuredAt';
+  // This is used for sorting
+  instanceProps.comparator = 'measuredAt';
 
-  collectionProps.addMeasurement = function (measurementData) {
-    this.create(measurementData);
+  instanceProps.setLocalStorage = function () {
+    var url = this.url,
+      regex = /^\/patients\/(\d+)\/vitals/,
+      id = regex.exec(url)[1],
+      localStorageName = 'patient-' + id + '-vitals';
+    this.localStorage = new Backbone.LocalStorage(localStorageName);
   };
 
-  Measurements = Backbone.Collection.extend(collectionProps);
+  instanceProps.setUrl = function (url) {
+    this.url = url;
+    this.setLocalStorage();
+  };
 
-  return Measurements;
+  return Backbone.Collection.extend(instanceProps, staticProps);
 });

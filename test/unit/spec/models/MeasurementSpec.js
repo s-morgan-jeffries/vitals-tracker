@@ -39,7 +39,8 @@ define(['Squire', 'customMatchers'], function (Squire, customMatchers) {
               staticProps: staticProps
             };
           }
-        }
+        },
+        LocalStorage: function () {}
       };
       sinon.spy(mockBackbone.Model, 'extend');
       // Moment
@@ -70,16 +71,16 @@ define(['Squire', 'customMatchers'], function (Squire, customMatchers) {
       var expectedValidationObj = {
         createdAt: {
           required: true,
-          isDate: true
+          isValidDate: true
         },
         measuredAt: {
           required: true,
-          isDate: true,
+          isValidDate: true,
           lteAttr: 'updatedAt'
         },
         updatedAt: {
           required: true,
-          isDate: true
+          isValidDate: true
         },
         temperature: {
           isNumber: true,

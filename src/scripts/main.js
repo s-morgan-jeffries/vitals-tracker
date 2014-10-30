@@ -90,7 +90,9 @@ requirejs.config({
 //    customSanitizers: 'mixins/customSanitizers',
     customValidators: 'mixins/customValidators',
     DatePickerView: 'views/DatePickerView',
+    DatePickerViewOrig: 'views/DatePickerViewOrig',
     InputView: 'views/InputView',
+    InputViewOrig: 'views/InputViewOrig',
     jquery: '../bower_components/jquery/dist/jquery',
 //    jquery: '//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min',
     jqueryPrivate: './lib/jqueryPrivate',
@@ -100,13 +102,17 @@ requirejs.config({
     Measurements: 'collections/Measurements',
 //    measurementInputView: 'views/measurementInputView',
     MeasurementEditView: 'views/MeasurementEditView',
+    MeasurementEditViewOrig: 'views/MeasurementEditViewOrig',
     MeasurementShowView: 'views/MeasurementShowView',
-    MeasurementsListView: 'views/MeasurementsListView',
+    MeasurementsTableView: 'views/MeasurementsTableView',
     moment: '../bower_components/moment/moment',
+    Patient: 'models/Patient',
+    PatientView: 'views/PatientView',
 //    momentPrivate: './lib/jqueryPrivate',
     sinon: '../bower_components/sinonjs/sinon',
     text: '../bower_components/text/text',
     TimePickerView: 'views/TimePickerView',
+    TimePickerViewOrig: 'views/TimePickerViewOrig',
 //    vitalsMeasurement: 'models/vitalsMeasurement',
     vitalsMeasurements: 'collections/vitalsMeasurements',
     vitalsMeasurementView: 'views/vitalsMeasurementView',
@@ -146,14 +152,14 @@ require(['app'], function (app) {
   app.start();
 });
 
-require(['sinon'], function () {
-  'use strict';
-});
-
-var Measurement, measurements;
-require(['Measurement', 'Measurements'], function (MeasurementModule, MeasurementsModule) {
-  'use strict';
-  Measurement = MeasurementModule;
-  measurements = new MeasurementsModule([], {collectionName: 'toyMeasurements'});
-  measurements.fetch();
-});
+//require(['sinon'], function () {
+//  'use strict';
+//});
+//
+//var Measurement, measurements;
+//require(['Measurement', 'Measurements'], function (MeasurementModule, MeasurementsModule) {
+//  'use strict';
+//  Measurement = MeasurementModule;
+//  measurements = new MeasurementsModule([], {collectionName: 'toyMeasurements'});
+//  measurements.fetch();
+//});

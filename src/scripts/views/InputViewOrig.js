@@ -4,56 +4,49 @@ define([
 ], function (_, Backbone) {
   'use strict';
 
-  //var ENTER_KEY = 13;
-
-  var protoProps = {},
+  var instanceProps = {},
     staticProps = {};
 
-  protoProps.initialize = function () {
+  instanceProps.initialize = function () {
     // The name, which tells you what to update
     this.name = this.$el.attr('name');
-    // jshint expr: true
-    this.$el.data('viewName') || this.$el.data('viewName', this.name);
-    // jshint expr: false
+    // Configures the view to update its value when the model is reset
+    this.listenTo(this.model, 'modelReset', this.updateView);
+    // Initialize the input's value with whatever's in the model
     this.updateView();
   };
 
   // A generic getter (can be overridden for Views that inherit from this one)
-  protoProps.get = function () {
+  instanceProps.get = function () {
     return this.parse(this.el.value, this.el.validity);
   };
 
   // A generic setter (can be overridden for Views that inherit from this one)
-  protoProps.set = function (value) {
+  instanceProps.set = function (value) {
     this.$el.val(value);
+  };
+
+  // A generic close method (can be overridden for Views that inherit from this one)
+  instanceProps.close = function () {
+    // Don't remove this from the DOM.
+    this.off();
+    this.stopListening();
   };
 
   // Method for updating the named attribute of the model for this view. You shouldn't have to rewrite this for Views
   // that inherit from this one.
-  protoProps.updateModel = function () {
-    console.log('updating');
+  instanceProps.updateModel = function () {
     var newVal = this.get(),
       oldVal = this.model.get(this.name),
       changeEvent = 'change:' + this.name,
       invalidEvent = 'invalid',
-      updateEvent = this.name + ':update',
-      //baseUpdateEvent = 'update:model',
-      //eventName,
-      eventData = {},
-      //updateStatus,
-      //updateSuccessEvent = 'update:model:success',
-      //updateErrorEvent = 'update:model:error',
-      //updateNoChangeEvent = 'update:model:nochange',
+      updateValidEvent = 'updateValid',
+      updateInvalidEvent = 'updateInvalid',
       updateAttrs = {};
 
     // Now we'll build our event handlers, `onChange` and `onInvalid`. The context for both of these will be the view.
     var onChange = function () {
-      //console.log('onChange');
-      //updateStatus = 'success';
-      //eventName = baseUpdateEvent + ':' + updateStatus;
-      eventData = {
-        status: 'success'
-      };
+      console.log('onChange');
       // Detach handler for change event
       this.stopListening(this.model, changeEvent, onChange);
       // Detach handler for invalid event
@@ -61,18 +54,11 @@ define([
       // Set the value to whatever we got by sanitizing the raw value
 //      this.$el.val(newVal);
       // Trigger an event indicating that the update worked
-      this.trigger(updateEvent, eventData);
-      console.log(updateEvent);
-      console.log(eventData);
+      this.trigger(updateValidEvent);
     };
 
     var onInvalid = function () {
       console.log('onInvalid');
-      //updateStatus = 'error';
-      //eventName = baseUpdateEvent + ':' + updateStatus;
-      eventData = {
-        status: 'error'
-      };
       // Detach handler for change event
       this.stopListening(this.model, changeEvent, onChange);
       // Detach handler for invalid event
@@ -80,23 +66,14 @@ define([
       // Revert to the old value
       this.set(oldVal);
       // Trigger an event indicating that the update didn't work
-      this.trigger(updateEvent, eventData);
-      console.log(updateEvent);
-      console.log(eventData);
+      this.trigger(updateInvalidEvent);
     };
 
     // First, check if the new value is the same as the old value. If it is, reset the value in the input to the value
     // from the model and trigger the `updateValid` event.
     if (newVal === oldVal) {
       this.set(oldVal);
-      //updateStatus = 'nochange';
-      //eventName = baseUpdateEvent + ':' + updateStatus;
-      eventData = {
-        status: 'nochange'
-      };
-      this.trigger(updateEvent, eventData);
-      console.log(updateEvent);
-      console.log(eventData);
+      this.trigger(updateValidEvent);
     } else {
       // If we've made it this far, we're going to try to update the model. The only way this won't work is if the
       // updated value fails validation. First, we'll set up the attributes hash.
@@ -120,25 +97,24 @@ define([
   };
 
   // A method for updating this input's value from the named attribute of its model
-  //console.log('Fix updateView!!');
-  protoProps.updateView = function () {
-    //console.log('updateView');
+  instanceProps.updateView = function () {
     this.set(this.model.get(this.name));
   };
 
-  protoProps.getParser = function () {
+  // Utility method for getting the parser
+  instanceProps.getParser = function () {
     var type = this.$el.attr('type'),
       parser = this[this.$el.data('parser')] || this[_.str.camelize('parse-' + type + '-input')];
     return _.isFunction(parser) ? parser : this.parseTextInput;
   };
 
   // Method for parsing raw string values
-  protoProps.parse = function (value, validity) {
+  instanceProps.parse = function (value, validity) {
     // jshint expr: true
     this._parser || (this._parser = this.getParser());
     // jshint expr: false
     return this._parser(value, validity);
   };
 
-  return Backbone.Marionette.ItemView.extend(protoProps, staticProps);
+  return Backbone.View.extend(instanceProps, staticProps);
 });

@@ -29,6 +29,21 @@ define([
     }
   };
 
+  customValidators.isValidDate = function (value, attr/*, expected, model*/) {
+    if (_.isUndefined(value)) {
+      return;
+    }
+    // Make sure it's a date
+    var isDate = _.isUndefined(customValidators.isDate(value, attr, true));
+    if (!isDate) {
+      return attr + ' must be a date';
+    }
+    // Make sure it's a valid date
+    if (_.isNaN(value.valueOf())) {
+      return attr + ' must be a valid date';
+    }
+  };
+
   customValidators.isNaN = makePredicate('isNaN', 'NaN');
 
   customValidators.isNull = makePredicate('isNull', 'null');

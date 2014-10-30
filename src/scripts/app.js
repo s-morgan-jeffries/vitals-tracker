@@ -1,15 +1,17 @@
-var vitalsMeasurementsView;
+//var vitalsMeasurementsView;
 //var app;
 //var channel;
 //var measurement;
 //var measurementView;
+var patient, patientView;
 
 define([
   'jquery',
   'underscore',
   'backbone',
-  'vitalsMeasurementsView'
-], function ($, _, Backbone, VitalsMeasurementsView) {
+  'Patient',
+  'PatientView'
+], function ($, _, Backbone, Patient, PatientView) {
   'use strict';
 
   var App,
@@ -18,7 +20,9 @@ define([
   appConfig.channelName = 'vitalsApp';
 
   appConfig.initialize = function () {
-    vitalsMeasurementsView = new VitalsMeasurementsView();
+    patient = new Patient({id: '12345'});
+    patientView = new PatientView({model: patient});
+    //vitalsMeasurementsView = new VitalsMeasurementsView();
 //    measurementView = new MeasurementNew();
   };
 

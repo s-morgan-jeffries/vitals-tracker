@@ -1,51 +1,59 @@
-var vitals,
-//  measurementInputView,
-  measurementDisplayView,
-  measurementNew;
+//var childView;
 
 define([
-  'underscore',
   'backbone',
-  'jquery',
-  'vitalsMeasurements',
-  'vitalsMeasurementView',
   'MeasurementEditView',
-  'bootstrap'
-], function (_, Backbone, $, VitalsMeasurements, VitalsMeasurementView, MeasurementEditView) {
+  'MeasurementShowView'
+], function (Backbone, MeasurementEditView, MeasurementShowView) {
   'use strict';
 
-  var viewProps = {};
+  var instanceProps = {},
+    staticProps = {};
 
-  viewProps.el = $('#vitals-table')[0];
+  MeasurementShowView = MeasurementShowView.extend({
+    triggers: {
+      dblclick: 'toggleEdit'
+    }
+  });
+  //MeasurementEditView = MeasurementEditView.extend({
+  //  events: {
+  //    blur: function () {
+  //      console.log('blur!');
+  //    }
+  //  }
+  //});
 
-  viewProps.initialize = function () {
-    var self = this;
-
-    this.eventBus = Backbone.Wreqr.radio.channel('vitalsApp').vent;
-    this.eventBus.on('saveMeasurement', function (measurementData) {
-      self.vitals.addMeasurement(measurementData);
-    });
-
-    // Get the vitals
-    vitals = this.vitals = new VitalsMeasurements(null, {collectionName: 'vitals'});
-    measurementNew = new MeasurementEditView();
-    this.$el.find('tbody')
-//      .append(inputView.el)
-      .append(measurementNew.el);
-
-    this.listenTo(this.vitals, 'add', this.addMeasurementView);
-    this.vitals.fetch();
+  instanceProps.getChildView = function () {
+    return MeasurementShowView;
   };
 
-  viewProps.addMeasurementView = function (measurement/*, collection, options*/) {
-    var measurementView = new VitalsMeasurementView({model: measurement});
-    measurementDisplayView = measurementView;
-    this.$el.append(measurementView.render().el);
+  instanceProps.tagName = 'tbody';
+
+  instanceProps.initialize = function () {
+    this.render();
+    this.listenTo(this.collection, 'sync', this.render);
   };
 
-//  viewProps.events = {
-//    'keydown #measurement-input': 'addMeasurement'
-//  };
+  instanceProps.childEvents = {
+    toggleEdit: 'editItem'
+  };
 
-  return Backbone.View.extend(viewProps);
+  instanceProps.editItem = function (measurementShowView) {
+    var model = measurementShowView.model,
+      measurementEditView = new MeasurementEditView({model: model});
+
+    var onModelUpdated = function () {
+      this.stopListening(measurementEditView, 'modelUpdated');
+      measurementEditView.close();
+      model.save();
+    };
+
+    this.listenTo(measurementEditView, 'modelUpdated', onModelUpdated);
+
+    measurementEditView.render();
+    measurementShowView.$el.replaceWith(measurementEditView.el);
+    measurementShowView.close();
+  };
+
+  return Backbone.Marionette.CollectionView.extend(instanceProps, staticProps);
 });

@@ -5,38 +5,38 @@ define([
 ], function (_, moment, InputView) {
   'use strict';
 
-  var instanceProps = {},
+  var protoProps = {},
     staticProps = {};
 
-  //instanceProps.initialize = function () {
-  //  // The name, which tells you what to update
-  //  this.name = this.$el.attr('name');
-  //  // Set up the datetimepicker
-  //  this.$el.datetimepicker({
-  //    pickDate: true,
-  //    pickTime: false
-  //  });
-  //};
-  //
-  //// Override the getter
-  //instanceProps.get = function () {
-  //  var datePicker = this.$el.data('DateTimePicker'),
-  //    newDate = datePicker.getDate();
-  //  return newDate;
-  //};
-  //
-  //// A generic setter (can be overridden for Views that inherit from this one)
-  //instanceProps.set = function (value) {
-  //  var datePicker = this.$el.data('DateTimePicker');
-  //  datePicker.setDate(value);
-  //};
-  //
-  //// A generic close method (can be overridden for Views that inherit from this one)
-  //instanceProps.close = function () {
-  //  // Don't remove this from the DOM.
-  //  this.off();
-  //  this.stopListening();
-  //};
+  protoProps.initialize = function () {
+    // Set up the datetimepicker
+    this.$el.datetimepicker({
+      pickDate: false,
+      pickTime: true
+    });
+    // Call the parent method
+    InputView.prototype.initialize.apply(this, arguments);
+  };
 
-  return InputView.extend(instanceProps, staticProps);
+  // Override the parent getter
+  protoProps.get = function () {
+    var datePicker = this.$el.data('DateTimePicker'),
+      modelDate = _.clone(this.model.get(this.name)),
+      pickerDate = datePicker.getDate() || moment(NaN);
+    modelDate.hour(pickerDate.hour());
+    modelDate.minute(pickerDate.minute());
+    modelDate.second(pickerDate.second());
+    return modelDate;
+  };
+
+  // Override the parent setter
+  protoProps.set = function (value) {
+    var datePicker = this.$el.data('DateTimePicker');
+    datePicker.setDate(moment(new Date(value)));
+  };
+
+  // Not yet implemented
+  protoProps.onDestroy = function () {};
+
+  return InputView.extend(protoProps, staticProps);
 });

@@ -5,17 +5,29 @@ define([
 ], function (_, Backbone, templates) {
   'use strict';
 
-  var viewProps = {};
+  var instanceProps = {},
+    staticProps = {};
 
-  viewProps.tagName = 'tr';
+  instanceProps.tagName = 'tr';
 
-  viewProps.template = function (serializedModel) {
-    return templates.measurementDisplayTemplate(serializedModel);
+  instanceProps.template = function (serializedModel) {
+    var defaults = {
+      temperature: null,
+      pulse: null,
+      sbp: null,
+      dbp: null,
+      respirations: null,
+      saturation: null
+    };
+    var data = _.defaults({}, serializedModel, defaults);
+    return templates.measurementShow(data);
   };
 
-  viewProps.initialize = function () {
-    this.render();
+  instanceProps.close = function () {
+    this.off();
+    this.stopListening();
+    this.remove();
   };
 
-  return Backbone.Marionette.ItemView.extend(viewProps);
+  return Backbone.Marionette.ItemView.extend(instanceProps, staticProps);
 });
