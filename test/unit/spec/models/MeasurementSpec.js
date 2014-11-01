@@ -6,7 +6,7 @@ define(['Squire', 'customMatchers'], function (Squire, customMatchers) {
   // of want to leave it this way for now, just because I don't know how this will go, but I'm also not sure if this is
   // the most useful test suite.
   // Anyway, you'll probably need to write integration tests eventually.
-  describe('Measurement', function () {
+  xdescribe('Measurement', function () {
 
     var Measurement;
 

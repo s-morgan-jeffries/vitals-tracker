@@ -5,6 +5,7 @@ define([
   'marionette',
   'customParsers',
   'customValidators',
+  'backbone.courier',
   'backbone.localstorage',
   'backbone.validation',
   'bootstrap'

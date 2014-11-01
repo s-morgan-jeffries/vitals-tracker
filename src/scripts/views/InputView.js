@@ -4,12 +4,11 @@ define([
 ], function (_, Backbone) {
   'use strict';
 
-  //var ENTER_KEY = 13;
-
   var protoProps = {},
     staticProps = {};
 
   protoProps.initialize = function () {
+    Backbone.Courier.add(this);
     // The name, which tells you what to update
     this.name = this.$el.attr('name');
     // jshint expr: true
@@ -31,26 +30,18 @@ define([
   // Method for updating the named attribute of the model for this view. You shouldn't have to rewrite this for Views
   // that inherit from this one.
   protoProps.updateModel = function () {
-    console.log('updating');
+    //console.log('updating');
     var newVal = this.get(),
       oldVal = this.model.get(this.name),
       changeEvent = 'change:' + this.name,
       invalidEvent = 'invalid',
       updateEvent = this.name + ':update',
-      //baseUpdateEvent = 'update:model',
-      //eventName,
       eventData = {},
-      //updateStatus,
-      //updateSuccessEvent = 'update:model:success',
-      //updateErrorEvent = 'update:model:error',
-      //updateNoChangeEvent = 'update:model:nochange',
       updateAttrs = {};
 
     // Now we'll build our event handlers, `onChange` and `onInvalid`. The context for both of these will be the view.
     var onChange = function () {
       //console.log('onChange');
-      //updateStatus = 'success';
-      //eventName = baseUpdateEvent + ':' + updateStatus;
       eventData = {
         status: 'success'
       };
@@ -62,14 +53,11 @@ define([
 //      this.$el.val(newVal);
       // Trigger an event indicating that the update worked
       this.trigger(updateEvent, eventData);
-      console.log(updateEvent);
-      console.log(eventData);
     };
 
     var onInvalid = function () {
-      console.log('onInvalid');
-      //updateStatus = 'error';
-      //eventName = baseUpdateEvent + ':' + updateStatus;
+      //console.log('onInvalid');
+      //console.log(arguments);
       eventData = {
         status: 'error'
       };
@@ -81,22 +69,16 @@ define([
       this.set(oldVal);
       // Trigger an event indicating that the update didn't work
       this.trigger(updateEvent, eventData);
-      console.log(updateEvent);
-      console.log(eventData);
     };
 
     // First, check if the new value is the same as the old value. If it is, reset the value in the input to the value
     // from the model and trigger the `updateValid` event.
     if (newVal === oldVal) {
       this.set(oldVal);
-      //updateStatus = 'nochange';
-      //eventName = baseUpdateEvent + ':' + updateStatus;
       eventData = {
         status: 'nochange'
       };
       this.trigger(updateEvent, eventData);
-      console.log(updateEvent);
-      console.log(eventData);
     } else {
       // If we've made it this far, we're going to try to update the model. The only way this won't work is if the
       // updated value fails validation. First, we'll set up the attributes hash.
@@ -107,6 +89,8 @@ define([
       this.listenTo(this.model, changeEvent, onChange);
       this.listenTo(this.model, invalidEvent, onInvalid);
 
+      //console.log(updateAttrs);
+
       // Now we update the model (with the validate option set to true) and let our event handlers do the rest.
       if (_.isUndefined(newVal)) {
         // If newVal is undefined, we're unsetting the attribute. We're using the `set` method with `unset` set to true
@@ -114,6 +98,7 @@ define([
         // event.
         this.model.set(updateAttrs, {validate: true, unset: true});
       } else {
+        //console.log('setting');
         this.model.set(updateAttrs, {validate: true});
       }
     }

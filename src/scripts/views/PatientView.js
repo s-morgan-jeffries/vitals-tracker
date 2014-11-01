@@ -2,10 +2,9 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'MeasurementEditViewOrig',
   'MeasurementsTableView',
   'MeasurementEditView'
-], function ($, _, Backbone, MeasurementEditViewOrig, MeasurementsTableView, MeasurementEditView) {
+], function ($, _, Backbone, MeasurementsTableView, MeasurementEditView) {
   'use strict';
 
   var protoProps = {},
@@ -14,6 +13,8 @@ define([
   protoProps.el = $('#vitals-app')[0];
 
   protoProps.initialize = function () {
+
+    Backbone.Courier.add(this);
 
     this.subViews = [];
 
@@ -35,10 +36,11 @@ define([
   };
 
   protoProps.addMeasurement = function (measurement, measurementInput) {
+    //console.log(measurement);
     this.model.createMeasurement(measurement.toJSON());
     //console.log(measurement.attributes);
     //measurement.save();
-    measurementInput.reset();
+    measurementInput.resetMeasurement();
   };
 
   protoProps.close = function () {

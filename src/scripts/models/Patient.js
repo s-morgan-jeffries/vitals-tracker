@@ -6,12 +6,12 @@ define([
 ], function (_, Backbone, moment, Measurements) {
   'use strict';
 
-  var instanceProps = {},
+  var protoProps = {},
     staticProps = {};
 
-  instanceProps.localStorage = new Backbone.LocalStorage('Patient');
+  protoProps.localStorage = new Backbone.LocalStorage('Patient');
 
-  instanceProps.initialize = function () {
+  protoProps.initialize = function () {
     this.vitals = new Measurements();
     if (this.id) {
       this.setUrl();
@@ -21,13 +21,13 @@ define([
     this.on('change:id', this.setUrl);
   };
 
-  instanceProps.setUrl = function () {
+  protoProps.setUrl = function () {
     this.url = '/patients/' + this.id;
     this.setLocalStorage();
     this.setVitalsUrl();
   };
 
-  instanceProps.setLocalStorage = function () {
+  protoProps.setLocalStorage = function () {
     //var url = this.url,
     //  regex = /^\/patients\/(\d+)$/,
     //  id = regex.exec(url)[1],
@@ -36,12 +36,12 @@ define([
     this.localStorage = new Backbone.LocalStorage(localStorageName);
   };
 
-  instanceProps.setVitalsUrl = function () {
+  protoProps.setVitalsUrl = function () {
     var vitalsUrl = this.url + '/vitals';
     this.vitals.setUrl(vitalsUrl);
   };
 
-  instanceProps.validation = {
+  protoProps.validation = {
     createdAt: {
       required: true,
       isValidDate: true
@@ -52,7 +52,7 @@ define([
     }
   };
 
-  instanceProps.defaults = function () {
+  protoProps.defaults = function () {
     var now = moment();
     return {
       createdAt: now,
@@ -60,11 +60,11 @@ define([
     };
   };
 
-  instanceProps.createMeasurement = function (measurementData) {
+  protoProps.createMeasurement = function (measurementData) {
     this.vitals.create(measurementData);
   };
 
-  instanceProps.parse = function (response/*, options*/) {
+  protoProps.parse = function (response/*, options*/) {
     // createdAt
     if (response.createdAt) {
       response.createdAt = moment(response.createdAt);
@@ -77,5 +77,5 @@ define([
     return response;
   };
 
-  return Backbone.Model.extend(instanceProps, staticProps);
+  return Backbone.Model.extend(protoProps, staticProps);
 });

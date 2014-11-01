@@ -7,38 +7,26 @@ define([
 ], function (Backbone, MeasurementEditView, MeasurementShowView) {
   'use strict';
 
-  var instanceProps = {},
+  var protoProps = {},
     staticProps = {};
 
-  MeasurementShowView = MeasurementShowView.extend({
-    triggers: {
-      dblclick: 'toggleEdit'
-    }
-  });
-  //MeasurementEditView = MeasurementEditView.extend({
-  //  events: {
-  //    blur: function () {
-  //      console.log('blur!');
-  //    }
-  //  }
-  //});
-
-  instanceProps.getChildView = function () {
+  protoProps.getChildView = function () {
     return MeasurementShowView;
   };
 
-  instanceProps.tagName = 'tbody';
+  protoProps.tagName = 'tbody';
 
-  instanceProps.initialize = function () {
+  protoProps.initialize = function () {
+    Backbone.Courier.add(this);
     this.render();
     this.listenTo(this.collection, 'sync', this.render);
   };
 
-  instanceProps.childEvents = {
+  protoProps.childEvents = {
     toggleEdit: 'editItem'
   };
 
-  instanceProps.editItem = function (measurementShowView) {
+  protoProps.editItem = function (measurementShowView) {
     var model = measurementShowView.model,
       measurementEditView = new MeasurementEditView({model: model});
 
@@ -55,5 +43,36 @@ define([
     measurementShowView.close();
   };
 
-  return Backbone.Marionette.CollectionView.extend(instanceProps, staticProps);
+  protoProps.editMeasurement = function (data, measurementShowView) {
+    //console.log(source);
+    //console.log('messageName: ' + messageName);
+    //console.log(arguments);
+
+    var model = measurementShowView.model,
+      measurementEditView = new MeasurementEditView({model: model});
+
+    //var onModelUpdated = function () {
+    //  this.stopListening(measurementEditView, 'modelUpdated');
+    //  measurementEditView.close();
+    //  model.save();
+    //};
+
+    this.listenToOnce(measurementEditView, 'measurement:submit', function () {
+      //console.log('measurement submitted');
+      measurementEditView.destroy();
+      //console.log('measurementEditView destroyed');
+      model.save();
+      //console.log('model saved');
+    });
+
+    measurementEditView.render();
+    measurementShowView.$el.replaceWith(measurementEditView.el);
+    measurementShowView.destroy();
+  };
+
+  protoProps.onMessages = {
+    'measurement:edit': 'editMeasurement'
+  };
+
+  return Backbone.Marionette.CollectionView.extend(protoProps, staticProps);
 });

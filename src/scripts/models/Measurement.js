@@ -2,7 +2,7 @@ define([
   'underscore',
   'backbone',
   'moment'
-], function (_, Backbone, moment) {
+], function (_, Backbone/*, moment*/) {
   'use strict';
 
   var instanceProps = {},
@@ -40,7 +40,7 @@ define([
     // This means the measurement will update the updatedAt attribute anytime something changes
     this.on('change', function () {
       // Passing {silent: true} prevents an infinite loop
-      this.set({updatedAt: moment()}, {silent: true});
+      this.set({updatedAt: new Date()}, {silent: true});
     });
 
   };
@@ -59,6 +59,7 @@ define([
     measuredAt: {
       required: true,
       isValidDate: true,
+      //isDate: false,
       lteAttr: 'updatedAt'
     },
     updatedAt: {
@@ -103,7 +104,7 @@ define([
   };
 
   instanceProps.defaults = function () {
-    var now = moment();
+    var now = new Date();
     return {
       createdAt: now,
       measuredAt: now,
@@ -123,17 +124,13 @@ define([
   };
 
   instanceProps.parse = function (response/*, options*/) {
-    // createdAt
-    if (response.createdAt) {
-      response.createdAt = moment(response.createdAt);
-    }
-    // measuredAt
-    if (response.measuredAt) {
-      response.measuredAt = moment(response.measuredAt);
-    }
-    // updatedAt
-    if (response.updatedAt) {
-      response.updatedAt = moment(response.updatedAt);
+    //console.log(response);
+    if (_.isObject(response)) {
+      _.each(['createdAt', 'measuredAt', 'updatedAt'], function (attr) {
+        if (attr in response) {
+          response[attr] = new Date(response[attr]);
+        }
+      });
     }
 
     return response;

@@ -16,7 +16,8 @@
     "epoxy": "~0.2.0",
     "backbone-forms": "~0.14.0",
     "backbone-validation": "~0.9.1",
-    "underscore.string": "~2.3.3"
+    "underscore.string": "~2.3.3",
+    "backbone.courier": "~1.0.1"
   },
   "devDependencies": {
     "sinonjs": "~1.10.2",
@@ -24,6 +25,7 @@
     "squire": "~0.2.0"
   },
   "resolutions": {
-    "backbone": "~1.1.2"
+    "backbone": "~1.1.2",
+    "jquery": "^1.8.0 || ^2.0.0"
   }
 }

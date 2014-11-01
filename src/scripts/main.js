@@ -21,6 +21,9 @@ requirejs.config({
 //    'backbone.dualstorage': {
 //      backbone: 'backbone'
 //    },
+    'backbone.courier': {
+      backbone: 'backbone'
+    },
     'backbone.forms': {
       backbone: 'backbone'
     },
@@ -69,6 +72,7 @@ requirejs.config({
   paths: {
     backbone: '../bower_components/backbone/backbone',
     backbonePrivate: './lib/backbonePrivate',
+    'backbone.courier': '../bower_components/backbone.courier/dist/backbone.courier',
     'backbone.localstorage': '../bower_components/backbone.localstorage/backbone.localStorage',
     'backbone.forms': '../bower_components/backbone-forms/distribution.amd/backbone-forms',
     'backbone.validation': '../bower_components/backbone-validation/dist/backbone-validation-amd',

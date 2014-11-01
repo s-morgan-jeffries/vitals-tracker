@@ -1,4 +1,5 @@
-//var evt;
+var measurementEditView;
+
 define([
   'jquery',
   'underscore',
@@ -24,18 +25,22 @@ define([
   };
 
   protoProps.initialize = function () {
+    Backbone.Courier.add(this);
     // Make the model
     if (this.model) {
-      console.log('has a model');
+      //console.log('has a model');
       this.initialAttrs = this.model.toJSON();
     } else {
-      console.log('no model');
+      //console.log('no model');
       this.model = new Measurement();
     }
     // Create an object for storing InputView instances (used to access them by name)
     this.inputViews = {};
     // Create an array for storing the subViews (used later to close them)
     this.subViews = [];
+    // Boolean to determine whether we can submit the form
+    this.canSubmit = true;
+    measurementEditView = this;
   };
 
   protoProps.onRender = function () {
@@ -43,9 +48,18 @@ define([
   };
 
   protoProps.updateModelAttr = function (e) {
+    //console.log('updateModelAttr');
     var $input = $(e.target),
       viewName = $input.data('viewName'),
-      inputView = this.inputViews[viewName];
+      inputView = this.inputViews[viewName],
+      //dummy = void console.log(viewName),
+      //dummy2 = void console.log(inputView),
+      updateEvent = inputView.name + ':update',
+      successStatuses = ['success', 'nochange'];
+    this.listenToOnce(inputView, updateEvent, function (data) {
+      //console.log(data);
+      this.canSubmit = _.contains(successStatuses, data.status);
+    });
     inputView.updateModel();
   };
 
@@ -53,6 +67,8 @@ define([
     if (e.which !== ENTER_KEY) {
       return;
     }
+    //console.log('submitOnEnter');
+    //console.log(e);
 
     // submission logic
     var $input = $(e.target),
@@ -62,10 +78,18 @@ define([
       successStatuses = ['success', 'nochange'];
     this.listenToOnce(inputView, updateEvent, function (data) {
       if (_.contains(successStatuses, data.status)) {
-        this.submitModel();
+        this.submitMeasurement();
       }
     });
     inputView.updateModel();
+  };
+
+  protoProps.submitOnClick = function () {
+    //console.log('this.canSubmit: ' + this.canSubmit);
+    if (this.canSubmit) {
+      this.submitMeasurement();
+    }
+    this.canSubmit = true;
   };
 
   protoProps.createSubViews = function () {
@@ -101,6 +125,7 @@ define([
   };
 
   protoProps.onBeforeDestroy = function () {
+    this.undelegateEvents();
     this.destroySubViews();
   };
 
@@ -110,12 +135,13 @@ define([
     }
   };
 
-  protoProps.submitModel = function () {
-    console.log('measurement:submit');
+  protoProps.submitMeasurement = function () {
+    //console.log('measurement:submit');
+    //console.log(this.model);
     this.trigger('measurement:submit', this.model, this);
   };
 
-  protoProps.reset = function () {
+  protoProps.resetMeasurement = function () {
     this.model.reset(this.initialAttrs);
     this.updateInputViews();
   };
@@ -135,7 +161,9 @@ define([
 
   protoProps.events = {
     'blur input': 'updateModelAttr',
-    'keydown input': 'submitOnEnter'
+    'keydown input': 'submitOnEnter',
+    'click .measurement-reset': 'resetMeasurement',
+    'click .measurement-submit': 'submitOnClick'
     //focusout: function () {
     //  this.netFocus -= 1;
     //  setTimeout(this.triggerFocusLost.bind(this), 0);

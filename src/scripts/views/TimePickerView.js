@@ -21,12 +21,12 @@ define([
   // Override the parent getter
   protoProps.get = function () {
     var datePicker = this.$el.data('DateTimePicker'),
-      modelDate = _.clone(this.model.get(this.name)),
+      modelDate = moment(this.model.get(this.name)),
       pickerDate = datePicker.getDate() || moment(NaN);
     modelDate.hour(pickerDate.hour());
     modelDate.minute(pickerDate.minute());
     modelDate.second(pickerDate.second());
-    return modelDate;
+    return modelDate.toDate();
   };
 
   // Override the parent setter

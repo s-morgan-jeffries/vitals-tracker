@@ -9931,11 +9931,6 @@ button.close {
 }
 
 /* line 7 : /Users/Morgan/Desktop/development/javascript/backbone/vitals-tracker/src/styles/layout/patient-table-layout.styl */
-.date-input {
-  width: 10%;
-}
-
-/* line 10 : /Users/Morgan/Desktop/development/javascript/backbone/vitals-tracker/src/styles/layout/patient-table-layout.styl */
 .measurement-input {
   width: 100%;
 }
