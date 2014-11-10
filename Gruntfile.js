@@ -56,11 +56,24 @@ module.exports = function (grunt) {
 //        plugins: ['assemble-middleware-lunr'],
         helpers: [],
         partials: ['<%= yeoman.src %>/views/partials/**/*.hbs'],
-        layoutdir: '<%= yeoman.src %>/views/layouts',
         data: '<%= yeoman.src %>/data/**/*.{json,yml}',
         flatten: true
       },
-      static: {
+      develop: {
+        options: {
+          layoutdir: '<%= yeoman.src %>/views/layouts'
+        },
+        expand: true,
+        cwd: '<%= yeoman.src %>/views/pages',
+        src: [
+          './**/*.hbs'
+        ],
+        dest: '<%= yeoman.temp %>/'
+      },
+      build: {
+        options: {
+          layoutdir: '<%= yeoman.temp %>/views/layouts'
+        },
         expand: true,
         cwd: '<%= yeoman.src %>/views/pages',
         src: [
@@ -78,9 +91,9 @@ module.exports = function (grunt) {
       build: {
         files: [{
           expand: true,
-          cwd: '.tmp/styles/',
+          cwd: '<%= yeoman.src %>/styles/',
           src: '{,*/}*.css',
-          dest: '.tmp/styles/'
+          dest: '<%= yeoman.temp %>/styles/'
         }]
       }
     },
@@ -180,8 +193,8 @@ module.exports = function (grunt) {
       build1: {
         expand: true,
         cwd: '<%= yeoman.src %>/views/layouts/',
-        src: 'base_layout.hbs',
-        dest: '<%= yeoman.temp %>'
+        src: '*.hbs',
+        dest: '<%= yeoman.temp %>/views/layouts/'
       },
       build2: {
         files: [
@@ -401,7 +414,7 @@ module.exports = function (grunt) {
           patterns: [
             {
               match: '../../bower_components',
-              replacement: 'bower_components'
+              replacement: '/bower_components'
             }
           ],
           usePrefix: false
@@ -414,6 +427,86 @@ module.exports = function (grunt) {
             dest: '<%= yeoman.src %>/views/layouts/'
           }
         ]
+      },
+      build: {
+        options: {
+          patterns: [
+            {
+              match: '../../bower_components',
+              replacement: '/bower_components'
+            },
+            {
+              match: '<script data-main="/scripts/main" src="/bower_components/requirejs/require.js"></script>',
+              replacement: '<script src="/scripts/built.js"></script>'
+            }
+          ],
+          usePrefix: false
+        },
+        files: [
+          {
+            expand: true,
+            flatten: true,
+            src: ['<%= yeoman.temp %>/views/layouts/base_layout.hbs'],
+            dest: '<%= yeoman.temp %>/views/layouts'
+          }
+        ]
+      }
+    },
+
+    requirejs: {
+      compile: {
+        options: {
+          baseUrl: '<%= yeoman.src %>/scripts',
+          mainConfigFile: '<%= yeoman.src %>/scripts/main.js',
+//          name: '../bower_components/almond/almond', // assumes a production build using almond
+          name: 'main',
+          include: ['main'],
+          insertRequre: ['main'],
+          out: '<%= yeoman.src %>/scripts/built.js'          ,
+          wrapShim: true,
+          preserveLicenseComments: false,
+          generateSourceMaps: true,
+          optimize: 'uglify2'
+//          ,
+//          // Add this map config in addition to any baseUrl or
+//          // paths config you may already have in the project.
+//          map: {
+//            // '*' means all modules will get 'jquery-private'
+//            // for their 'jquery' dependency.
+//            '*': {
+//              jquery: 'jqueryPrivate'
+//            },
+//            // 'jquery-private' wants the real jQuery module
+//            // though. If this line was not here, there would
+//            // be an unresolvable cyclic dependency.
+//            jqueryPrivate: {
+//              jquery: 'jquery'
+//            }
+//          },
+//          packages: [
+//            {
+//              name: 'color',
+//              main: 'color',
+//              location: './lib/color'
+//            },
+//            {
+//              name: 'color-convert',
+//              main: 'index',
+//              location: './lib/color/node_modules/color-convert'
+//            },
+//            {
+//              name: 'color-string',
+//              main: 'color-string',
+//              location: './lib/color/node_modules/color-string'
+//            }
+//          ],
+//          paths: {
+//            jqueryPrivate: './lib/jqueryPrivate',
+//            jquery: '../bower_components/jquery/dist/jquery',
+//            underscore: '../bower_components/underscore/underscore',
+//            backbone: '../bower_components/backbone/backbone'
+//          }
+        }
       }
     },
 
@@ -574,7 +667,7 @@ module.exports = function (grunt) {
     // concat, minify and revision files. Creates configurations in memory so
     // additional tasks can operate on them
     useminPrepare: {
-      html: '<%= yeoman.temp %>/base_layout.hbs',
+      html: '<%= yeoman.temp %>/views/layouts/base_layout.hbs',
       options: {
         dest: '<%= yeoman.dist %>',
         flow: {
@@ -795,9 +888,10 @@ module.exports = function (grunt) {
     var buildTasks = [
       'clean:build',
 //      'wiredep',
-      'replace',
-      'assemble',
+      'requirejs',
       'copy:build1',
+      'replace:build',
+      'assemble',
       'useminPrepare',
       'concurrent:build',
       'autoprefixer',

@@ -35,18 +35,18 @@
 
     <!--[if lt IE 9]>
     <!-- build:js({.tmp,src}) scripts/vendor-ielt9.js -->
-    <script src="bower_components/es5-shim/es5-shim.js"></script>
-    <script src="bower_components/json3/lib/json3.min.js"></script>
+    <script src="/bower_components/es5-shim/es5-shim.js"></script>
+    <script src="/bower_components/json3/lib/json3.min.js"></script>
     <!-- endbuild -->
     <![endif]-->
 
-    <!-- build:js({.tmp,src}) scripts/vendor.js -->
-    <script data-main="/scripts/main" src="/bower_components/requirejs/require.js"></script>
-    <!-- bower:js -->
-    <!-- endbower -->
-    <!-- endbuild -->
+    {{!--<!-- build:js({.tmp,src}) scripts/vendor.js -->--}}
+    {{!--<!-- bower:js -->--}}
+    {{!--<!-- endbower -->--}}
+    {{!--<!-- endbuild -->--}}
 
-    <!-- build:js({.tmp,src}) scripts/scripts.js -->
+    <!-- build:js({.tmp,src}) /scripts/scripts.js -->
+    <script data-main="/scripts/main" src="/bower_components/requirejs/require.js"></script>
     {{!--<script src="scripts/app.js"></script>--}}
     <!-- endbuild -->
 </body>
