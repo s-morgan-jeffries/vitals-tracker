@@ -1,1 +1,0 @@
-var patient,patientView;define(["jquery","underscore","backbone","Patient","PatientView"],function(a,b,c,d,e){"use strict";var f,g={};return g.channelName="vitalsApp",g.initialize=function(){patient=new d({id:"12345"}),patientView=new e({model:patient})},new(f=c.Marionette.Application.extend(g))});
