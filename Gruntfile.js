@@ -458,15 +458,23 @@ module.exports = function (grunt) {
         options: {
           baseUrl: '<%= yeoman.src %>/scripts',
           mainConfigFile: '<%= yeoman.src %>/scripts/main.js',
-//          name: '../bower_components/almond/almond', // assumes a production build using almond
-          name: 'main',
+          name: '../bower_components/almond/almond', // assumes a production build using almond
+          //name: 'main',
           include: ['main'],
-          insertRequre: ['main'],
-          out: '<%= yeoman.src %>/scripts/built.js'          ,
-          wrapShim: true,
+          //include: ['../bower_components/requirejs/require'],
+          //insertRequre: ['main'],
+          out: '<%= yeoman.src %>/scripts/built.js',
+          //wrapShim: true,
           preserveLicenseComments: false,
           generateSourceMaps: true,
-          optimize: 'uglify2'
+          optimize: 'uglify2',
+          uglify2: {
+            mangle: {
+              except: ['$super']
+            }
+          },
+          useStrict: true
+          //optimize: 'none'
 //          ,
 //          // Add this map config in addition to any baseUrl or
 //          // paths config you may already have in the project.
@@ -720,7 +728,7 @@ module.exports = function (grunt) {
 //      },
       handlebars: {
         files: ['<%= yeoman.src %>/views/**/*.hbs'],
-        tasks: ['assemble'],
+        tasks: ['assemble:develop'],
         options: {
           livereload: true
         }
@@ -789,7 +797,7 @@ module.exports = function (grunt) {
 //      'wiredep',
       'replace:develop',
       'sprite',
-      'assemble',
+      'assemble:develop',
       'react',
       'concurrent:server',
       'autoprefixer',
