@@ -43,6 +43,19 @@ define([
     }
   };
 
+  customValidators.inFuture = function (value, attr, expected/*, model*/) {
+    if (_.isUndefined(value)) {
+      return;
+    }
+
+    var now = new Date(),
+      isInFuture = (value - now) > 0;
+
+    if (isInFuture !== expected) {
+      return attr + ' must ' + (expected ? '' : 'not ') + 'be in the future';
+    }
+  };
+
   customValidators.isNaN = makePredicate('isNaN', 'NaN');
 
   customValidators.isNull = makePredicate('isNull', 'null');

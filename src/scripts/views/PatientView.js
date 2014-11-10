@@ -3,8 +3,9 @@ define([
   'underscore',
   'backbone',
   'MeasurementsTableView',
-  'MeasurementEditView'
-], function ($, _, Backbone, MeasurementsTableView, MeasurementEditView) {
+  'MeasurementEditView',
+  'MeasurementsGraphView'
+], function ($, _, Backbone, MeasurementsTableView, MeasurementEditView, MeasurementsGraphView) {
   'use strict';
 
   var protoProps = {},
@@ -17,6 +18,20 @@ define([
     Backbone.Courier.add(this);
 
     this.subViews = [];
+
+    //simpleLineGraph();
+
+    var measurementsGraphView = this.measurementsGraphView = new MeasurementsGraphView({
+      el: $('#vitals-chart')[0],
+      data: this.model.vitals,
+      collection: this.model.vitals
+    });
+    //var measurementsGraphView = this.measurementsGraphView = new MeasurementsGraphView();
+    measurementsGraphView.render();
+    this.subViews.push(measurementsGraphView);
+    this.$el
+      .find('#vitals-chart')
+      .append(measurementsGraphView.el);
 
     var measurementInput = this.measurementInput = new MeasurementEditView();
     measurementInput.render();

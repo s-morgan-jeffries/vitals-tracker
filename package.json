@@ -5,7 +5,9 @@
     "type": "git",
     "url": "https://github.com/s.morgan.jeffries/vitals-tracker.git"
   },
-  "dependencies": {},
+  "dependencies": {
+    "grunt-contrib-jshint": "^0.10.0"
+  },
   "devDependencies": {
     "assemble": "^0.4.41",
     "axis-css-adapter": "git+https://github.com/s-morgan-jeffries/axis-css-adapter.git",
@@ -26,6 +28,7 @@
     "grunt-contrib-watch": "~0.5.2",
     "grunt-google-cdn": "~0.2.0",
     "grunt-karma": "^0.9.0",
+    "grunt-react": "^0.10.0",
     "grunt-replace": "^0.7.8",
     "grunt-rev": "~0.1.0",
     "grunt-spritesmith": "^2.1.1",

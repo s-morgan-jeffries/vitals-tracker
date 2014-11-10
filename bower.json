@@ -17,7 +17,13 @@
     "backbone-forms": "~0.14.0",
     "backbone-validation": "~0.9.1",
     "underscore.string": "~2.3.3",
-    "backbone.courier": "~1.0.1"
+    "backbone.courier": "~1.0.1",
+    "nvd3": "~1.1.15-beta",
+    "cubism": "~1.6.0",
+    "rickshaw": "https://github.com/shutterstock/rickshaw.git#~1.5.0",
+    "react": "~0.12.0",
+    "require-jsx": "https://github.com/seiffert/require-jsx.git",
+    "showdown": "~0.3.1"
   },
   "devDependencies": {
     "sinonjs": "~1.10.2",

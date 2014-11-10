@@ -60,7 +60,8 @@ define([
       required: true,
       isValidDate: true,
       //isDate: false,
-      lteAttr: 'updatedAt'
+      //lteAttr: 'updatedAt'
+      inFuture: false
     },
     updatedAt: {
       required: true,

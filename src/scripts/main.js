@@ -11,8 +11,11 @@ requirejs.config({
     // for their 'jquery' dependency.
     '*': {
       backbone: 'backbonePrivate',
+      d3: 'd3Private',
       jquery: 'jqueryPrivate',
+      rickshaw: 'rickshawPrivate',
       marionette: 'marionettePrivate',
+      showdown: 'showdownPrivate',
       underscore: 'underscorePrivate'
     },
     // 'jquery-private' wants the real jQuery module
@@ -36,14 +39,23 @@ requirejs.config({
     backbonePrivate: {
       backbone: 'backbone'
     },
+    d3Private: {
+      d3: 'd3'
+    },
+    jqueryPrivate: {
+      jquery: 'jquery'
+    },
     marionette: {
       backbone: 'backbone'
     },
     marionettePrivate: {
       marionette: 'marionette'
     },
-    jqueryPrivate: {
-      jquery: 'jquery'
+    rickshawPrivate: {
+      rickshaw: 'rickshaw'
+    },
+    showdownPrivate: {
+      showdown: 'showdown'
     },
     'underscore.string': {
       underscore: 'underscore'
@@ -89,38 +101,54 @@ requirejs.config({
     'bootstrap.tab': '../bower_components/bootstrap-stylus/js/tab',
     'bootstrap.tooltip': '../bower_components/bootstrap-stylus/js/tooltip',
     'bootstrap.transition': '../bower_components/bootstrap-stylus/js/transition',
+    CommentBox: 'react_components/CommentBox',
     'bootstrap-datetimepicker': '../bower_components/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker',
     customParsers: 'mixins/customParsers',
 //    customSanitizers: 'mixins/customSanitizers',
     customValidators: 'mixins/customValidators',
+    d3: '../bower_components/d3/d3',
+    d3Private: 'lib/d3Private',
     DatePickerView: 'views/DatePickerView',
     DatePickerViewOrig: 'views/DatePickerViewOrig',
+    FilterableProductTable: 'react_components/FilterableProductTable',
+    HelloWorld: 'react_components/HelloWorld',
     InputView: 'views/InputView',
     InputViewOrig: 'views/InputViewOrig',
     jquery: '../bower_components/jquery/dist/jquery',
 //    jquery: '//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min',
     jqueryPrivate: './lib/jqueryPrivate',
+    jsx: '../bower_components/require-jsx/jsx',
+    JSXTransformer: '../bower_components/react/JSXTransformer',
     marionette: '../bower_components/marionette/lib/backbone.marionette',
     marionettePrivate: './lib/marionettePrivate',
     Measurement: 'models/Measurement',
     Measurements: 'collections/Measurements',
+    MeasurementsData: 'controllers/MeasurementsData',
 //    measurementInputView: 'views/measurementInputView',
     MeasurementEditView: 'views/MeasurementEditView',
-    MeasurementEditViewOrig: 'views/MeasurementEditViewOrig',
+    //MeasurementEditViewOrig: 'views/MeasurementEditViewOrig',
+    MeasurementsGraphView: 'views/MeasurementsGraphView',
     MeasurementShowView: 'views/MeasurementShowView',
     MeasurementsTableView: 'views/MeasurementsTableView',
     moment: '../bower_components/moment/moment',
+    //nvd3: '../bower_components/nvd3/nv.d3',
     Patient: 'models/Patient',
     PatientView: 'views/PatientView',
-//    momentPrivate: './lib/jqueryPrivate',
+    react: '../bower_components/react/react-with-addons',
+    rickshaw: '../bower_components/rickshaw/rickshaw',
+    rickshawPrivate: 'lib/rickshawPrivate',
+    showdown: '../bower_components/showdown/src/showdown',
+    showdownPrivate: 'lib/showdownPrivate',
+    simpleLineGraph: 'views/simpleLineGraph',
     sinon: '../bower_components/sinonjs/sinon',
     text: '../bower_components/text/text',
     TimePickerView: 'views/TimePickerView',
-    TimePickerViewOrig: 'views/TimePickerViewOrig',
+    Timer: 'react_components/Timer',
+    //TimePickerViewOrig: 'views/TimePickerViewOrig',
 //    vitalsMeasurement: 'models/vitalsMeasurement',
-    vitalsMeasurements: 'collections/vitalsMeasurements',
-    vitalsMeasurementView: 'views/vitalsMeasurementView',
-    vitalsMeasurementsView: 'views/vitalsMeasurementsView',
+//    vitalsMeasurements: 'collections/vitalsMeasurements',
+//    vitalsMeasurementView: 'views/vitalsMeasurementView',
+//    vitalsMeasurementsView: 'views/vitalsMeasurementsView',
 //    todoView: 'views/todoView',
 //    todosView: 'views/todosView',
     underscore: '../bower_components/underscore/underscore',
@@ -144,7 +172,14 @@ requirejs.config({
     'bootstrap.scrollspy': { deps: ['jquery'] },
     'bootstrap.tab': { deps: ['jquery'] },
     'bootstrap.tooltip': { deps: ['jquery'] },
-    'bootstrap.transition': { deps: ['jquery'] }
+    'bootstrap.transition': { deps: ['jquery'] },
+    d3: { exports: 'd3' },
+    showdown: {exports: 'Showdown'}
+    //,
+    //nvd3: {
+    //  deps: ['d3'],
+    //  exports: 'nv'
+    //}
 //    ,
 //    sinon: {deps: []}
   }
