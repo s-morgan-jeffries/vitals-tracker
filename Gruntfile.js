@@ -906,11 +906,11 @@ module.exports = function (grunt) {
       'concat',
       'copy:build2',
       'cdnify',
-      'cssmin'/*,
+      'cssmin',
       'uglify',
       'rev',
       'usemin',
-      'htmlmin'*/
+      'htmlmin'
     ];
 
     if (target === 'serve') {
