@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-    <!-- build:css({.tmp,src}) styles/main.css -->
+    <!-- build:css({.tmp,}) /styles/main.css -->
     <link rel="stylesheet" href="/styles/style.css">
     <!-- endbuild -->
 </head>
@@ -40,14 +40,14 @@
     <!-- endbuild -->
     <![endif]-->
 
-    {{!--<!-- build:js({.tmp,src}) scripts/vendor.js -->--}}
+    {{!--<!-- build_:js({.tmp,src}) scripts/vendor.js -->--}}
     {{!--<!-- bower:js -->--}}
     {{!--<!-- endbower -->--}}
     {{!--<!-- endbuild -->--}}
 
-    <!-- build:js({.tmp,src}) /scripts/scripts.js -->
-    {{!--<script data-main="/scripts/main" src="/bower_components/requirejs/require.js"></script>--}}
-    <script src="/scripts/built.js"></script>
+    <script data-main="/scripts/main" src="/bower_components/requirejs/require.js"></script>
+    {{!--<script src="/scripts/built.js"></script>--}}
+    <!-- build_:js({.tmp,src}) /scripts/scripts.js -->
     {{!--<script src="scripts/app.js"></script>--}}
     <!-- endbuild -->
 </body>

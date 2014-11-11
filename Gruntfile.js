@@ -437,7 +437,7 @@ module.exports = function (grunt) {
             },
             {
               match: '<script data-main="/scripts/main" src="/bower_components/requirejs/require.js"></script>',
-              replacement: '<script src="/scripts/built.js"></script>'
+              replacement: '<script src="/scripts/app.js"></script>'
             }
           ],
           usePrefix: false
@@ -463,7 +463,7 @@ module.exports = function (grunt) {
           include: ['main'],
           //include: ['../bower_components/requirejs/require'],
           //insertRequre: ['main'],
-          out: '<%= yeoman.src %>/scripts/built.js',
+          out: '<%= yeoman.dist %>/scripts/app.js',
           //wrapShim: true,
           preserveLicenseComments: false,
           generateSourceMaps: true,
@@ -906,11 +906,11 @@ module.exports = function (grunt) {
       'concat',
       'copy:build2',
       'cdnify',
-      'cssmin',
+      'cssmin'/*,
       'uglify',
       'rev',
       'usemin',
-      'htmlmin'
+      'htmlmin'*/
     ];
 
     if (target === 'serve') {
