@@ -1,0 +1,7 @@
+<p>Hello, I am the inner HTML of the TestChildView. I have been rendered <%= renderCount %> times.</p>
+<p><a class="update-view-click-count">This link</a> has been clicked <%= clickCount %> times. The viewState is keeping track.</p>
+<ul>
+  <% for (var i = 0, len = itemList.length; i < len; i++) { %>
+  <li><%= itemList[i] %></li>
+  <% } %>
+</ul>

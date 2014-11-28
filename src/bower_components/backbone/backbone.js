@@ -1372,8 +1372,10 @@
         if (this._hasPushState || !this._wantsHashChange || forcePushState) {
           fragment = decodeURI(this.location.pathname + this.location.search);
           var root = this.root.replace(trailingSlash, '');
+          // this removes the root from the fragment if it's the leading part of the fragment
           if (!fragment.indexOf(root)) fragment = fragment.slice(root.length);
         } else {
+          // just the hash
           fragment = this.getHash();
         }
       }
@@ -1390,9 +1392,14 @@
       // Is pushState desired ... is it available?
       this.options          = _.extend({root: '/'}, this.options, options);
       this.root             = this.options.root;
+      // true by default
       this._wantsHashChange = this.options.hashChange !== false;
+      // false by default
       this._wantsPushState  = !!this.options.pushState;
+      // check to see if push state is requested and that it is supported
       this._hasPushState    = !!(this.options.pushState && this.history && this.history.pushState);
+
+
       var fragment          = this.getFragment();
       var docMode           = document.documentMode;
       var oldIE             = (isExplorer.exec(navigator.userAgent.toLowerCase()) && (!docMode || docMode <= 7));
@@ -1409,8 +1416,10 @@
       // Depending on whether we're using pushState or hashes, and whether
       // 'onhashchange' is supported, determine how we check the URL state.
       if (this._hasPushState) {
+        // Register the checkUrl method as a handler for popstate
         Backbone.$(window).on('popstate', this.checkUrl);
       } else if (this._wantsHashChange && ('onhashchange' in window) && !oldIE) {
+        // ... or hashchange
         Backbone.$(window).on('hashchange', this.checkUrl);
       } else if (this._wantsHashChange) {
         this._checkUrlInterval = setInterval(this.checkUrl, this.interval);
@@ -1462,6 +1471,7 @@
     // Checks the current URL to see if it has changed, and if it has,
     // calls `loadUrl`, normalizing across the hidden iframe.
     checkUrl: function(e) {
+      console.log('checkUrl');
       var current = this.getFragment();
       if (current === this.fragment && this.iframe) {
         current = this.getFragment(this.getHash(this.iframe));

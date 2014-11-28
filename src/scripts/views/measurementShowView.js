@@ -34,7 +34,7 @@ define([
       }
     });
     data = _.defaults({}, serializedModel, defaults);
-    return templates.measurementShow(data);
+    return templates.MeasurementShow(data);
   };
 
   protoProps.deleteMeasurement = function () {

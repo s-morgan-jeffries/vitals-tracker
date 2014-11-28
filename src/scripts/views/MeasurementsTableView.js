@@ -1,78 +1,57 @@
-//var childView;
-
 define([
+  'underscore',
   'backbone',
+  'MeasurementsTableListView',
   'MeasurementEditView',
-  'MeasurementShowView'
-], function (Backbone, MeasurementEditView, MeasurementShowView) {
+  'templates'
+], function (_, Backbone, MeasurementsTableListView, MeasurementEditView, templates) {
   'use strict';
 
   var protoProps = {},
     staticProps = {};
 
-  protoProps.getChildView = function () {
-    return MeasurementShowView;
-  };
-
-  protoProps.tagName = 'tbody';
-
   protoProps.initialize = function () {
     Backbone.Courier.add(this);
-    this.render();
-    this.listenTo(this.collection, 'sync', this.render);
+    this.subViews = [];
   };
 
-  protoProps.childEvents = {
-    toggleEdit: 'editItem'
+  protoProps.tagName = 'table';
+
+  protoProps.template = function (serializedModel) {
+    return templates.MeasurementsTable(serializedModel);
   };
 
-  protoProps.editItem = function (measurementShowView) {
-    var model = measurementShowView.model,
-      measurementEditView = new MeasurementEditView({model: model});
+  protoProps.onRender = function () {
+    this.$el
+      .addClass('table')
+      .addClass('vitals-table')
+    ;
 
-    var onModelUpdated = function () {
-      this.stopListening(measurementEditView, 'modelUpdated');
-      measurementEditView.close();
-      model.save();
-    };
+    var measurementInput = this.measurementInput = new MeasurementEditView();
+    measurementInput.render();
+    this.subViews.push(measurementInput);
+    this.$el
+      .find('tbody')
+      .append(measurementInput.el);
+    this.listenTo(measurementInput, 'measurement:submit', this.addMeasurement);
 
-    this.listenTo(measurementEditView, 'modelUpdated', onModelUpdated);
+    var measurementsTable = this.measurementsTable = new MeasurementsTableListView({collection: this.model.vitals});
+    this.subViews.push(measurementsTable);
+    this.$el
+      .append(measurementsTable.el);
 
-    measurementEditView.render();
-    measurementShowView.$el.replaceWith(measurementEditView.el);
-    measurementShowView.close();
   };
 
-  protoProps.editMeasurement = function (data, measurementShowView) {
-    //console.log(source);
-    //console.log('messageName: ' + messageName);
-    //console.log(arguments);
+  protoProps.addMeasurement = function (measurement, measurementInput) {
+    this.model.createMeasurement(measurement.toJSON());
+    measurementInput.resetMeasurement();
+  };
 
-    var model = measurementShowView.model,
-      measurementEditView = new MeasurementEditView({model: model});
-
-    //var onModelUpdated = function () {
-    //  this.stopListening(measurementEditView, 'modelUpdated');
-    //  measurementEditView.close();
-    //  model.save();
-    //};
-
-    this.listenToOnce(measurementEditView, 'measurement:submit', function () {
-      //console.log('measurement submitted');
-      measurementEditView.destroy();
-      //console.log('measurementEditView destroyed');
-      model.save();
-      //console.log('model saved');
+  protoProps.onBeforeDestroy = function () {
+    _.each(this.subViews, function (childView) {
+      childView.close();
     });
-
-    measurementEditView.render();
-    measurementShowView.$el.replaceWith(measurementEditView.el);
-    measurementShowView.destroy();
   };
 
-  protoProps.onMessages = {
-    'measurement:edit': 'editMeasurement'
-  };
-
-  return Backbone.Marionette.CollectionView.extend(protoProps, staticProps);
+  return Backbone.Marionette.ItemView.extend(protoProps, staticProps);
 });

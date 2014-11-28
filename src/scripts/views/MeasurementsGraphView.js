@@ -19,7 +19,6 @@ define([
 
     graphConfig.element = this.el;
 
-    //graphConfig.series = sinAndCos();
     graphConfig.series = this.measurementsData.rickshawData;
     graphConfig.interpolation = 'linear';
     //console.log(this.data);

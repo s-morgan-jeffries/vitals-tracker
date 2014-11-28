@@ -1,46 +1,56 @@
-//var vitalsMeasurementsView;
-//var app;
-//var channel;
-//var measurement;
-//var measurementView;
-var patient, patientView;
+var app;
 
 define([
-  'jquery',
   'underscore',
   'backbone',
-  'Patient',
-  'PatientView'
-  //'HelloWorld',
-  //'Timer',
-  //'CommentBox',
-  //'FilterableProductTable'
-], function ($, _, Backbone, Patient, PatientView/*, HelloWorld, Timer, CommentBox, FilterableProductTable*/) {
+  'config',
+  'appRouter',
+  'behaviors/index',
+  'HeaderRegion',
+  'ContentRegion',
+  'FooterRegion',
+  'TestRegion',
+  'TestChildView'
+], function (_, Backbone, globalConfig, appRouter, behaviors, HeaderRegion, ContentRegion, FooterRegion, TestRegion, TestChildView) {
   'use strict';
 
   var App,
     appConfig = {};
 
-  appConfig.channelName = 'vitalsApp';
-
-  appConfig.initialize = function () {
-    patient = new Patient({id: '12345'});
-    patientView = new PatientView({model: patient});
-    //vitalsMeasurementsView = new VitalsMeasurementsView();
-//    measurementView = new MeasurementNew();
-//    FilterableProductTable.render($('#product-table')[0]);
+  appConfig.regions = {
+    headerRegion: {
+      el: '#vitals-app-header',
+      regionClass: HeaderRegion
+    },
+    contentRegion: {
+      el: 'main',
+      regionClass: ContentRegion
+    },
+    footerRegion: {
+      el: '#vitals-app-footer',
+      regionClass: FooterRegion
+    }
   };
 
-  App = Backbone.Marionette.Application.extend(appConfig);
-  //app = new App();
-  //channel = Backbone.Wreqr.radio.channel('vitalsApp');
-  //measurement = new Measurement();
-  //HelloWorld.render(document.getElementById('hello-world'), 'Doodoobutt');
-  //$('.timer').each(function () {
-  //  Timer.render(this);
-  //});
-  //CommentBox.render($('#comment-box')[0]);
+  appConfig.initialize = function () {
+    this.router = appRouter;
+    Backbone.history.start();
+    this.history = Backbone.history;
+    this.headerRegion.trigger('show:header');
+    this.footerRegion.trigger('show:footer');
+    this.channel.commands.execute('home', {trigger: true});
+    //this.router.navigate('home', {trigger: true});
+    //this.router.navigate('home');
+    this.TestChildView = TestChildView;
+    this.testRegion = new TestRegion({el: Backbone.$('#test-div')[0]});
+    this.testRegion.show(new TestChildView());
+  };
 
-  //return app;
-  return new App();
+  appConfig = _.extend({}, globalConfig, appConfig);
+
+  App = Backbone.Marionette.Application.extend(appConfig);
+
+  app = new App();
+
+  return app;
 });
