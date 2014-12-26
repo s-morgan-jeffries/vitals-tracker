@@ -1,57 +1,55 @@
 (function () {
   'use strict';
 
+  // Template directory relative to RequireJS base directory
   var templateDir = '../templates/',
+    // template files relative to template directory
     templateFiles = [
-      'measurement-show-template.html',
-      'measurement-edit-template.html',
-      'header-template.html',
-      'footer-template.html',
-      'patient-template.html',
-      'measurements-table.html',
-      'dummy-layout.html',
-      'dummy-item-1.html',
-      'about.html',
-      'dummy-item-1.html'
+      'app.html',
+      'app-header.html',
+      'app-content.html',
+      'app-footer.html',
+      'pages/landing-page.html',
+      'pages/register.html',
+      'pages/login.html',
+      'pages/about.html',
+      'pages/user-home.html',
+      'pages/patient-list.html',
+      'pages/patient.html',
+      'pages/logout.html',
+      'partials/user-info.html',
+      'partials/patient-list-item.html',
+      'partials/measurement-show.html',
+      'partials/measurement-edit-template.html',
+      //'patient-template.html',
+      'partials/measurements-table.html'
     ],
+    // list for holding module dependencies
     dependencies = ['underscore'],
     i,
     len;
 
+  // Iterate over the list and set the dependency names appropriately
   for (i = 0, len = templateFiles.length; i < len; i++) {
     dependencies.push('text!' + templateDir + templateFiles[i]);
   }
 
-  return define(dependencies, function (_,
-                                        MeasurementShowTemplate,
-                                        MeasurementEditTemplate,
-                                        HeaderTemplate,
-                                        FooterTemplate,
-                                        PatientTemplate,
-                                        MeasurementsTableTemplate,
-                                        DummyLayoutTemplate,
-                                        DummyItem1Template,
-                                        //HomeTemplate,
-                                        AboutTemplate
-  ) {
+  return define(dependencies, function (_) {
 
-    var templates = {
-      MeasurementShow: _.template(MeasurementShowTemplate),
-      MeasurementEdit: _.template(MeasurementEditTemplate),
-      Header: _.template(HeaderTemplate),
-      Footer: _.template(FooterTemplate),
-      Patient: _.template(PatientTemplate),
-      MeasurementsTable: _.template(MeasurementsTableTemplate),
-      DummyLayout: _.template(DummyLayoutTemplate),
-      DummyItem1: _.template(DummyItem1Template),
-      //Home: _.template(HomeTemplate),
-      About: _.template(AboutTemplate)
-    };
+    // export object for holding template functions
+    var templates = {},
+      // Arguments as list. This contains all the templates as strings. It drops the first argument, which is
+      // underscore.
+      templateArgs = [].slice.call(arguments, 1),
+      i,
+      len,
+      templateName;
 
-    var templateArgs = [].slice.call(arguments, 1);
-    for (var i = 0, len = templateFiles.length; i < len; i++) {
-      var templateName = templateFiles[i].replace('.html', '');
-      templates[templateName] = templateArgs[i];
+    // Iterate over the template files, convert each to a name by stripping the trailing '.html', and store the
+    // corresponding template function under that names in the object.
+    for (i = 0, len = templateFiles.length; i < len; i++) {
+      templateName = templateFiles[i].replace('.html', '');
+      templates[templateName] = _.template(templateArgs[i]);
     }
 
     return templates;

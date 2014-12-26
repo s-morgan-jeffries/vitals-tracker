@@ -394,19 +394,19 @@ module.exports = function (grunt) {
 
     }()),
 
-    react: {
-      develop: {
-        files: [
-          {
-            expand: true,
-            cwd: '<%= yeoman.src %>/react_components',
-            src: ['**/*.jsx'],
-            dest: '<%= yeoman.src %>/scripts/react_components',
-            ext: '.js'
-          }
-        ]
-      }
-    },
+    //react: {
+    //  develop: {
+    //    files: [
+    //      {
+    //        expand: true,
+    //        cwd: '<%= yeoman.src %>/react_components',
+    //        src: ['**/*.jsx'],
+    //        dest: '<%= yeoman.src %>/scripts/react_components',
+    //        ext: '.js'
+    //      }
+    //    ]
+    //  }
+    //},
 
     replace: {
       develop: {
@@ -733,10 +733,10 @@ module.exports = function (grunt) {
           livereload: true
         }
       },
-      react: {
-        files: ['<%= yeoman.src %>/react_components/**/*.jsx'],
-        tasks: ['react']
-      },
+      //react: {
+      //  files: ['<%= yeoman.src %>/react_components/**/*.jsx'],
+      //  tasks: ['react']
+      //},
       stylus: {
         files: ['<%= yeoman.src %>/styles/**/*.styl'],
         tasks: ['stylus:server', 'autoprefixer'],
@@ -798,7 +798,7 @@ module.exports = function (grunt) {
       'replace:develop',
       'sprite',
       'assemble:develop',
-      'react',
+      //'react',
       'concurrent:server',
       'autoprefixer',
       'connect:develop',

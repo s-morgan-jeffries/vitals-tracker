@@ -1,0 +1,49 @@
+<div class="row marketing">
+  <form role="form" id="registrationform" name="registrationform" novalidate>
+    <h1>Sign Up</h1>
+    <!--Email-->
+    <div class="form-group">
+      <label for="registrationform-email">Email address</label>
+      <input type="email"
+             id="registrationform-email"
+             class="form-control"
+             name="email"
+             placeholder="Enter email"/>
+    </div>
+    <% if (false) { %>
+    <div class="alert alert-danger">Email required</div>
+    <% } else if (false) { %>
+    <div class="alert alert-danger">Must enter a valid email</div>
+    <% } else if (false) { %>
+    <div class="alert alert-danger">Email address is not available</div>
+    <% } %>
+    <!--Password-->
+    <div class="form-group">
+      <label for="registrationform-password">Password</label>
+      <input type="password"
+             id="registrationform-password"
+             class="form-control"
+             name="password"
+             placeholder="Enter password"/>
+    </div>
+    <% if (false) { %>
+    <div class="alert alert-danger">Password required</div>
+    <% } else if (false) { %>
+    <div class="alert alert-danger">Password must be at least five characters</div>
+    <% } %>
+    <!--Password confirmation-->
+    <div class="form-group">
+      <label for="registrationform-password-confirmation">Confirm password</label>
+      <input type="password"
+             id="registrationform-password-confirmation"
+             class="form-control"
+             placeholder="Re-enter password"/>
+    </div>
+    <% if (false) { %>
+    <div class="alert alert-danger">Password confirmation required</div>
+    <% } else if (false) { %>
+    <div class="alert alert-danger">Password confirmation must match password</div>
+    <% } %>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+</div>

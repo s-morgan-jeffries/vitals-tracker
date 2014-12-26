@@ -1,38 +1,16 @@
 define([
-  'backbone',
-  'Measurement'
-], function (Backbone, Measurement) {
+  'collections/LoopBackCollection',
+  'models/Measurement',
+  'presenters/Measurements'
+], function (LoopBackCollection, Measurement, MeasurementsPresenter) {
   'use strict';
 
-  var instanceProps = {},
+  var protoProps = {},
     staticProps = {};
 
-  instanceProps.model = Measurement;
+  protoProps.presenter = MeasurementsPresenter;
 
-  instanceProps.initialize = function (/*models, options*/) {
+  protoProps.model = Measurement;
 
-    // Sort when the comparator changes
-    this.on('sync', function () {
-      //console.log('synced');
-      this.sort();
-    });
-  };
-
-  // This is used for sorting
-  instanceProps.comparator = 'measuredAt';
-
-  instanceProps.setLocalStorage = function () {
-    var url = this.url,
-      regex = /^\/patients\/(\d+)\/vitals/,
-      id = regex.exec(url)[1],
-      localStorageName = 'patient-' + id + '-vitals';
-    this.localStorage = new Backbone.LocalStorage(localStorageName);
-  };
-
-  instanceProps.setUrl = function (url) {
-    this.url = url;
-    this.setLocalStorage();
-  };
-
-  return Backbone.Collection.extend(instanceProps, staticProps);
+  return LoopBackCollection.extend(protoProps, staticProps);
 });

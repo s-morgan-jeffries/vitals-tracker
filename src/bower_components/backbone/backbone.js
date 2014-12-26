@@ -1471,7 +1471,6 @@
     // Checks the current URL to see if it has changed, and if it has,
     // calls `loadUrl`, normalizing across the hidden iframe.
     checkUrl: function(e) {
-      console.log('checkUrl');
       var current = this.getFragment();
       if (current === this.fragment && this.iframe) {
         current = this.getFragment(this.getHash(this.iframe));

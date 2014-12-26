@@ -1,81 +1,39 @@
 define([
-  'underscore',
-  'backbone',
-  'moment',
-  'Measurements'
-], function (_, Backbone, moment, Measurements) {
+  'models/LoopBackModel',
+  'presenters/Patient',
+  'collections/Measurements',
+  'apiUrl'
+], function (LoopBackModel, PatientPresenter, Measurements, apiUrl) {
   'use strict';
 
   var protoProps = {},
     staticProps = {};
 
-  protoProps.localStorage = new Backbone.LocalStorage('Patient');
+  protoProps.presenter = PatientPresenter;
 
-  protoProps.initialize = function () {
-    this.vitals = new Measurements();
-    if (this.id) {
-      this.setUrl();
-      this.fetch();
-      this.vitals.fetch();
-    }
-    this.on('change:id', this.setUrl);
-  };
-
-  protoProps.setUrl = function () {
-    this.url = '/patients/' + this.id;
-    this.setLocalStorage();
-    this.setVitalsUrl();
-  };
-
-  protoProps.setLocalStorage = function () {
-    //var url = this.url,
-    //  regex = /^\/patients\/(\d+)$/,
-    //  id = regex.exec(url)[1],
-    //  localStorageName = 'patient-' + id;
-    var localStorageName = 'patient';
-    this.localStorage = new Backbone.LocalStorage(localStorageName);
-  };
-
-  protoProps.setVitalsUrl = function () {
-    var vitalsUrl = this.url + '/vitals';
-    this.vitals.setUrl(vitalsUrl);
-  };
-
-  protoProps.validation = {
-    createdAt: {
-      required: true,
-      isValidDate: true
-    },
-    updatedAt: {
-      required: true,
-      isValidDate: true
-    }
-  };
-
-  protoProps.defaults = function () {
-    var now = moment();
-    return {
-      createdAt: now,
-      updatedAt: now
+  protoProps.initialize = function (options) {
+    LoopBackModel.prototype.initialize.call(this, options);
+    var self = this;
+    // t0d0: Fix this bit here - this should get passed to the table view
+    this.measurements = new Measurements();
+    this.measurements.url = function () {
+      return apiUrl('patient measurements', {patientId: self.id});
     };
+    this.listenTo(this, 'sync', this.getMeasurements);
   };
 
-  protoProps.createMeasurement = function (measurementData) {
-    this.vitals.create(measurementData);
-  };
-
-  protoProps.parse = function (response/*, options*/) {
-    // createdAt
-    if (response.createdAt) {
-      response.createdAt = moment(response.createdAt);
+  protoProps.getMeasurements = function () {
+    var includedMeasurements = this.get('measurements');
+    if (includedMeasurements) {
+      this.measurements.replace(includedMeasurements);
+      this.unset('measurements');
     }
-    // updatedAt
-    if (response.updatedAt) {
-      response.updatedAt = moment(response.updatedAt);
-    }
-
-    return response;
+    this.measurements.fetch();
   };
 
-  return Backbone.Model.extend(protoProps, staticProps);
+  protoProps.url = function () {
+    return apiUrl('patient', {patientId: this.id});
+  };
+
+  return LoopBackModel.extend(protoProps, staticProps);
 });

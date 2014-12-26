@@ -9920,11 +9920,32 @@ button.close {
 
 /* line 2 : /Users/Morgan/Desktop/development/javascript/backbone/vitals-tracker/src/styles/components/index.styl */
 
-/* line 12 : /Users/Morgan/Desktop/development/javascript/backbone/vitals-tracker/src/styles/layout/index.styl */
+/* line 5 : /Users/Morgan/Desktop/development/javascript/backbone/vitals-tracker/src/styles/layout/index.styl */
 
-/* line 12 : /Users/Morgan/Desktop/development/javascript/backbone/vitals-tracker/src/styles/layout/index.styl */
+/* line 5 : /Users/Morgan/Desktop/development/javascript/backbone/vitals-tracker/src/styles/layout/index.styl */
 
-/* line 12 : /Users/Morgan/Desktop/development/javascript/backbone/vitals-tracker/src/styles/layout/patient-table-layout.styl */
+/* line 5 : /Users/Morgan/Desktop/development/javascript/backbone/vitals-tracker/src/styles/layout/footer-layout.styl */
+
+/* line 1 : /Users/Morgan/Desktop/development/javascript/backbone/vitals-tracker/src/styles/layout/footer-layout.styl */
+.footer {
+  margin: 0 auto;
+  text-align: center;
+}
+
+/* line 4 : /Users/Morgan/Desktop/development/javascript/backbone/vitals-tracker/src/styles/layout/footer-layout.styl */
+
+/* line 4 : /Users/Morgan/Desktop/development/javascript/backbone/vitals-tracker/src/styles/layout/content-layout.styl */
+
+/* line 1 : /Users/Morgan/Desktop/development/javascript/backbone/vitals-tracker/src/styles/layout/content-layout.styl */
+main {
+  max-width: 1000px;
+/*width 900px*/
+  margin: 0 auto;
+}
+
+/* line 5 : /Users/Morgan/Desktop/development/javascript/backbone/vitals-tracker/src/styles/layout/content-layout.styl */
+
+/* line 5 : /Users/Morgan/Desktop/development/javascript/backbone/vitals-tracker/src/styles/layout/patient-table-layout.styl */
 
 /* line 1 : /Users/Morgan/Desktop/development/javascript/backbone/vitals-tracker/src/styles/layout/patient-table-layout.styl */
 .vitals-table {
@@ -9939,16 +9960,3 @@ button.close {
 /* line 9 : /Users/Morgan/Desktop/development/javascript/backbone/vitals-tracker/src/styles/layout/patient-table-layout.styl */
 
 /* line 9 : /Users/Morgan/Desktop/development/javascript/backbone/vitals-tracker/src/styles/layout/measurements-graph-layout.styl */
-
-/* line 4 : /Users/Morgan/Desktop/development/javascript/backbone/vitals-tracker/src/styles/layout/index.styl */
-main {
-  max-width: 1000px;
-/*width 900px*/
-  margin: 0 auto;
-}
-
-/* line 9 : /Users/Morgan/Desktop/development/javascript/backbone/vitals-tracker/src/styles/layout/index.styl */
-.footer {
-  margin: 0 auto;
-  text-align: center;
-}

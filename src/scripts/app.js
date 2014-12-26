@@ -1,56 +1,89 @@
 var app;
-
 define([
-  'underscore',
   'backbone',
-  'config',
+  'views/View',
+  'appMediator',
+  'appState',
+  //'controllers/index',
   'appRouter',
-  'behaviors/index',
-  'HeaderRegion',
-  'ContentRegion',
-  'FooterRegion',
-  'TestRegion',
-  'TestChildView'
-], function (_, Backbone, globalConfig, appRouter, behaviors, HeaderRegion, ContentRegion, FooterRegion, TestRegion, TestChildView) {
+  'presenters/Presenter',
+  'views/Header',
+  'views/Content',
+  'views/Footer',
+  'templates'
+], function (Backbone, View, appMediator, appState, appRouter, Presenter, SiteHeaderView, ContentView, SiteFooterView, templates) {
   'use strict';
 
-  var App,
-    appConfig = {};
+  var protoProps = {},
+    staticProps = {},
+    AppView;
 
-  appConfig.regions = {
-    headerRegion: {
-      el: '#vitals-app-header',
-      regionClass: HeaderRegion
-    },
-    contentRegion: {
-      el: 'main',
-      regionClass: ContentRegion
-    },
-    footerRegion: {
-      el: '#vitals-app-footer',
-      regionClass: FooterRegion
+  // The app will run in the document body
+  protoProps.el = Backbone.$('#vitals-tracker-app')[0];
+
+  protoProps.template = templates.app;
+
+  // Initialization
+  protoProps.initialize = function () {
+    appMediator.trigger('app:start');
+    // Render the view
+    this.render();
+    // Start the history
+    Backbone.history.start();
+  };
+
+  protoProps.createPresenter = function () {
+    var presenter = new Presenter();
+    this.contentView = new ContentView();
+    this.subviews = {
+      header: new SiteHeaderView({model: appState}),
+      content: this.contentView,
+      footer: new SiteFooterView()
+    };
+    return presenter;
+  };
+
+  //protoProps.render = function () {
+  //  var headerView = new SiteHeaderView({model: appState}),
+  //    contentView = new ContentView(),
+  //    footerView = new SiteFooterView();
+  //
+  //  this.$el
+  //    .empty()
+  //    .append(headerView.render().el)
+  //    .append(contentView.render().el)
+  //    .append(footerView.render().el)
+  //  ;
+  //};
+
+  // Events
+  // This is the most compelling reason for organizing the app with a view. It makes it easy to attach events to it.
+  protoProps.events = {
+    // This is for capturing clicks on application links
+    'click a[href^="/"]': function (event) {
+      var href = Backbone.$(event.target).attr('href');
+      //var passThrough = href.indexOf('sign_out') >= 0;
+      var passThrough = false;
+
+      if (!passThrough && !event.altKey && !event.ctrlKey && !event.metaKey && !event.shiftKey) {
+        event.preventDefault();
+      }
+
+      // Remove leading slashes and hash bangs (backward compatablility)
+      var url = href.replace(/^\//,'').replace('#!\/','');
+
+      // Instruct Backbone to trigger routing events
+      appMediator.execute('goTo', url);
+
+      return false;
     }
   };
 
-  appConfig.initialize = function () {
-    this.router = appRouter;
-    Backbone.history.start();
-    this.history = Backbone.history;
-    this.headerRegion.trigger('show:header');
-    this.footerRegion.trigger('show:footer');
-    this.channel.commands.execute('home', {trigger: true});
-    //this.router.navigate('home', {trigger: true});
-    //this.router.navigate('home');
-    this.TestChildView = TestChildView;
-    this.testRegion = new TestRegion({el: Backbone.$('#test-div')[0]});
-    this.testRegion.show(new TestChildView());
+  AppView = View.extend(protoProps, staticProps);
+
+  return {
+    start: function () {
+      app = new AppView();
+    }
   };
-
-  appConfig = _.extend({}, globalConfig, appConfig);
-
-  App = Backbone.Marionette.Application.extend(appConfig);
-
-  app = new App();
-
-  return app;
 });

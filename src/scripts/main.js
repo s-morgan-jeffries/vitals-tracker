@@ -10,13 +10,13 @@ requirejs.config({
     // '*' means all modules will get 'jquery-private'
     // for their 'jquery' dependency.
     '*': {
-      backbone: 'backbonePrivate',
-      d3: 'd3Private',
-      jquery: 'jqueryPrivate',
-      rickshaw: 'rickshawPrivate',
-      marionette: 'marionettePrivate',
-      showdown: 'showdownPrivate',
-      underscore: 'underscorePrivate'
+      backbone: 'module_interfaces/backbonePrivate',
+      d3: 'module_interfaces/d3Private',
+      jquery: 'module_interfaces/jqueryPrivate',
+      rickshaw: 'module_interfaces/rickshawPrivate',
+      //marionette: 'module_interfaces/marionettePrivate',
+      //showdown: 'module_interfaces/showdownPrivate',
+      underscore: 'module_interfaces/underscorePrivate'
     },
     // 'jquery-private' wants the real jQuery module
     // though. If this line was not here, there would
@@ -24,43 +24,46 @@ requirejs.config({
 //    'backbone.dualstorage': {
 //      backbone: 'backbone'
 //    },
-    'backbone.courier': {
+//    'backbone.courier': {
+//      backbone: 'backbone'
+//    },
+//    'backbone.forms': {
+//      backbone: 'backbone'
+//    },
+    'backbone.DOMStorage': {
       backbone: 'backbone'
     },
-    'backbone.forms': {
+    //'backbone.localstorage': {
+    //  backbone: 'backbone'
+    //},
+    //'backbone.validation': {
+    //  backbone: 'backbone'
+    //},
+    'module_interfaces/backbonePrivate': {
       backbone: 'backbone'
     },
-    'backbone.localstorage': {
-      backbone: 'backbone'
-    },
-    'backbone.validation': {
-      backbone: 'backbone'
-    },
-    backbonePrivate: {
-      backbone: 'backbone'
-    },
-    d3Private: {
+    'module_interfaces/d3Private': {
       d3: 'd3'
     },
-    jqueryPrivate: {
+    'module_interfaces/jqueryPrivate': {
       jquery: 'jquery'
     },
-    marionette: {
-      backbone: 'backbone'
-    },
-    marionettePrivate: {
-      marionette: 'marionette'
-    },
-    rickshawPrivate: {
+    //marionette: {
+    //  backbone: 'backbone'
+    //},
+    //'module_interfaces/marionettePrivate': {
+    //  marionette: 'marionette'
+    //},
+    'module_interfaces/rickshawPrivate': {
       rickshaw: 'rickshaw'
     },
-    showdownPrivate: {
-      showdown: 'showdown'
-    },
+    //'module_interfaces/showdownPrivate': {
+    //  showdown: 'showdown'
+    //},
     'underscore.string': {
       underscore: 'underscore'
     },
-    underscorePrivate: {
+    'module_interfaces/underscorePrivate': {
       underscore: 'underscore'
     }
   },
@@ -82,16 +85,17 @@ requirejs.config({
 //    }
 //  ],
   paths: {
-    AboutView: 'views/AboutView',
-    HeaderState: 'models/HeaderState',
+    //AboutView: 'views/AboutView',
+    //HeaderState: 'models/HeaderState',
     backbone: '../bower_components/backbone/backbone',
-    backbonePrivate: './lib/backbonePrivate',
-    'backbone.courier': '../bower_components/backbone.courier/dist/backbone.courier',
-    'backbone.localstorage': '../bower_components/backbone.localstorage/backbone.localStorage',
-    'backbone.forms': '../bower_components/backbone-forms/distribution.amd/backbone-forms',
-    'backbone.validation': '../bower_components/backbone-validation/dist/backbone-validation-amd',
+    //backbonePrivate: './lib/backbonePrivate',
+    //'backbone.courier': '../bower_components/backbone.courier/dist/backbone.courier',
+    'backbone.DOMStorage': '../bower_components/Backbone.DOMStorage/backbone.domStorage',
+    //'backbone.localstorage': '../bower_components/backbone.localstorage/backbone.localStorage',
+    //'backbone.forms': '../bower_components/backbone-forms/distribution.amd/backbone-forms',
+    //'backbone.validation': '../bower_components/backbone-validation/dist/backbone-validation-amd',
     //behaviors: 'behaviors/index',
-    bootstrap: './lib/bootstrap',
+    bootstrap: 'module_interfaces/bootstrap',
     'bootstrap.affix': '../bower_components/bootstrap-stylus/js/affix',
     'bootstrap.alert': '../bower_components/bootstrap-stylus/js/alert',
     'bootstrap.button': '../bower_components/bootstrap-stylus/js/button',
@@ -106,63 +110,63 @@ requirejs.config({
     'bootstrap.transition': '../bower_components/bootstrap-stylus/js/transition',
     'bootstrap-datetimepicker': '../bower_components/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker',
     //CaptureAppLinks: 'behaviors/CaptureAppLinks',
-    CommentBox: 'react_components/CommentBox',
-    ContentRegion: 'regions/ContentRegion',
-    customParsers: 'mixins/customParsers',
+    //CommentBox: 'react_components/CommentBox',
+    //ContentRegion: 'regions/ContentRegion',
+    //customParsers: 'mixins/customParsers',
 //    customSanitizers: 'mixins/customSanitizers',
-    customValidators: 'mixins/customValidators',
+//    customValidators: 'mixins/customValidators',
     d3: '../bower_components/d3/d3',
-    d3Private: 'lib/d3Private',
-    DatePickerView: 'views/DatePickerView',
-    DatePickerViewOrig: 'views/DatePickerViewOrig',
-    DummyContentRegion: 'regions/DummyContentRegion',
-    DummyItem1View: 'views/DummyItem1View',
-    DummyLayoutView: 'views/DummyLayoutView',
-    FilterableProductTable: 'react_components/FilterableProductTable',
-    FooterRegion: 'regions/FooterRegion',
-    FooterView: 'views/FooterView',
-    HeaderRegion: 'regions/HeaderRegion',
-    HeaderView: 'views/HeaderView',
-    HelloWorld: 'react_components/HelloWorld',
-    HomeView: 'views/HomeView',
-    InputView: 'views/InputView',
-    InputViewOrig: 'views/InputViewOrig',
+    //d3Private: 'lib/d3Private',
+    //DatePickerView: 'views/DatePickerView',
+    //DatePickerViewOrig: 'views/DatePickerViewOrig',
+    //DummyContentRegion: 'regions/DummyContentRegion',
+    //DummyItem1View: 'views/DummyItem1View',
+    //DummyLayoutView: 'views/DummyLayoutView',
+    //FilterableProductTable: 'react_components/FilterableProductTable',
+    //FooterRegion: 'regions/FooterRegion',
+    //FooterView: 'views/FooterView',
+    //HeaderRegion: 'regions/HeaderRegion',
+    //HeaderView: 'views/HeaderView',
+    //HelloWorld: 'react_components/HelloWorld',
+    //HomeView: 'views/HomeView',
+    //InputView: 'views/InputView',
+    //InputViewOrig: 'views/InputViewOrig',
     jquery: '../bower_components/jquery/dist/jquery',
 //    jquery: '//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min',
-    jqueryPrivate: './lib/jqueryPrivate',
-    jsx: '../bower_components/require-jsx/jsx',
-    JSXTransformer: '../bower_components/react/JSXTransformer',
-    marionette: '../bower_components/marionette/lib/backbone.marionette',
-    marionettePrivate: './lib/marionettePrivate',
-    Measurement: 'models/Measurement',
-    Measurements: 'collections/Measurements',
-    MeasurementsData: 'presenters/MeasurementsData',
+//    jqueryPrivate: './lib/jqueryPrivate',
+//    jsx: '../bower_components/require-jsx/jsx',
+//    JSXTransformer: '../bower_components/react/JSXTransformer',
+//    marionette: '../bower_components/marionette/lib/backbone.marionette',
+    //marionettePrivate: './lib/marionettePrivate',
+    //Measurement: 'models/Measurement',
+    //Measurements: 'collections/Measurements',
+    //MeasurementsData: 'presenters/MeasurementsData',
 //    measurementInputView: 'views/measurementInputView',
-    MeasurementEditView: 'views/MeasurementEditView',
+//    MeasurementEditView: 'views/MeasurementEditView',
     //MeasurementEditViewOrig: 'views/MeasurementEditViewOrig',
-    MeasurementsGraphView: 'views/MeasurementsGraphView',
-    MeasurementShowView: 'views/MeasurementShowView',
-    MeasurementsTableView: 'views/MeasurementsTableView',
-    MeasurementsTableListView: 'views/MeasurementsTableListView',
+    //MeasurementsGraphView: 'views/MeasurementsGraphView',
+    //MeasurementShowView: 'views/MeasurementShowView',
+    //MeasurementsTableView: 'views/MeasurementsTableView',
+    //MeasurementsTableListView: 'views/MeasurementsTableListView',
     moment: '../bower_components/moment/moment',
     //nvd3: '../bower_components/nvd3/nv.d3',
-    Patient: 'models/Patient',
-    PatientView: 'views/PatientView',
-    react: '../bower_components/react/react-with-addons',
-    Region: 'regions/Region',
+    //Patient: 'models/Patient',
+    //PatientView: 'views/PatientView',
+    //react: '../bower_components/react/react-with-addons',
+    //Region: 'regions/Region',
     rickshaw: '../bower_components/rickshaw/rickshaw',
-    rickshawPrivate: 'lib/rickshawPrivate',
-    showdown: '../bower_components/showdown/src/showdown',
-    showdownPrivate: 'lib/showdownPrivate',
+    //rickshawPrivate: 'lib/rickshawPrivate',
+    //showdown: '../bower_components/showdown/src/showdown',
+    //showdownPrivate: 'lib/showdownPrivate',
     //SignInView: 'views/SignInView',
-    simpleLineGraph: 'views/simpleLineGraph',
-    sinon: '../bower_components/sinonjs/sinon',
-    TestChildView: 'views/TestChildView',
-    TestRegion: 'regions/TestRegion',
-    TestView: 'views/TestView',
+    //simpleLineGraph: 'views/simpleLineGraph',
+    //sinon: '../bower_components/sinonjs/sinon',
+    //TestChildView: 'views/TestChildView',
+    //TestRegion: 'regions/TestRegion',
+    //TestView: 'views/TestView',
     text: '../bower_components/text/text',
-    TimePickerView: 'views/TimePickerView',
-    Timer: 'react_components/Timer',
+    //TimePickerView: 'views/TimePickerView',
+    //Timer: 'react_components/Timer',
     //TimePickerViewOrig: 'views/TimePickerViewOrig',
 //    vitalsMeasurement: 'models/vitalsMeasurement',
 //    vitalsMeasurements: 'collections/vitalsMeasurements',
@@ -171,8 +175,8 @@ requirejs.config({
 //    todoView: 'views/todoView',
 //    todosView: 'views/todosView',
     underscore: '../bower_components/underscore/underscore',
-    'underscore.string': '../bower_components/underscore.string/lib/underscore.string',
-    underscorePrivate: './lib/underscorePrivate'
+    'underscore.string': '../bower_components/underscore.string/lib/underscore.string'
+    //underscorePrivate: './lib/underscorePrivate'
 
   },
   // So all this does is delay the loading of these files until jQuery loads. Meaning the tags shouldn't get appended
@@ -180,6 +184,7 @@ requirejs.config({
   // you can see that that's the case. The lastChild at that point is the Backbone script tag, whereas in the final
   // version of the page, it's the bootstrap scripts.
   shim: {
+    'backbone.DOMStorage': { deps: ['underscore', 'backbone'] },
     'bootstrap.affix': { deps: ['jquery'] },
     'bootstrap.alert': { deps: ['jquery'] },
     'bootstrap.button': { deps: ['jquery'] },
@@ -192,8 +197,8 @@ requirejs.config({
     'bootstrap.tab': { deps: ['jquery'] },
     'bootstrap.tooltip': { deps: ['jquery'] },
     'bootstrap.transition': { deps: ['jquery'] },
-    d3: { exports: 'd3' },
-    showdown: {exports: 'Showdown'}
+    d3: { exports: 'd3' }
+    //showdown: {exports: 'Showdown'}
     //,
     //nvd3: {
     //  deps: ['d3'],

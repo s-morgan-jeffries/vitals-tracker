@@ -1,0 +1,28 @@
+define([
+  'views/View',
+  'templates',
+  'auth'
+], function (View, templates, auth) {
+  'use strict';
+
+  var protoProps = {},
+    staticProps = {};
+
+  protoProps.template = templates['app-header'];
+
+  protoProps.initialize = function () {
+    this.listenTo(this.model, 'change:token', this.render);
+  };
+
+  protoProps.createPresenter = function () {
+    return this.model.toPresenter();
+  };
+
+  protoProps.events = {
+    'click .logout': function () {
+      auth.logout();
+    }
+  };
+
+  return View.extend(protoProps, staticProps);
+});

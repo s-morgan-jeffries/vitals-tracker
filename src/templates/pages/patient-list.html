@@ -1,0 +1,7 @@
+<section>
+  <ul> Here are some patients:
+    <% for (var i = 0, len = model.models.length; i < len; i++) { %>
+    <%= model.models[i].toPresenter().renderPartial('partials/patient-list-item') %>
+    <% } %>
+  </ul>
+</section>

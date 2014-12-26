@@ -1,0 +1,7 @@
+<section>
+  <ul> Here are some authors:
+    <% for (var i = 0, len = model.models.length; i < len; i++) { %>
+      <%= model.models[i].toPresenter().partial('partials/author-list-item') %>
+    <% } %>
+  </ul>
+</section>
