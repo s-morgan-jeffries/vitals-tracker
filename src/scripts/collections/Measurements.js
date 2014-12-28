@@ -12,5 +12,7 @@ define([
 
   protoProps.model = Measurement;
 
+  protoProps.comparator = 'measuredAt';
+
   return LoopBackCollection.extend(protoProps, staticProps);
 });

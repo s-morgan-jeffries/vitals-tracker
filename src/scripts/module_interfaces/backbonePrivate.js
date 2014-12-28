@@ -7,12 +7,13 @@ define([
   //'mixins/customValidators',
   //'backbone.courier',
   //'backbone.localstorage',
-  'backbone.DOMStorage',
+  'backbone.DOMStorage'
   //'backbone.validation',
-  'bootstrap'
+  //'bootstrap'
 ], function ($, _, Backbone) {
   'use strict';
 
+  console.log('backbonePrivate');
   // Add custom validators
   //_.extend(Backbone.Validation.validators, customValidators);
   // Add validators to models

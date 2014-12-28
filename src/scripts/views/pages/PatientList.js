@@ -1,9 +1,9 @@
 //var patientsPresenter;
 
 define([
-  'backbone',
+  'views/View',
   'templates'
-], function (Backbone, templates) {
+], function (View, templates) {
   'use strict';
 
   var protoProps = {},
@@ -15,21 +15,9 @@ define([
     this.listenTo(this.collection, 'sync', this.render);
   };
 
-  protoProps.render = function () {
-    var presenter = this.collection.toPresenter();
-    //patientsPresenter = presenter;
-    // Create the new element
-    var $newEl = Backbone.$(this.template(presenter));
-    if (this.$el[0].tagName === $newEl[0].tagName) {
-      // If the tag name of the new element matches that of the current element, replace this.$el's innerHTML with that
-      // of the new element. This saves the cost of re-delegating events.
-      this.$el.html($newEl.html());
-    } else {
-      // If they don't match, call the setElement method, which will swap out the element and re-delegate events.
-      this.setElement($newEl);
-    }
-    return this;
+  protoProps.createPresenter = function () {
+    return this.collection.toPresenter();
   };
 
-  return Backbone.View.extend(protoProps, staticProps);
+  return View.extend(protoProps, staticProps);
 });

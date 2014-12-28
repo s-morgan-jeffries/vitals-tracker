@@ -13,9 +13,9 @@
 @import '/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css';
 @import '/bower_components/rickshaw/rickshaw.css';
 
-/* line 22 : /Users/Morgan/Desktop/development/javascript/backbone/vitals-tracker/src/styles/generic/index.styl */
+/* line 23 : /Users/Morgan/Desktop/development/javascript/backbone/vitals-tracker/src/styles/generic/index.styl */
 
-/* line 22 : /Users/Morgan/Desktop/development/javascript/backbone/vitals-tracker/src/bower_components/bootstrap-stylus/stylus/bootstrap.styl */
+/* line 23 : /Users/Morgan/Desktop/development/javascript/backbone/vitals-tracker/src/bower_components/bootstrap-stylus/stylus/bootstrap.styl */
 /*
  * Bootstrap v3.2.0 (http://getbootstrap.com)
  * Copyright 2011-2014 Twitter, Inc.
@@ -9912,7 +9912,16 @@ button.close {
 
 /* line 159 : /Users/Morgan/Desktop/development/javascript/backbone/vitals-tracker/src/bower_components/bootstrap-stylus/stylus/responsive-utilities.styl */
 
-/* line 159 : /Users/Morgan/Desktop/development/javascript/backbone/vitals-tracker/src/styles/base/index.styl */
+/* line 159 : /Users/Morgan/Desktop/development/javascript/backbone/vitals-tracker/src/styles/generic/helpers.styl */
+
+/* line 1 : /Users/Morgan/Desktop/development/javascript/backbone/vitals-tracker/src/styles/generic/helpers.styl */
+.shrinkwrap {
+  display: inline-block;
+}
+
+/* line 3 : /Users/Morgan/Desktop/development/javascript/backbone/vitals-tracker/src/styles/generic/helpers.styl */
+
+/* line 3 : /Users/Morgan/Desktop/development/javascript/backbone/vitals-tracker/src/styles/base/index.styl */
 
 /* line 3 : /Users/Morgan/Desktop/development/javascript/backbone/vitals-tracker/src/styles/base/index.styl */
 
@@ -9945,18 +9954,23 @@ main {
 
 /* line 5 : /Users/Morgan/Desktop/development/javascript/backbone/vitals-tracker/src/styles/layout/content-layout.styl */
 
-/* line 5 : /Users/Morgan/Desktop/development/javascript/backbone/vitals-tracker/src/styles/layout/patient-table-layout.styl */
+/* line 5 : /Users/Morgan/Desktop/development/javascript/backbone/vitals-tracker/src/styles/layout/measurements-table-layout.styl */
 
-/* line 1 : /Users/Morgan/Desktop/development/javascript/backbone/vitals-tracker/src/styles/layout/patient-table-layout.styl */
+/* line 1 : /Users/Morgan/Desktop/development/javascript/backbone/vitals-tracker/src/styles/layout/measurements-table-layout.styl */
 .vitals-table {
   table-layout: fixed;
 }
 
-/* line 7 : /Users/Morgan/Desktop/development/javascript/backbone/vitals-tracker/src/styles/layout/patient-table-layout.styl */
+/* line 7 : /Users/Morgan/Desktop/development/javascript/backbone/vitals-tracker/src/styles/layout/measurements-table-layout.styl */
 .measurement-input {
   width: 100%;
 }
 
-/* line 9 : /Users/Morgan/Desktop/development/javascript/backbone/vitals-tracker/src/styles/layout/patient-table-layout.styl */
+/* line 10 : /Users/Morgan/Desktop/development/javascript/backbone/vitals-tracker/src/styles/layout/measurements-table-layout.styl */
+.hidden-col {
+  display: none;
+}
 
-/* line 9 : /Users/Morgan/Desktop/development/javascript/backbone/vitals-tracker/src/styles/layout/measurements-graph-layout.styl */
+/* line 12 : /Users/Morgan/Desktop/development/javascript/backbone/vitals-tracker/src/styles/layout/measurements-table-layout.styl */
+
+/* line 12 : /Users/Morgan/Desktop/development/javascript/backbone/vitals-tracker/src/styles/layout/measurements-graph-layout.styl */

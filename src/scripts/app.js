@@ -4,14 +4,12 @@ define([
   'views/View',
   'appMediator',
   'appState',
-  //'controllers/index',
   'appRouter',
-  'presenters/Presenter',
   'views/Header',
   'views/Content',
   'views/Footer',
   'templates'
-], function (Backbone, View, appMediator, appState, appRouter, Presenter, SiteHeaderView, ContentView, SiteFooterView, templates) {
+], function (Backbone, View, appMediator, appState, appRouter, SiteHeaderView, ContentView, SiteFooterView, templates) {
   'use strict';
 
   var protoProps = {},
@@ -30,31 +28,19 @@ define([
     this.render();
     // Start the history
     Backbone.history.start();
+    var currentLocation = Backbone.history.getFragment();
+    if (currentLocation === '') {
+      appMediator.execute('goTo', 'home');
+    }
   };
 
-  protoProps.createPresenter = function () {
-    var presenter = new Presenter();
-    this.contentView = new ContentView();
+  protoProps.createSubviews = function () {
     this.subviews = {
       header: new SiteHeaderView({model: appState}),
-      content: this.contentView,
+      content: new ContentView(),
       footer: new SiteFooterView()
     };
-    return presenter;
   };
-
-  //protoProps.render = function () {
-  //  var headerView = new SiteHeaderView({model: appState}),
-  //    contentView = new ContentView(),
-  //    footerView = new SiteFooterView();
-  //
-  //  this.$el
-  //    .empty()
-  //    .append(headerView.render().el)
-  //    .append(contentView.render().el)
-  //    .append(footerView.render().el)
-  //  ;
-  //};
 
   // Events
   // This is the most compelling reason for organizing the app with a view. It makes it easy to attach events to it.

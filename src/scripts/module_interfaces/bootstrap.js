@@ -1,4 +1,5 @@
 define([
+  'module_interfaces/jqueryCore',
   'bootstrap.affix',
   'bootstrap.alert',
   'bootstrap.button',
@@ -12,8 +13,10 @@ define([
   'bootstrap.tooltip',
   'bootstrap.transition',
   'bootstrap-datetimepicker'
-], function () {
+], function ($) {
   'use strict';
 
+  console.log('boostrap');
   // Nothing
+  return $;
 });

@@ -30,8 +30,6 @@ define([
 
     // Set options
     options = options || {};
-    //this.loginUrl = options.loginUrl || options.host + this._loginUrl;
-    //this.logoutUrl = options.logoutUrl || options.host + this._logoutUrl;
 
     // Declare token in closure
     var token;

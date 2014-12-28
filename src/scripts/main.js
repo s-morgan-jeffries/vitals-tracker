@@ -13,6 +13,7 @@ requirejs.config({
       backbone: 'module_interfaces/backbonePrivate',
       d3: 'module_interfaces/d3Private',
       jquery: 'module_interfaces/jqueryPrivate',
+      //jqueryCore: 'module_interfaces/jqueryCore',
       rickshaw: 'module_interfaces/rickshawPrivate',
       //marionette: 'module_interfaces/marionettePrivate',
       //showdown: 'module_interfaces/showdownPrivate',
@@ -32,6 +33,45 @@ requirejs.config({
 //    },
     'backbone.DOMStorage': {
       backbone: 'backbone'
+    },
+    'bootstrap.affix': {
+      jquery: 'jquery'
+    },
+    'bootstrap.alert': {
+      jquery: 'jquery'
+    },
+    'bootstrap.button': {
+      jquery: 'jquery'
+    },
+    'bootstrap.carousel': {
+      jquery: 'jquery'
+    },
+    'bootstrap.collapse': {
+      jquery: 'jquery'
+    },
+    'bootstrap.dropdown': {
+      jquery: 'jquery'
+    },
+    'bootstrap.modal': {
+      jquery: 'jquery'
+    },
+    'bootstrap.popover': {
+      jquery: 'jquery'
+    },
+    'bootstrap.scrollspy': {
+      jquery: 'jquery'
+    },
+    'bootstrap.tab': {
+      jquery: 'jquery'
+    },
+    'bootstrap.tooltip': {
+      jquery: 'jquery'
+    },
+    'bootstrap.transition': {
+      jquery: 'jquery'
+    },
+    'bootstrap-datetimepicker': {
+      jquery: 'jquery'
     },
     //'backbone.localstorage': {
     //  backbone: 'backbone'
@@ -95,7 +135,7 @@ requirejs.config({
     //'backbone.forms': '../bower_components/backbone-forms/distribution.amd/backbone-forms',
     //'backbone.validation': '../bower_components/backbone-validation/dist/backbone-validation-amd',
     //behaviors: 'behaviors/index',
-    bootstrap: 'module_interfaces/bootstrap',
+    //bootstrap: 'module_interfaces/bootstrap',
     'bootstrap.affix': '../bower_components/bootstrap-stylus/js/affix',
     'bootstrap.alert': '../bower_components/bootstrap-stylus/js/alert',
     'bootstrap.button': '../bower_components/bootstrap-stylus/js/button',

@@ -1,31 +1,43 @@
-<table>
-  <colgroup>
-    <col class="measurement-date-col"/>
-    <col class="measurement-time-col"/>
-    <col class="measurement-temperature-col"/>
-    <col class="measurement-pulse-col"/>
-    <col class="measurement-sbp-col"/>
-    <col class="measurement-dbp-col"/>
-    <col class="measurement-respirations-col"/>
-    <col class="measurement-saturation-col"/>
-    <col class="button-col"/>
-    <col class="button-col"/>
-  </colgroup>
-  <thead>
-  <tr>
-    <td>Date</td>
-    <td>Time</td>
-    <td>Temp</td>
-    <td>Pulse</td>
-    <td>SBP</td>
-    <td>DBP</td>
-    <td>Resp</td>
-    <td>Sat</td>
-  </tr>
-  </thead>
-  <tbody>
-  <% for (var i = 0, len = model.models.length; i < len; i++) { %>
-  <%= model.models[i].toPresenter().partial('partials/measurement-show') %>
-  <% } %>
-  </tbody>
-</table>
+<section>
+  <table class="table">
+    <colgroup>
+      <col class="hidden-col" />
+      <col class="measurement-date-col"/>
+      <col class="measurement-time-col"/>
+      <col class="measurement-temperature-col"/>
+      <col class="measurement-pulse-col"/>
+      <col class="measurement-sbp-col"/>
+      <col class="measurement-dbp-col"/>
+      <col class="measurement-respirations-col"/>
+      <col class="measurement-saturation-col"/>
+      <col class="button-col"/>
+      <col class="button-col"/>
+    </colgroup>
+    <thead>
+    <tr>
+      <td></td>
+      <td>Date</td>
+      <td>Time</td>
+      <td>Temp</td>
+      <td>Pulse</td>
+      <td>SBP</td>
+      <td>DBP</td>
+      <td>Resp</td>
+      <td>Sat</td>
+    </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+  <nav class="text-center">
+    <ul class="pagination">
+      <li><a href="#"><span aria-hidden="true">&laquo;</span><span class="sr-only">Previous</span></a></li>
+      <li><a href="#">1</a></li>
+      <li><a href="#">2</a></li>
+      <li><a href="#">3</a></li>
+      <li><a href="#">4</a></li>
+      <li><a href="#">5</a></li>
+      <li><a href="#"><span aria-hidden="true">&raquo;</span><span class="sr-only">Next</span></a></li>
+    </ul>
+  </nav>
+</section>

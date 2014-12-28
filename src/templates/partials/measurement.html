@@ -1,0 +1,47 @@
+<tr>
+  <% if (isEditing) { %>
+  <td><form id="measurement-<%= cid %>-form"></form></td>
+  <td class="date-input">
+    <input class="measurement-input" name="measuredAt" data-view-name="date" data-picker="date" type="datetime" form="measurement-<%= cid %>-form" />
+  </td>
+  <td class="time-input">
+    <input class="measurement-input" name="measuredAt" data-view-name="time" data-picker="time" type="datetime" form="measurement-<%= cid %>-form" />
+  </td>
+  <td class="temperature-input">
+    <input class="measurement-input" name="temperature" type="number" value="<%= temperature %>" form="measurement-<%= cid %>-form" />
+  </td>
+  <td class="pulse-input">
+    <input class="measurement-input" name="pulse" type="number" value="<%= pulse %>" form="measurement-<%= cid %>-form" />
+  </td>
+  <td class="sbp-input">
+    <input class="measurement-input" name="sbp" type="number" value="<%= sbp %>" form="measurement-<%= cid %>-form" />
+  </td>
+  <td class="dbp-input">
+    <input class="measurement-input" name="dbp" type="number" value="<%= dbp %>" form="measurement-<%= cid %>-form" />
+  </td>
+  <td class="respirations-input">
+    <input class="measurement-input" name="respirations" type="number" value="<%= respirations %>" form="measurement-<%= cid %>-form" />
+  </td>
+  <td class="saturation-input">
+    <input class="measurement-input" name="saturation" type="number" value="<%= saturation %>" form="measurement-<%= cid %>-form" />
+  </td>
+  <td>
+    <button class="btn btn-sm save-measurement" type="button">save</button>
+  </td>
+  <td>
+    <button class="btn btn-sm cancel-edit" type="button">cancel</button>
+  </td>
+  <% } else { %>
+  <td></td>
+  <td class="date-input"><%= measuredAt.format('MM/D/YYYY') %></td>
+  <td class="time-input"><%= measuredAt.format('h:mm A') %></td>
+  <td class="temperature-input"><%= temperature %></td>
+  <td class="pulse-input"><%= pulse %></td>
+  <td class="sbp-input"><%= sbp %></td>
+  <td class="dbp-input"><%= dbp %></td>
+  <td class="respirations-input"><%= respirations %></td>
+  <td class="saturation-input"><%= saturation %></td>
+  <td><a class="edit-measurement">edit</a></td>
+  <td><a class="delete-measurement">delete</a></td>
+  <% } %>
+</tr>

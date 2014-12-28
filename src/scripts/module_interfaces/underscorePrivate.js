@@ -4,6 +4,7 @@ define([
 ], function (_, _s) {
   'use strict';
 
+  console.log('underscorePrivate');
   // For the sake of parity, calling this `root`
   var root = window;
   // First call underscore's noConflict method. This may or may not lead to root._ being set to the _ defined by

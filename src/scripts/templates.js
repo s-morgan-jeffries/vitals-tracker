@@ -22,7 +22,8 @@
       'partials/measurement-show.html',
       'partials/measurement-edit-template.html',
       //'patient-template.html',
-      'partials/measurements-table.html'
+      'partials/measurements-table.html',
+      'partials/measurement.html'
     ],
     // list for holding module dependencies
     dependencies = ['underscore'],
