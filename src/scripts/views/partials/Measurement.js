@@ -1,9 +1,10 @@
 //var patient;
 define([
+  'underscore',
   'views/View',
   'templates',
   'moment'
-], function (View, templates, moment) {
+], function (_, View, templates, moment) {
   'use strict';
 
   var protoProps = {},
@@ -14,6 +15,7 @@ define([
 
   protoProps.initialize = function () {
     this.listenTo(this.model, 'change:isEditing', this.render);
+    this.listenTo(this.model, 'sync', this.render);
   };
 
   protoProps.createPresenter = function () {
@@ -21,11 +23,11 @@ define([
   };
 
   protoProps.addPlugins = function () {
+    // Test for whether we've rendered yet. If not, add the trackFocus plugin to the top-level element.
+    if (!(this.hasRendered)) {
+      this.$el.trackFocus();
+    }
     if (this.model.get('isEditing')) {
-      // Test for whether we've rendered yet. If not, add the trackFocus plugin to the top-level element.
-      if (!(this.hasRendered)) {
-        this.$el.trackFocus();
-      }
       var $inputs = this.$('input'),
         $dateTimeInputs = $inputs.filter('[type=datetime]'),
         $valueInputs = $inputs.not('[type=datetime]'),
@@ -41,9 +43,14 @@ define([
       $tempInput.focus();
 
       //t0d0: Move this
-      this._validatedValues = this.model.toJSON();
+      this._validatedValues = this.getModelValues();
     }
     return this;
+  };
+
+  protoProps.getModelValues = function () {
+    var values = _.omit(this.model.attributes, this.model.stale);
+    return _.omit(values, 'id');
   };
 
   protoProps.events = {
@@ -51,41 +58,53 @@ define([
     'dblclick': 'editMeasurement',
     'click .delete-measurement': 'deleteMeasurement',
     'click .save-measurement': 'saveMeasurement',
+    'keydown input': 'saveMeasurement',
     'click .cancel-edit': 'cancelEdit',
-    //'focuslost': 'cancelEdit',
+    'focuslost': 'cancelEdit',
     'change input': 'updateValues'
   };
 
   protoProps.editMeasurement = function () {
     this.model.set({isEditing: true});
-    this._netFocus = 0;
   };
 
   protoProps.cancelEdit = function () {
     this.model.set({isEditing: false});
-    this._netFocus = 0;
   };
 
   protoProps.deleteMeasurement = function () {
     console.log('delete measurement');
+    this.model.destroy();
   };
 
   protoProps.updateValues = function (/*event*/) {
     if (!this.pluginsAdded) {
       return;
     }
-    var values = this.getInputValues();
-    console.log(values);
-    var validationError = this.model.validate(values);
-    console.log(validationError);
+    var values = this.getInputValues(),
+      validationError = this.model.validate(values);
+    //console.log(validationError);
     if (!validationError) {
       this._validatedValues = values;
+      return true;
     } else {
       this.setInputValues(this._validatedValues);
     }
   };
 
-  protoProps.setInputValues = function () {};
+  protoProps.setInputValues = function (values) {
+    //console.log(values);
+    var $inputs = this.$('input'),
+      $measuredAtInputs = $inputs.filter('[name=measuredAt]');
+
+    if (values.measuredAt) {
+      $measuredAtInputs.dateTimeInput('set', values.measuredAt);
+    }
+    $.each(_.omit(values, 'measuredAt'), function (key, val) {
+      var $el = $inputs.filter('[name=' + key + ']');
+      $el.smartInput('set', val);
+    });
+  };
 
   protoProps.getMeasuredAt = function () {
     var $dateTimeInputs = this.$('input').filter('[type=datetime]'),
@@ -105,7 +124,6 @@ define([
 
   protoProps.getInputValues = function () {
     var $inputs = this.$('input'),
-      //$dateTimeInputs = $inputs.filter('[type=datetime]'),
       $valueInputs = $inputs.not('[name=measuredAt]'),
       values = {
         measuredAt: this.getMeasuredAt()
@@ -118,12 +136,32 @@ define([
   };
 
   // t0d0: You want to get all the form's elements
-  protoProps.saveMeasurement = function () {
-    var formSelector = '#measurement-' + this.model.cid + '-form',
-      $form = this.$(formSelector),
-      formAttr = this.attributesFrom($form);
-    console.log('save measurement');
-    console.log(formAttr);
+  protoProps.saveMeasurement = function (event) {
+    //console.log('save measurement');
+    //console.log(event);
+    var ENTER = 13;
+    if (event.type === 'keydown' && event.which !== ENTER) {
+      return;
+    }
+
+    if (this.updateValues()) {
+      // Remove anything from values that is the same as in the model
+      var modelValues = _.omit(this.model.attributes, this.model.stale),
+        newValues = this._validatedValues,
+        changedValues = {};
+      _.forEach(newValues, function (val, key) {
+        //console.log(key);
+        //console.log(val);
+        //console.log(modelValues[key]);
+        if (modelValues[key].valueOf() !== val.valueOf()) {
+          changedValues[key] = val;
+        }
+      });
+      //console.log(changedValues);
+      //var values = $.extend({isEditing: false}, changedValues);
+      changedValues.isEditing = false;
+      this.model.save(changedValues);
+    }
   };
 
   return View.extend(protoProps, staticProps);

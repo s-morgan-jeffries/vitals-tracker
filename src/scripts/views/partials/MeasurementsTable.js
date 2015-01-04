@@ -12,7 +12,7 @@ define([
   protoProps.template = templates['partials/measurements-table'];
 
   protoProps.initialize = function () {
-    this.listenTo(this.collection, 'sync', this.render);
+    this.listenTo(this.collection, 'sync remove sort', this.render);
   };
 
   protoProps.createPresenter = function () {

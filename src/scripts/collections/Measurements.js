@@ -8,6 +8,11 @@ define([
   var protoProps = {},
     staticProps = {};
 
+  protoProps.initialize = function () {
+    LoopBackCollection.prototype.initialize.apply(this, arguments);
+    this.listenTo(this, 'change:' + this.comparator, this.sort);
+  };
+
   protoProps.presenter = MeasurementsPresenter;
 
   protoProps.model = Measurement;
