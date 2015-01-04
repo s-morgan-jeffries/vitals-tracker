@@ -40,6 +40,7 @@ define([
       content: new ContentView(),
       footer: new SiteFooterView()
     };
+    return this;
   };
 
   // Events

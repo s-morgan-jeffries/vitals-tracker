@@ -16,7 +16,7 @@ define([
 ], function ($) {
   'use strict';
 
-  console.log('boostrap');
+  //console.log('boostrap');
   // Nothing
   return $;
 });

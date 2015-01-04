@@ -24,15 +24,17 @@ define([
     this.collection.forEach(function (model) {
       subviews.push(new MeasurementView({model: model}));
     });
+    return this;
   };
 
-  protoProps.addSubviews = function ($el) {
+  protoProps.addSubviews = function () {
     var subviews = this.subviews,
+      $newEl = this.$newEl,
       selector = 'tbody',
       $subEl;
     // Attach the subviews if they exist.
     if (subviews) {
-      $subEl = $el.find(selector);
+      $subEl = $newEl.find(selector);
       _.forEach(subviews, function (subview) {
         // Subviews get attached to the DOM wherever there's a DOM element with the correct class (maybe change this to
         // id?). It's basically a dummy element to mark where the subview should go.
@@ -42,6 +44,7 @@ define([
         }
       });
     }
+    return this;
   };
 
   //protoProps.removeSubviews = function () {};

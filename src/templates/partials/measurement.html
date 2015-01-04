@@ -2,10 +2,16 @@
   <% if (isEditing) { %>
   <td><form id="measurement-<%= cid %>-form"></form></td>
   <td class="date-input">
-    <input class="measurement-input" name="measuredAt" data-view-name="date" data-picker="date" type="datetime" form="measurement-<%= cid %>-form" />
+    <input class="measurement-input" name="measuredAt" data-date-format="MM/D/YYYY"
+           data-initial-value="<%= measuredAt.toJSON() %>" data-date-picker type="datetime"
+           form="measurement-<%= cid %>-form"
+      />
   </td>
   <td class="time-input">
-    <input class="measurement-input" name="measuredAt" data-view-name="time" data-picker="time" type="datetime" form="measurement-<%= cid %>-form" />
+    <input class="measurement-input" name="measuredAt" data-date-format="h:mm A"
+           data-initial-value="<%= measuredAt.toJSON() %>" data-time-picker type="datetime"
+           form="measurement-<%= cid %>-form"
+      />
   </td>
   <td class="temperature-input">
     <input class="measurement-input" name="temperature" type="number" value="<%= temperature %>" form="measurement-<%= cid %>-form" />

@@ -1,0 +1,36 @@
+Events in Backbone and jQuery:
+
+  Backbone:
+    - Standard events can't be detached by namespace
+    - Standard events can't be triggered by namespace
+    - View events ?can be namespaced (https://github.com/jashkenas/backbone/issues/366)
+
+  jQuery:
+  - You can namespace events when you attach them:
+    - e.g. $el.on('click.namespace')
+  - You can trigger event handlers in multiple namespaces with a single event:
+    // $el.on('event1.namespace1', function () {console.log('event1.namespace1');});
+    // $el.on('event1.namespace2', function () {console.log('event1.namespace2');});
+    // $el.trigger('event1') ->
+    //    event1.namespace1
+    //    event1.namespace2
+  - You can trigger event handlers that are specific to a namespace for an event if you qualify the event name in
+    the call to jQuery#trigger:
+    // $el.on('event1.namespace1', function () {console.log('event1.namespace1');});
+    // $el.on('event1.namespace2', function () {console.log('event1.namespace2');});
+    // $el.trigger('event1.namespace1') ->
+    //    event1.namespace1
+  - You *cannot* trigger all the handlers for a given namespace without trigger each of the individual events:
+    // $el.on('event1.namespace1', function () {console.log('event1.namespace1');});
+    // $el.on('event2.namespace1', function () {console.log('event2.namespace1');});
+    // $el.trigger('.namespace1') ->
+    //    <nothing>
+  - You can remove all the event handlers event handlers that are specific to a namespace by passing that namespace
+    to jQuery#off:
+    // $el.on('event1.namespace1', function () {console.log('event1.namespace1');});
+    // $el.on('event2.namespace1', function () {console.log('event2.namespace1');});
+    // $el.off('namespace1');
+    // $el.trigger('event1.namespace1') ->
+    //    <nothing>
+    // $el.trigger('event2.namespace1') ->
+    //    <nothing>

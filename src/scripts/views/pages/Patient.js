@@ -24,6 +24,7 @@ define([
     this.subviews = {
       measurementsTable: new MeasurementsTableView({collection: this.model.measurements})
     };
+    return this;
   };
 
   return View.extend(protoProps, staticProps);

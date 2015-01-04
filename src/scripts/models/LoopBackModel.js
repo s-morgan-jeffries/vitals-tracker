@@ -1,6 +1,6 @@
 define([
   'models/Model',
-  'plugins/loopBackConnection'
+  'loopBackConnection'
 ], function (Model, loopBackConnection) {
   'use strict';
 

@@ -1,12 +1,14 @@
 //var patient;
 define([
   'views/View',
-  'templates'
-], function (View, templates) {
+  'templates',
+  'moment'
+], function (View, templates, moment) {
   'use strict';
 
   var protoProps = {},
-    staticProps = {};
+    staticProps = {},
+    $ = View.$;
 
   protoProps.template = templates['partials/measurement'];
 
@@ -18,31 +20,40 @@ define([
     return this.model.toPresenter();
   };
 
+  protoProps.addPlugins = function () {
+    if (this.model.get('isEditing')) {
+      // Test for whether we've rendered yet. If not, add the trackFocus plugin to the top-level element.
+      if (!(this.hasRendered)) {
+        this.$el.trackFocus();
+      }
+      var $inputs = this.$('input'),
+        $dateTimeInputs = $inputs.filter('[type=datetime]'),
+        $valueInputs = $inputs.not('[type=datetime]'),
+        $tempInput = $valueInputs.filter('[name=temperature]');
+
+      // Add bootstrap-datetime behavior.
+      $dateTimeInputs.dateTimeInput();
+
+      // Set up smartInput behavior
+      $valueInputs.smartInput();
+
+      // Give focus to the temperature.
+      $tempInput.focus();
+
+      //t0d0: Move this
+      this._validatedValues = this.model.toJSON();
+    }
+    return this;
+  };
+
   protoProps.events = {
-    dblclick: 'editMeasurement',
     'click .edit-measurement': 'editMeasurement',
+    'dblclick': 'editMeasurement',
     'click .delete-measurement': 'deleteMeasurement',
     'click .save-measurement': 'saveMeasurement',
     'click .cancel-edit': 'cancelEdit',
-    'blur input': 'updateValue',
-    focusin: 'onFocusIn',
-    focusout: 'onFocusOut',
-    focuslost: 'cancelEdit'
-  };
-
-  protoProps.onFocusIn = function () {
-    this._netFocus += 1;
-  };
-
-  protoProps.onFocusOut = function () {
-    this._netFocus -= 1;
-    setTimeout(this.triggerFocusLost.bind(this), 0);
-  };
-
-  protoProps.triggerFocusLost = function () {
-    if (this._netFocus === 0) {
-      this.$el.trigger('focuslost');
-    }
+    //'focuslost': 'cancelEdit',
+    'change input': 'updateValues'
   };
 
   protoProps.editMeasurement = function () {
@@ -59,9 +70,51 @@ define([
     console.log('delete measurement');
   };
 
-  // t0d0: Add bootstrap-datetimepicker to the form (if you can't add it here, you'll need subviews)
-  protoProps.updateValue = function (event) {
-    console.log(event.target);
+  protoProps.updateValues = function (/*event*/) {
+    if (!this.pluginsAdded) {
+      return;
+    }
+    var values = this.getInputValues();
+    console.log(values);
+    var validationError = this.model.validate(values);
+    console.log(validationError);
+    if (!validationError) {
+      this._validatedValues = values;
+    } else {
+      this.setInputValues(this._validatedValues);
+    }
+  };
+
+  protoProps.setInputValues = function () {};
+
+  protoProps.getMeasuredAt = function () {
+    var $dateTimeInputs = this.$('input').filter('[type=datetime]'),
+      $dateInput = $dateTimeInputs.filter(function () {
+        return 'datePicker' in $(this).data();
+      }),
+      $timeInput = $dateTimeInputs.filter(function () {
+        return 'timePicker' in $(this).data();
+      }),
+      measuredAt = moment($dateInput.dateTimeInput('get')),
+      measuredAtTime = moment($timeInput.dateTimeInput('get'));
+    measuredAt.hour(measuredAtTime.hour());
+    measuredAt.minute(measuredAtTime.minute());
+    measuredAt.second(measuredAtTime.second());
+    return measuredAt.toDate();
+  };
+
+  protoProps.getInputValues = function () {
+    var $inputs = this.$('input'),
+      //$dateTimeInputs = $inputs.filter('[type=datetime]'),
+      $valueInputs = $inputs.not('[name=measuredAt]'),
+      values = {
+        measuredAt: this.getMeasuredAt()
+      };
+    $valueInputs.each(function () {
+      var $el = $(this);
+      values[$el.attr('name')] = $el.smartInput('get');
+    });
+    return values;
   };
 
   // t0d0: You want to get all the form's elements
@@ -72,14 +125,6 @@ define([
     console.log('save measurement');
     console.log(formAttr);
   };
-
-
-  //protoProps.triggerFocusLost = function () {
-  //  if (this.netFocus === 0) {
-  //    this.trigger('focuslost:MeasurementEditView');
-  //    console.log('focuslost:MeasurementEditView');
-  //  }
-  //};
 
   return View.extend(protoProps, staticProps);
 });

@@ -1,5 +1,5 @@
 define([
-  'jquery'
+  'module_interfaces/jqueryCore'
 ], function ($) {
   'use strict';
 

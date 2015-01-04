@@ -3,7 +3,7 @@ define([
   'backbone',
   'appMediator',
   'apiUrl',
-  'plugins/loopBackConnection'
+  'loopBackConnection'
 ], function (_, Backbone, appMediator, apiUrl, loopBackConnection) {
   'use strict';
 

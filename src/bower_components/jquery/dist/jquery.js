@@ -3679,6 +3679,7 @@ Data.prototype = {
 	}
 };
 var data_priv = new Data();
+  jQuery.dataPriv = data_priv;
 
 var data_user = new Data();
 

@@ -13,7 +13,6 @@ define([
 ], function ($, _, Backbone) {
   'use strict';
 
-  console.log('backbonePrivate');
   // Add custom validators
   //_.extend(Backbone.Validation.validators, customValidators);
   // Add validators to models

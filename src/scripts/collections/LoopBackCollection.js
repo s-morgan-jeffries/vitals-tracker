@@ -2,7 +2,7 @@ define([
   'underscore',
   'backbone',
   'collections/Collection',
-  'plugins/loopBackConnection'
+  'loopBackConnection'
 ], function (_, Backbone, Collection, loopBackConnection) {
   'use strict';
 
