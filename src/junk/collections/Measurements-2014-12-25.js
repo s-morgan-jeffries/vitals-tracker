@@ -1,5 +1,5 @@
 define([
-  'backbone',
+  '../../bower_components/backbone/backbone',
   'models/Measurement'
 ], function (Backbone, Measurement) {
   'use strict';

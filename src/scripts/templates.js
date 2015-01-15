@@ -19,9 +19,8 @@
       'pages/logout.html',
       'partials/user-info.html',
       'partials/patient-list-item.html',
-      'partials/measurement-show.html',
-      'partials/measurement-edit-template.html',
-      //'patient-template.html',
+      'partials/measurement-form.html',
+      'partials/measurements-graph.html',
       'partials/measurements-table.html',
       'partials/measurement.html'
     ],

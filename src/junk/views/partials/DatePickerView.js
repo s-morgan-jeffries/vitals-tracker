@@ -1,5 +1,5 @@
 define([
-  'underscore',
+  '../../../bower_components/underscore/underscore',
   'moment',
   'InputView'
 ], function (_, moment, InputView) {
@@ -9,12 +9,10 @@ define([
     staticProps = {};
 
   protoProps.initialize = function () {
-    // Set up the datetimepicker
     this.$el.datetimepicker({
-      pickDate: false,
-      pickTime: true
+      pickDate: true,
+      pickTime: false
     });
-    // Call the parent method
     InputView.prototype.initialize.apply(this, arguments);
   };
 
@@ -23,9 +21,9 @@ define([
     var datePicker = this.$el.data('DateTimePicker'),
       modelDate = moment(this.model.get(this.name)),
       pickerDate = datePicker.getDate() || moment(NaN);
-    modelDate.hour(pickerDate.hour());
-    modelDate.minute(pickerDate.minute());
-    modelDate.second(pickerDate.second());
+    modelDate.month(pickerDate.month());
+    modelDate.date(pickerDate.date());
+    modelDate.year(pickerDate.year());
     return modelDate.toDate();
   };
 

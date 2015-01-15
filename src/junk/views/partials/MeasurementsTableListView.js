@@ -1,5 +1,5 @@
 define([
-  'backbone',
+  '../../../bower_components/backbone/backbone',
   'MeasurementEditView',
   'MeasurementShowView'
 ], function (Backbone, MeasurementEditView, MeasurementShowView) {

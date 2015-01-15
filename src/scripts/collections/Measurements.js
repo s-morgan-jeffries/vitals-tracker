@@ -10,6 +10,7 @@ define([
 
   protoProps.initialize = function () {
     LoopBackCollection.prototype.initialize.apply(this, arguments);
+    // Sort when the value of the comparator changes
     this.listenTo(this, 'change:' + this.comparator, this.sort);
   };
 

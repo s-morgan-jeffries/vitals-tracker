@@ -1,4 +1,4 @@
-define(['moment'], function (/*moment*/) {
+define(['../../bower_components/moment/moment'], function (/*moment*/) {
   'use strict';
 
   var customParsers = {};

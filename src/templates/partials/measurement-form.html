@@ -1,0 +1,37 @@
+<section>
+  <header>Add Measurement</header>
+  <form id="new-measurement-form" class="form-inline" novalidate>
+    <!--<div class="row">-->
+      <div class="form-group">
+        <label for="new-measurement-measured-at" class="sr-only">Date & Time</label>
+        <input id="new-measurement-measured-at" class="form-control new-measurement-measured-at" name="measuredAt" type="datetime" />
+      </div>
+      <div class="form-group">
+        <label for="new-measurement-temperature" class="sr-only">Temp</label>
+        <input id="new-measurement-temperature" class= "form-control new-measurement-temperature" name="temperature" type="number" step=".1" placeholder="Temp" />
+      </div>
+      <div class="form-group">
+        <label for="new-measurement-pulse" class="sr-only">Pulse</label>
+        <input id="new-measurement-pulse" class= "form-control new-measurement-pulse" name="pulse" type="number" placeholder="Pulse" />
+      </div>
+      <div class="form-group">
+        <label for="new-measurement-sbp" class="sr-only">SBP</label>
+        <input id="new-measurement-sbp" class= "form-control new-measurement-sbp" name="sbp" type="number" placeholder="SBP" />
+      </div>
+      <div class="form-group">
+        <label for="new-measurement-dbp" class="sr-only">DBP</label>
+        <input id="new-measurement-dbp" class= "form-control new-measurement-dbp" name="dbp" type="number" placeholder="DBP" />
+      </div>
+      <div class="form-group">
+        <label for="new-measurement-respirations" class="sr-only">Resp</label>
+        <input id="new-measurement-respirations" class= "form-control new-measurement-respirations" name="respirations" type="number" placeholder="Resp" />
+      </div>
+      <div class="form-group">
+        <label for="new-measurement-saturation" class="sr-only">O2 Sat</label>
+        <input id="new-measurement-saturation" class= "form-control new-measurement-saturation" name="saturation" type="number" placeholder="O2 Sat" />
+      </div>
+    <!--</div>-->
+  </form>
+  <button type="submit" class="btn" form="new-measurement-form">Submit</button>
+  <button type="reset" class="btn" form="new-measurement-form">Reset</button>
+</section>

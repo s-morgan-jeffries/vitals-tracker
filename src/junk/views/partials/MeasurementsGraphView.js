@@ -1,6 +1,6 @@
 define([
   'jquery',
-  'underscore',
+  '../../../bower_components/underscore/underscore',
   'backbone',
   'd3',
   'rickshaw',

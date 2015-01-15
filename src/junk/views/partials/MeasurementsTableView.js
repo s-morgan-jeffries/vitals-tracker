@@ -1,5 +1,5 @@
 define([
-  'underscore',
+  '../../../bower_components/underscore/underscore',
   'backbone',
   'MeasurementsTableListView',
   'MeasurementEditView',
@@ -44,7 +44,7 @@ define([
 
   protoProps.addMeasurement = function (measurement, measurementInput) {
     this.model.createMeasurement(measurement.toJSON());
-    measurementInput.resetMeasurement();
+    measurementInput.resetForm();
   };
 
   protoProps.onBeforeDestroy = function () {

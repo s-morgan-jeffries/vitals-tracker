@@ -4,7 +4,7 @@ define([
   'use strict';
 
   var nameSpace = 'vitalsTracker',
-    pluginName = 'smartInput',
+    pluginName = 'typedInput',
     widgetName = nameSpace + '.' + pluginName;
 
   var identity = function (val) {
@@ -32,12 +32,13 @@ define([
     }
   };
 
+  // This widget should take a regular input and convert it to a typed input, so that
   $.widget(widgetName, {
     options: {
 
     },
     _create: function () {
-      var typeName = this.element.attr('type');
+      var typeName = this.options.type || this.element.attr('type');
       this._parser = (typeName && parsers[typeName]) || identity;
       this._validator = (typeName && validators[typeName]) || returnTrue;
       this._on({
@@ -45,25 +46,38 @@ define([
       });
       this._update();
     },
-    // No side effects
-    get: function () {
-      var rawVal = this.element.val(),
-        parser = this._parser,
-        $el = this.element;
-      return parser(rawVal, $el);
-    },
-
-    set: function (value) {
-      if (this._isValid(value)) {
-        this.element.val(value);
-        this._updateCachedVal();
+    //// No side effects
+    //get: function () {
+    //  var rawVal = this.element.val(),
+    //    parser = this._parser,
+    //    $el = this.element;
+    //  return parser(rawVal, $el);
+    //},
+    //
+    //set: function (value) {
+    //  if (this._isValid(value)) {
+    //    this.element.val(value);
+    //    this._updateCachedVal();
+    //  }
+    //},
+    val: function (value) {
+      if (arguments.length > 0) {
+        if (this._isValid(value)) {
+          this.element.val(value);
+          this._updateCachedVal();
+        }
+      } else {
+        var rawVal = this.element.val(),
+          parser = this._parser,
+          $el = this.element;
+        return parser(rawVal, $el);
       }
     },
     _isValid: function (value) {
       return this._validator(value);
     },
     _update: function () {
-      var newVal = this.get();
+      var newVal = this.val();
       if (this._isValid(newVal)) {
         this.element.val(newVal);
         this._updateCachedVal();
@@ -73,11 +87,11 @@ define([
       }
     },
     _updateCachedVal: function () {
-      var currentVal = this.get();
+      var currentVal = this.val();
       this._cachedVal = currentVal;
     },
     _revertToCachedVal: function () {
-      this.set(this._cachedVal);
+      this.val(this._cachedVal);
     },
     _onChange: function (event) {
       if (!this._update()) {

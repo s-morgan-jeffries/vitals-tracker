@@ -1,5 +1,5 @@
 define([
-  'underscore',
+  '../../../bower_components/underscore/underscore',
   'backbone',
   'moment',
   'templates'

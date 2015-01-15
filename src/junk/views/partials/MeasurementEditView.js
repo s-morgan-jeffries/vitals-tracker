@@ -2,7 +2,7 @@ var measurementEditView;
 
 define([
   'jquery',
-  'underscore',
+  '../../../bower_components/underscore/underscore',
   'backbone',
   'templates',
   'Measurement',
@@ -141,7 +141,7 @@ define([
     this.trigger('measurement:submit', this.model, this);
   };
 
-  protoProps.resetMeasurement = function () {
+  protoProps.resetForm = function () {
     this.model.reset(this.initialAttrs);
     this.updateInputViews();
   };
@@ -162,7 +162,7 @@ define([
   protoProps.events = {
     'blur input': 'updateModelAttr',
     'keydown input': 'submitOnEnter',
-    'click .measurement-reset': 'resetMeasurement',
+    'click .measurement-reset': 'resetForm',
     'click .measurement-submit': 'submitOnClick'
     //focusout: function () {
     //  this.netFocus -= 1;

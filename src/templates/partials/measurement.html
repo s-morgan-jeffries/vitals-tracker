@@ -2,19 +2,19 @@
   <% if (isEditing) { %>
   <td><form id="measurement-<%= cid %>-form"></form></td>
   <td class="date-input">
-    <input class="measurement-input" name="measuredAt" data-date-format="MM/D/YYYY"
-           data-initial-value="<%= measuredAt.toJSON() %>" data-date-picker type="datetime"
+    <input class="measurement-input date-picker-input" name="measuredAt"
+           data-initial-value="<%= measuredAt.toJSON() %>" type="datetime"
            form="measurement-<%= cid %>-form"
       />
   </td>
   <td class="time-input">
-    <input class="measurement-input" name="measuredAt" data-date-format="h:mm A"
-           data-initial-value="<%= measuredAt.toJSON() %>" data-time-picker type="datetime"
+    <input class="measurement-input time-picker-input" name="measuredAt"
+           data-initial-value="<%= measuredAt.toJSON() %>" type="datetime"
            form="measurement-<%= cid %>-form"
       />
   </td>
   <td class="temperature-input">
-    <input class="measurement-input" name="temperature" type="number" value="<%= temperature %>" form="measurement-<%= cid %>-form" />
+    <input class="measurement-input" name="temperature" type="number" step=".1" value="<%= temperature %>" form="measurement-<%= cid %>-form" />
   </td>
   <td class="pulse-input">
     <input class="measurement-input" name="pulse" type="number" value="<%= pulse %>" form="measurement-<%= cid %>-form" />

@@ -1,5 +1,5 @@
 define([
-  'underscore',
+  '../../bower_components/underscore/underscore',
   'moment'
 ], function (_, moment) {
   'use strict';

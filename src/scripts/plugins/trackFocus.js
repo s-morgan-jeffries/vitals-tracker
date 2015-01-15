@@ -20,12 +20,10 @@ define([
     },
     _onFocusIn: function () {
       this.options.netFocus += 1;
-      //console.log('netFocus: ' + this.options.netFocus);
       this.refresh();
     },
     _onFocusOut: function () {
       this.options.netFocus -= 1;
-      //console.log('netFocus: ' + this.options.netFocus);
       this.refresh();
     },
     refresh: function () {
@@ -34,8 +32,6 @@ define([
       setTimeout(function () {
         var hadFocus = self._hasFocus,
           hasFocus = self._hasFocus = self.options.netFocus > 0;
-        //console.log('hadFocus: ' + hadFocus);
-        //console.log('hasFocus: ' + hasFocus);
         if (!hadFocus && hasFocus) {
           el.trigger('focusgained');
         } else if (hadFocus && !hasFocus) {

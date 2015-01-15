@@ -13,7 +13,7 @@ define([
     this.listenTo(this.model, 'change', this.render);
   };
 
-  protoProps.createPresenter = function () {
+  protoProps._createPresenter = function () {
     return this.model.toPresenter();
   };
 

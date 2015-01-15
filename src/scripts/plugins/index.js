@@ -1,8 +1,8 @@
 define([
   'module_interfaces/jqueryCore',
   'plugins/trackFocus',
-  'plugins/smartInput',
-  'plugins/dateTimeInput',
+  'plugins/typedInput',
+  'plugins/dateTimePickerInput',
   'plugins/privateData'
 ], function ($) {
   'use strict';

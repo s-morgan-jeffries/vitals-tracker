@@ -11,15 +11,16 @@ define([
 
   protoProps.template = templates['partials/measurements-table'];
 
+  // Re-render anytime a new measurement is added or removed, or whenever the collection gets sorted
   protoProps.initialize = function () {
-    this.listenTo(this.collection, 'sync remove sort', this.render);
+    this.listenTo(this.collection, 'add remove sort', this.render);
   };
 
-  protoProps.createPresenter = function () {
+  protoProps._createPresenter = function () {
     return this.collection.toPresenter();
   };
 
-  protoProps.createSubviews = function () {
+  protoProps._createSubviews = function () {
     var subviews = this.subviews = [];
     this.collection.forEach(function (model) {
       subviews.push(new MeasurementView({model: model}));
@@ -27,9 +28,9 @@ define([
     return this;
   };
 
-  protoProps.addSubviews = function () {
+  protoProps._addSubviews = function () {
     var subviews = this.subviews,
-      $newEl = this.$newEl,
+      $newEl = this._$newEl,
       selector = 'tbody',
       $subEl;
     // Attach the subviews if they exist.
@@ -46,8 +47,6 @@ define([
     }
     return this;
   };
-
-  //protoProps.removeSubviews = function () {};
 
   return View.extend(protoProps, staticProps);
 });

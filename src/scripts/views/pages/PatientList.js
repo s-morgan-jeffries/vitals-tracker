@@ -15,7 +15,7 @@ define([
     this.listenTo(this.collection, 'sync', this.render);
   };
 
-  protoProps.createPresenter = function () {
+  protoProps._createPresenter = function () {
     return this.collection.toPresenter();
   };
 

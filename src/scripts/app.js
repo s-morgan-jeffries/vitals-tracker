@@ -34,7 +34,7 @@ define([
     }
   };
 
-  protoProps.createSubviews = function () {
+  protoProps._createSubviews = function () {
     this.subviews = {
       header: new SiteHeaderView({model: appState}),
       content: new ContentView(),
