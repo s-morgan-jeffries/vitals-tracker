@@ -350,7 +350,7 @@ module.exports = function (grunt) {
         integrationTestFiles = commonTestFiles.concat([{pattern: './test/integration/spec/**/*.js', included: false}]);
 
       sharedConfig.basePath = '../../';
-      sharedConfig.exclude = ['./src/scripts/main.js'];
+      sharedConfig.exclude = ['./src/scripts/devMain.js'];
       sharedConfig.singleRun = true;
 
       config.unitCI = {
@@ -436,7 +436,7 @@ module.exports = function (grunt) {
               replacement: '/bower_components'
             },
             {
-              match: '<script data-main="/scripts/main" src="/bower_components/requirejs/require.js"></script>',
+              match: '<script data-main="/scripts/devMain" src="/bower_components/requirejs/require.js"></script>',
               replacement: '<script src="/scripts/app.js"></script>'
             }
           ],
@@ -457,10 +457,10 @@ module.exports = function (grunt) {
       compile: {
         options: {
           baseUrl: '<%= yeoman.src %>/scripts',
-          mainConfigFile: '<%= yeoman.src %>/scripts/main.js',
+          mainConfigFile: '<%= yeoman.src %>/scripts/prodMain.js',
           name: '../bower_components/almond/almond', // assumes a production build using almond
           //name: 'main',
-          include: ['main'],
+          include: ['prodMain'],
           //include: ['../bower_components/requirejs/require'],
           //insertRequre: ['main'],
           out: '<%= yeoman.dist %>/scripts/app.js',

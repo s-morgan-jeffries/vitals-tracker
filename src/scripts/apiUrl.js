@@ -1,9 +1,12 @@
-define([], function () {
+define([
+  'appConfig'
+], function (appConfig) {
   'use strict';
 
-  var protocol = 'http',
-    hostname = '0.0.0.0',
-    port = '3000';
+  var apiServerConfig = appConfig.apiServer,
+    protocol = apiServerConfig.protocol,
+    hostname = apiServerConfig.hostname,
+    port = apiServerConfig.port;
 
   var paths = {
     authors: function () {
