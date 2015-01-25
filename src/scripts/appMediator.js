@@ -1,7 +1,8 @@
 define([
   'underscore',
+  'jquery',
   'backbone'
-], function (_, Backbone) {
+], function (_, $, Backbone) {
   'use strict';
 
   // The AppMediator constructor, which will be used to create the appMediator instance.
@@ -37,6 +38,16 @@ define([
     }
   });
 
-  // Return an instance of AppMediator as the module.
-  return new AppMediator();
+  // Create an instance of AppMediator. This will be returned as the module.
+  var appMediator = new AppMediator(),
+    // Get a jQuery window object
+    $window = $(window);
+
+  // Register some window events on the appMediator. The same appMediator will exist for the entire lifecycle of the
+  // app, so this won't result in memory leaks.
+  $window.on('resize', function () {
+    appMediator.trigger('window:resize');
+  });
+
+  return appMediator;
 });

@@ -28,9 +28,8 @@ define([
       ._createSubviews()
       // Add subviews to the template at the places designated in the template.
       ._addSubviews()
-      // Now add plugin behavior. Can't decide if I like this approach. It feels like DOM attachment should be the last
-      // step, but right now, there's behavior that I'm attaching to a top-level element, and we don't figure out what
-      // that is until the DOM attachment takes place.
+      // Now add plugin behavior. Not sure if this should go here or just be folded into the _onRender method. Or maybe
+      // be made into a _beforeRender or _beforeAttachment method. _addPlugins feels too specific.
       ._addPlugins()
       // Attach everthing to the DOM
       ._updateElement()

@@ -30,8 +30,11 @@ define([
     Backbone.history.start();
     var currentLocation = Backbone.history.getFragment();
     if (currentLocation === '') {
-      appMediator.execute('goTo', 'home');
+      //appMediator.execute('goTo', 'home');
+      currentLocation = 'home';
     }
+    // Force a refresh of the page
+    appMediator.execute('goTo', currentLocation);
   };
 
   protoProps._createSubviews = function () {

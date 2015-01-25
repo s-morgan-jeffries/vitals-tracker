@@ -15,6 +15,7 @@ define([
 
   protoProps.initialize = function () {
     this.listenTo(this.model, 'change', this.render);
+
     //this.listenTo(this.model.measurements, 'change', this.render);
   };
 
@@ -25,9 +26,18 @@ define([
   protoProps._createSubviews = function () {
     this.subviews = {
       measurementForm: new MeasurementFormView({collection: this.model.measurements}),
-      measurementGraph: new MeasurementsGraphView({collection: this.model.measurements}),
+      measurementsGraph: new MeasurementsGraphView({collection: this.model.measurements}),
       measurementsTable: new MeasurementsTableView({collection: this.model.measurements})
     };
+    return this;
+  };
+
+  protoProps._onRender = function () {
+    //var subviews = this.subviews;
+    //if (subviews) {
+    //
+    //}
+    this.subviews.measurementsGraph.trigger('parent:rendered');
     return this;
   };
 

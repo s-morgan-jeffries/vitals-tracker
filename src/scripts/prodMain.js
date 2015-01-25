@@ -37,6 +37,9 @@ requirejs.config({
     'module_interfaces/d3Private': {
       d3: 'd3'
     },
+    'module_interfaces/rickshaw/RickshawGraph': {
+      rickshaw: 'rickshaw'
+    },
     'module_interfaces/rickshawPrivate': {
       rickshaw: 'rickshaw'
     },
@@ -65,6 +68,7 @@ requirejs.config({
     'bootstrap-datetimepicker': '../bower_components/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker',
     appConfig: 'prodConfig',
     d3: '../bower_components/d3/d3',
+    hammer: '../bower_components/hammerjs/hammer',
     jquery: '../bower_components/jquery/dist/jquery',
     'jquery-ui': '../bower_components/jquery-ui/jquery-ui',
     moment: '../bower_components/moment/moment',
@@ -72,7 +76,6 @@ requirejs.config({
     text: '../bower_components/text/text',
     underscore: '../bower_components/underscore/underscore',
     'underscore.string': '../bower_components/underscore.string/lib/underscore.string'
-
   },
   // So all this does is delay the loading of these files until jQuery loads. Meaning the tags shouldn't get appended
   // to head until jQuery is registered. By logging document.head.lastChild in the define function for jqueryPrivate,

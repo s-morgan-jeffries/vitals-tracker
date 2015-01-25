@@ -37,6 +37,9 @@ requirejs.config({
     'module_interfaces/d3Private': {
       d3: 'd3'
     },
+    'module_interfaces/rickshaw/RickshawGraph': {
+      rickshaw: 'rickshaw'
+    },
     'module_interfaces/rickshawPrivate': {
       rickshaw: 'rickshaw'
     },
@@ -65,6 +68,7 @@ requirejs.config({
     'bootstrap-datetimepicker': '../bower_components/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker',
     appConfig: 'devConfig',
     d3: '../bower_components/d3/d3',
+    hammer: '../bower_components/hammerjs/hammer',
     jquery: '../bower_components/jquery/dist/jquery',
     'jquery-ui': '../bower_components/jquery-ui/jquery-ui',
     moment: '../bower_components/moment/moment',

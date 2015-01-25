@@ -1,6 +1,7 @@
 define([
-  'rickshaw'
-], function (Rickshaw) {
+  'rickshaw',
+  'module_interfaces/rickshaw/RickshawGraph'
+], function (Rickshaw, RickshawGraphView) {
   'use strict';
 
   // For the sake of parity, calling this `root`
@@ -8,6 +9,9 @@ define([
 
   // Now set root.Rickshaw to undefined
   root.Rickshaw = void 0;
+
+  // Add-ons
+  Rickshaw.RickshawGraphView = RickshawGraphView;
 
   // And return Rickshaw
   return Rickshaw;

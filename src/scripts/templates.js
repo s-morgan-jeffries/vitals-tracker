@@ -1,57 +1,28 @@
-(function () {
+define(function (require/*, exports, module*/) {
   'use strict';
 
-  // Template directory relative to RequireJS base directory
-  var templateDir = '../templates/',
-    // template files relative to template directory
-    templateFiles = [
-      'app.html',
-      'app-header.html',
-      'app-content.html',
-      'app-footer.html',
-      'pages/landing-page.html',
-      'pages/register.html',
-      'pages/login.html',
-      'pages/about.html',
-      'pages/user-home.html',
-      'pages/patient-list.html',
-      'pages/patient.html',
-      'pages/logout.html',
-      'partials/user-info.html',
-      'partials/patient-list-item.html',
-      'partials/measurement-form.html',
-      'partials/measurements-graph.html',
-      'partials/measurements-table.html',
-      'partials/measurement.html'
-    ],
-    // list for holding module dependencies
-    dependencies = ['underscore'],
-    i,
-    len;
+  var _ = require('underscore');
 
-  // Iterate over the list and set the dependency names appropriately
-  for (i = 0, len = templateFiles.length; i < len; i++) {
-    dependencies.push('text!' + templateDir + templateFiles[i]);
-  }
+  //console.log(module);
 
-  return define(dependencies, function (_) {
-
-    // export object for holding template functions
-    var templates = {},
-      // Arguments as list. This contains all the templates as strings. It drops the first argument, which is
-      // underscore.
-      templateArgs = [].slice.call(arguments, 1),
-      i,
-      len,
-      templateName;
-
-    // Iterate over the template files, convert each to a name by stripping the trailing '.html', and store the
-    // corresponding template function under that names in the object.
-    for (i = 0, len = templateFiles.length; i < len; i++) {
-      templateName = templateFiles[i].replace('.html', '');
-      templates[templateName] = _.template(templateArgs[i]);
-    }
-
-    return templates;
-  });
-}());
+  return {
+    'app': _.template(require('text!../templates/app.html')),
+    'app-header': _.template(require('text!../templates/app-header.html')),
+    'app-content': _.template(require('text!../templates/app-content.html')),
+    'app-footer': _.template(require('text!../templates/app-footer.html')),
+    'pages/landing-page': _.template(require('text!../templates/pages/landing-page.html')),
+    'pages/register': _.template(require('text!../templates/pages/register.html')),
+    'pages/login': _.template(require('text!../templates/pages/login.html')),
+    'pages/about': _.template(require('text!../templates/pages/about.html')),
+    'pages/user-home': _.template(require('text!../templates/pages/user-home.html')),
+    'pages/patient-list': _.template(require('text!../templates/pages/patient-list.html')),
+    'pages/patient': _.template(require('text!../templates/pages/patient.html')),
+    'pages/logout': _.template(require('text!../templates/pages/logout.html')),
+    'partials/user-info': _.template(require('text!../templates/partials/user-info.html')),
+    'partials/patient-list-item': _.template(require('text!../templates/partials/patient-list-item.html')),
+    'partials/measurement-form': _.template(require('text!../templates/partials/measurement-form.html')),
+    'partials/measurements-graph': _.template(require('text!../templates/partials/measurements-graph.html')),
+    'partials/measurements-table': _.template(require('text!../templates/partials/measurements-table.html')),
+    'partials/measurement': _.template(require('text!../templates/partials/measurement.html'))
+  };
+});

@@ -458,17 +458,24 @@ module.exports = function (grunt) {
         options: {
           baseUrl: '<%= yeoman.src %>/scripts',
           mainConfigFile: '<%= yeoman.src %>/scripts/prodMain.js',
-          name: '../bower_components/almond/almond', // assumes a production build using almond
-          //name: 'main',
-          include: ['prodMain'],
-          //include: ['../bower_components/requirejs/require'],
-          //insertRequre: ['main'],
+          ///// Build using almond /////
+          //name: '../bower_components/almond/almond',
+          //include: ['prodMain'],
+          ///// Build using almond /////
+
+          ///// Build using RequireJS /////
+          include: ['../bower_components/requirejs/require', 'prodMain'],
+          ///// Build using RequireJS /////
+
+          //insertRequire: ['prodMain'],
           out: '<%= yeoman.dist %>/scripts/app.js',
-          //wrapShim: true,
+          wrapShim: true,
           preserveLicenseComments: false,
           generateSourceMaps: true,
-          optimize: 'uglify2',
+          //optimize: 'uglify2',
+          optimize: 'none',
           uglify2: {
+            // This is required because of an issue with Rickshaw
             mangle: {
               except: ['$super']
             }
@@ -909,8 +916,8 @@ module.exports = function (grunt) {
       'cssmin',
       'uglify',
       'rev',
-      'usemin',
-      'htmlmin'
+      'usemin'
+      //'htmlmin'
     ];
 
     if (target === 'serve') {

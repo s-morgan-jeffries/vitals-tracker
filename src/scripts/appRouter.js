@@ -35,6 +35,7 @@ define([
     // this, we temporarily redirect to a location that does not exist.
     if (options.force) {
       // jshint bitwise: false
+      // If you have a URL like this in your app, you should rethink your app and your career.
       var tempRedirectUrl = 'temp-redirect-' + (Math.random() * 100000 >> 0);
       // jshint bitwise: true
       // We don't want this redirect to trigger, and we don't want it to be entered in the history. We therefore set
@@ -48,6 +49,9 @@ define([
       this._navigate(tempRedirectUrl, tempRedirectOptions);
     }
     this._navigate(route, options);
+    // Trigger a route:changed event on the appMediator
+    //console.log('triggering route:changed event');
+    appMediator.trigger('route:changed');
   };
 
   protoProps.initialize = function () {
@@ -58,6 +62,7 @@ define([
     appMediator.registerCommand('navigate', this.navigate, this);
     // This is a slightly higher-level function that assumes you'll want to trigger the routing function.
     appMediator.registerCommand('goTo', function (route) {
+      //console.log('goTo:' + route);
       this.navigate(route, {force: true, trigger: true});
     }, this);
 
