@@ -10,7 +10,7 @@ define([
     if (isAuthenticated) {
       //console.log(appState.user);
       var user = appMediator.execute('getUser');
-      console.log(user);
+      //console.log(user);
       this.show(new UserHomeView({model: user}));
     } else {
       appMediator.execute('goTo', 'home');

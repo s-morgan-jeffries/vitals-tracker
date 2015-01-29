@@ -158,7 +158,7 @@ module.exports = function (grunt) {
       options: {
         port: 9000,
         // Change this to '0.0.0.0' to access the server from outside.
-        hostname: 'localhost'
+        hostname: '0.0.0.0'
       },
       develop: {
         options: {
@@ -768,10 +768,12 @@ module.exports = function (grunt) {
       },
       livereload: {
         options: {
-          livereload: '<%= connect.options.livereload %>'
+          //livereload: '<%= connect.options.livereload %>'
+          livereload: true
         },
         files: [
           '<%= yeoman.src %>/{,*/}*.html',
+          '<%= yeoman.src %>/templates/{,*/}*.html',
           '.tmp/styles/{,*/}*.css',
           '<%= yeoman.src %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
         ]

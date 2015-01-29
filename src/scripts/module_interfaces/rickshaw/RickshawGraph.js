@@ -416,15 +416,26 @@ define(function (require) {
       var graph = rickshawObjects.graph,
         graphUpdateCallbacks = graph.updateCallbacks,
         callbackIdx = graphUpdateCallbacks.length,
-        $graphEl = $(graph.element);
+        $graphEl = $(graph.element),
+        $sliderEl = $('<div>').appendTo($graphEl),
+        origCallback;
       // Create the RangeSlider instance and store a reference so we can remove it later
       var rangeSlider = rickshawObjects.rangeSlider = new Rickshaw.Graph.RangeSlider({
         graph: graph,
-        element: $('<div>').appendTo($graphEl)[0]
+        element: $sliderEl[0]
       });
-      // Store a reference to the callback that was just added so we can remove it later
-      rangeSlider.graphUpdateCallback = graphUpdateCallbacks[callbackIdx];
-      //console.log(rangeSlider.graphUpdateCallback);
+      // Get the callback that was just created
+      origCallback = graphUpdateCallbacks[callbackIdx];
+      // Create a new wrapped callback that will also resize the slider bar. Store a reference to it so we can remove
+      // it later.
+      var graphUpdateCallback = rangeSlider.graphUpdateCallback = function () {
+        // Call the original callback
+        origCallback();
+        // Resize the rangeSlider
+        $sliderEl.width(graph.width, 'px');
+      };
+      // Replace the original callback in the graph's updateCallbacks array
+      graphUpdateCallbacks.splice(callbackIdx, 1, graphUpdateCallback);
     },
 
     _removeSlider: function () {

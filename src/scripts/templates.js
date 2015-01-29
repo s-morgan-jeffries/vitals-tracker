@@ -3,13 +3,11 @@ define(function (require/*, exports, module*/) {
 
   var _ = require('underscore');
 
-  //console.log(module);
-
   return {
     'app': _.template(require('text!../templates/app.html')),
-    'app-header': _.template(require('text!../templates/app-header.html')),
+    'app-header': _.template(require('text!../templates/partials/app-header.html')),
     'app-content': _.template(require('text!../templates/app-content.html')),
-    'app-footer': _.template(require('text!../templates/app-footer.html')),
+    'app-footer': _.template(require('text!../templates/partials/app-footer.html')),
     'pages/landing-page': _.template(require('text!../templates/pages/landing-page.html')),
     'pages/register': _.template(require('text!../templates/pages/register.html')),
     'pages/login': _.template(require('text!../templates/pages/login.html')),

@@ -9928,7 +9928,11 @@ button.close {
 
 /* line 3 : /Users/Morgan/Desktop/development/javascript/backbone/vitals-tracker/src/styles/components/index.styl */
 
-/* line 2 : /Users/Morgan/Desktop/development/javascript/backbone/vitals-tracker/src/styles/components/index.styl */
+/* line 3 : /Users/Morgan/Desktop/development/javascript/backbone/vitals-tracker/src/styles/components/index.styl */
+
+/* line 3 : /Users/Morgan/Desktop/development/javascript/backbone/vitals-tracker/src/styles/components/buttons.styl */
+
+/* line 6 : /Users/Morgan/Desktop/development/javascript/backbone/vitals-tracker/src/styles/components/buttons.styl */
 
 /* line 6 : /Users/Morgan/Desktop/development/javascript/backbone/vitals-tracker/src/styles/layout/index.styl */
 
@@ -9979,3 +9983,38 @@ main {
 /* line 28 : /Users/Morgan/Desktop/development/javascript/backbone/vitals-tracker/src/styles/layout/measurements-graph-layout.styl */
 
 /* line 28 : /Users/Morgan/Desktop/development/javascript/backbone/vitals-tracker/src/styles/layout/measurement-form-layout.styl */
+
+/* line 1 : /Users/Morgan/Desktop/development/javascript/backbone/vitals-tracker/src/styles/layout/measurement-form-layout.styl */
+.new-measurement-form {
+/*border 1px solid black*/
+  margin-bottom: 10px;
+}
+
+/* line 4 : /Users/Morgan/Desktop/development/javascript/backbone/vitals-tracker/src/styles/layout/measurement-form-layout.styl */
+.new-measurement-form form {
+  margin-bottom: 10px;
+}
+
+/* line 7 : /Users/Morgan/Desktop/development/javascript/backbone/vitals-tracker/src/styles/layout/measurement-form-layout.styl */
+@media (min-width: 768px) {
+
+/* line 9 : /Users/Morgan/Desktop/development/javascript/backbone/vitals-tracker/src/styles/layout/measurement-form-layout.styl */
+  .form-inline .new-measurement-datetime {
+    width: 18%;
+  }
+
+/* line 11 : /Users/Morgan/Desktop/development/javascript/backbone/vitals-tracker/src/styles/layout/measurement-form-layout.styl */
+  .form-inline .new-measurement-datetime > input {
+    width: 100%;
+  }
+
+/* line 14 : /Users/Morgan/Desktop/development/javascript/backbone/vitals-tracker/src/styles/layout/measurement-form-layout.styl */
+  .form-inline .new-measurement-number {
+    width: 13%;
+  }
+
+/* line 16 : /Users/Morgan/Desktop/development/javascript/backbone/vitals-tracker/src/styles/layout/measurement-form-layout.styl */
+  .form-inline .new-measurement-number > input {
+    width: 100%;
+  }
+}

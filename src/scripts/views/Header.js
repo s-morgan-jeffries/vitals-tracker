@@ -19,7 +19,7 @@ define([
   };
 
   protoProps.events = {
-    'click .logout': function () {
+    'click .js-logout': function () {
       auth.logout();
     }
   };

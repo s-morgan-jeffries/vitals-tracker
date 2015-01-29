@@ -67,6 +67,7 @@ requirejs.config({
     'bootstrap.transition': '../bower_components/bootstrap-stylus/js/transition',
     'bootstrap-datetimepicker': '../bower_components/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker',
     appConfig: 'devConfig',
+    //appConfig: 'prodConfig',
     d3: '../bower_components/d3/d3',
     hammer: '../bower_components/hammerjs/hammer',
     jquery: '../bower_components/jquery/dist/jquery',
