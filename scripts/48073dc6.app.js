@@ -38744,9 +38744,8 @@ define('views/View',[
       ._createSubviews()
       // Add subviews to the template at the places designated in the template.
       ._addSubviews()
-      // Now add plugin behavior. Can't decide if I like this approach. It feels like DOM attachment should be the last
-      // step, but right now, there's behavior that I'm attaching to a top-level element, and we don't figure out what
-      // that is until the DOM attachment takes place.
+      // Now add plugin behavior. Not sure if this should go here or just be folded into the _onRender method. Or maybe
+      // be made into a _beforeRender or _beforeAttachment method. _addPlugins feels too specific.
       ._addPlugins()
       // Attach everthing to the DOM
       ._updateElement()
@@ -38910,8 +38909,9 @@ define('views/View',[
 
 define('appMediator',[
   'underscore',
+  'jquery',
   'backbone'
-], function (_, Backbone) {
+], function (_, $, Backbone) {
   'use strict';
 
   // The AppMediator constructor, which will be used to create the appMediator instance.
@@ -38947,8 +38947,18 @@ define('appMediator',[
     }
   });
 
-  // Return an instance of AppMediator as the module.
-  return new AppMediator();
+  // Create an instance of AppMediator. This will be returned as the module.
+  var appMediator = new AppMediator(),
+    // Get a jQuery window object
+    $window = $(window);
+
+  // Register some window events on the appMediator. The same appMediator will exist for the entire lifecycle of the
+  // app, so this won't result in memory leaks.
+  $window.on('resize', function () {
+    appMediator.trigger('window:resize');
+  });
+
+  return appMediator;
 });
 
 /**
@@ -39346,16 +39356,16 @@ define('text',['module'], function (module) {
 define('text!../templates/app.html',[],function () { return '<div>\n  <div id="header-subview"></div>\n  <div id="content-subview"></div>\n  <div id="footer-subview"></div>\n</div>\n';});
 
 
-define('text!../templates/app-header.html',[],function () { return '<nav class="navbar navbar-default" role="navigation">\n  <div class="container-fluid">\n    <!-- Brand and toggle get grouped for better mobile display -->\n    <div class="navbar-header">\n      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">\n        <span class="sr-only">Toggle navigation</span>\n        <span class="icon-bar"></span>\n        <span class="icon-bar"></span>\n        <span class="icon-bar"></span>\n      </button>\n      <a class="navbar-brand" href="/">Vitality</a>\n    </div>\n\n    <!-- Collect the nav links, forms, and other content for toggling -->\n    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">\n      <ul class="nav navbar-nav navbar-right">\n        <li><a href="/home" class="btn btn-default">Home</a></li>\n        <li><a href="/about" class="btn btn-default">About</a></li>\n        <% if (isAuthenticated()) { %>\n        <li><button type="button" class="btn btn-default navbar-btn logout">Sign Out</button></li>\n        <% } else { %>\n        <li><a href="/login" class="btn btn-default">Sign In</a></li>\n        <% } %>\n      </ul>\n    </div><!-- /.navbar-collapse -->\n  </div><!-- /.container-fluid -->\n</nav>\n';});
+define('text!../templates/partials/app-header.html',[],function () { return '<nav class="navbar navbar-default" role="navigation">\n  <!--Fluid container-->\n  <div class="container-fluid">\n    <!-- Brand and toggle get grouped for better mobile display -->\n    <div class="navbar-header">\n      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#site-header-navbar-collapse">\n        <span class="sr-only">Toggle navigation</span>\n        <span class="icon-bar"></span>\n        <span class="icon-bar"></span>\n        <span class="icon-bar"></span>\n      </button>\n      <a class="navbar-brand" href="/">Vitality</a>\n    </div>\n\n    <!-- Collect the nav links, forms, and other content for toggling -->\n    <div class="collapse navbar-collapse" id="site-header-navbar-collapse">\n      <ul class="nav navbar-nav navbar-right">\n        <li><a href="/home" class="">Home</a></li>\n        <li><a href="/about" class="">About</a></li>\n        <% if (isAuthenticated()) { %>\n        <li><a role="button" class="js-logout">Sign Out</a></li>\n        <% } else { %>\n        <li><a href="/login" class="">Sign In</a></li>\n        <% } %>\n      </ul>\n    </div><!-- /.navbar-collapse -->\n  </div><!-- /.container-fluid -->\n</nav>\n';});
 
 
 define('text!../templates/app-content.html',[],function () { return '<main role="main"></main>\n';});
 
 
-define('text!../templates/app-footer.html',[],function () { return '<footer class="footer"><small>&copy; 2014 Hit and Run Productions, Inc</small></footer>\n';});
+define('text!../templates/partials/app-footer.html',[],function () { return '<footer class="footer"><small>&copy; 2014 Hit and Run Productions, Inc</small></footer>\n';});
 
 
-define('text!../templates/pages/landing-page.html',[],function () { return '<div>\n  <div class="jumbotron">\n    <h1>Vitality</h1>\n    <p class="lead">It\'s the shit.</p>\n    <p><a class="btn btn-lg btn-success" href="/register" role="button">Sign up today</a></p>\n  </div>\n</div>\n';});
+define('text!../templates/pages/landing-page.html',[],function () { return '<div>\n  <div class="jumbotron">\n    <h1>Vitality</h1>\n    <p class="lead">Get some.</p>\n    <p><a class="btn btn-lg btn-success" href="/register" role="button">Sign up today</a></p>\n  </div>\n</div>\n';});
 
 
 define('text!../templates/pages/register.html',[],function () { return '<div class="row marketing">\n  <form role="form" id="registrationform" name="registrationform" novalidate>\n    <h1>Sign Up</h1>\n    <!--Email-->\n    <div class="form-group">\n      <label for="registrationform-email">Email address</label>\n      <input type="email"\n             id="registrationform-email"\n             class="form-control"\n             name="email"\n             placeholder="Enter email"/>\n    </div>\n    <% if (false) { %>\n    <div class="alert alert-danger">Email required</div>\n    <% } else if (false) { %>\n    <div class="alert alert-danger">Must enter a valid email</div>\n    <% } else if (false) { %>\n    <div class="alert alert-danger">Email address is not available</div>\n    <% } %>\n    <!--Password-->\n    <div class="form-group">\n      <label for="registrationform-password">Password</label>\n      <input type="password"\n             id="registrationform-password"\n             class="form-control"\n             name="password"\n             placeholder="Enter password"/>\n    </div>\n    <% if (false) { %>\n    <div class="alert alert-danger">Password required</div>\n    <% } else if (false) { %>\n    <div class="alert alert-danger">Password must be at least five characters</div>\n    <% } %>\n    <!--Password confirmation-->\n    <div class="form-group">\n      <label for="registrationform-password-confirmation">Confirm password</label>\n      <input type="password"\n             id="registrationform-password-confirmation"\n             class="form-control"\n             placeholder="Re-enter password"/>\n    </div>\n    <% if (false) { %>\n    <div class="alert alert-danger">Password confirmation required</div>\n    <% } else if (false) { %>\n    <div class="alert alert-danger">Password confirmation must match password</div>\n    <% } %>\n    <button type="submit" class="btn btn-primary">Submit</button>\n  </form>\n</div>\n';});
@@ -39364,7 +39374,7 @@ define('text!../templates/pages/register.html',[],function () { return '<div cla
 define('text!../templates/pages/login.html',[],function () { return '<div class="row marketing">\n  <form role="form" id="loginform" action="/sessions" method="post" accept-charset="utf-8">\n    <input type="hidden" name="_method" value="post">\n    <h1>Sign In</h1>\n    <div class="form-group">\n      <label for="loginform-email">Email address</label>\n      <input type="text" class="form-control" id="loginform-email" name="email" placeholder="Enter email" autofocus/>\n    </div>\n    <div class="form-group">\n      <label for="loginform-password">Password</label>\n      <input type="password" class="form-control" id="loginform-password" name="password" placeholder="Password" />\n    </div>\n    <button type="submit" class="btn btn-primary">Submit</button>\n  </form>\n</div>\n';});
 
 
-define('text!../templates/pages/about.html',[],function () { return '<p>This is the about view.</p>\n';});
+define('text!../templates/pages/about.html',[],function () { return '<section>\n  <header>\n    <h3>About This App</h3>\n  </header>\n  <p>\n    This app consists of two parts: a front-end Backbone application and a back-end Node API server. Each was developed,\n    built, and deployed separately using <a href="http://gruntjs.com/" target="_blank">Grunt</a>.\n  </p>\n  <p>\n    The front-end is a single-page <a href="http://backbonejs.org/" target="_blank">Backbone</a> application that\'s\n    served from <a href="https://pages.github.com/" target="_blank">GitHub Pages</a>. Most of the architecture was\n    inspired/influenced by <a href="http://pragmatic-backbone.com/" target="_blank">Pragmatic Backbone</a>. Plots were\n    generated using <a href="http://code.shutterstock.com/rickshaw/" target="_blank">Rickshaw</a>, an open-source\n    plotting utility for time series data built on <a href="http://d3js.org/" target="_blank">D3.js</a>. CSS was\n    generated using the <a href="https://github.com/Acquisio/bootstrap-stylus" target="_blank">Stylus port</a> of\n    <a href="http://getbootstrap.com/" target="_blank">Bootstrap</a>.\n  </p>\n  <p>\n    The back-end is built with <a href="http://strongloop.com/" target="_blank">Strongloop</a>\'s\n    <a href="http://strongloop.com/node-js/loopback-framework/" target="_blank">Loopback</a> framework. It\'s deployed on\n    <a href="https://www.heroku.com/" target="_blank">Heroku</a>. Data are persisted on a\n    <a href="http://www.mongodb.org/" target="_blank">MongoDB</a> instance hosted by\n    <a href="https://mongolab.com/" target="_blank">MongoLab</a>.\n  </p>\n</section>\n';});
 
 
 define('text!../templates/pages/user-home.html',[],function () { return '<div>\n  <h3><%= username %></h3>\n  <h4><%= email %></h4>\n  <p><a href="/patients">Patient list</a></p>\n</div>\n';});
@@ -39373,7 +39383,7 @@ define('text!../templates/pages/user-home.html',[],function () { return '<div>\n
 define('text!../templates/pages/patient-list.html',[],function () { return '<section>\n  <ul> Here are some patients:\n    <% for (var i = 0, len = model.models.length; i < len; i++) { %>\n    <%= model.models[i].toPresenter().renderPartial(\'partials/patient-list-item\') %>\n    <% } %>\n  </ul>\n</section>\n';});
 
 
-define('text!../templates/pages/patient.html',[],function () { return '<div>\n  <h3><%= firstName %> <%= lastName %></h3>\n  <div id="measurement-form-subview"></div>\n  <section>\n\n    <div id="measurement-graph-subview"></div>\n  </section>\n  <div id="measurements-table-subview"></div>\n</div>\n';});
+define('text!../templates/pages/patient.html',[],function () { return '<div>\n  <h3><%= firstName %> <%= lastName %></h3>\n  <section>\n    <div id="measurements-graph-subview"></div>\n  </section>\n  <div id="measurement-form-subview"></div>\n  <div id="measurements-table-subview"></div>\n</div>\n';});
 
 
 define('text!../templates/pages/logout.html',[],function () { return '<div>\n  <p>You have successfully logged out.</p>\n  <p>If you are not redirected to the home page in 10 seconds, click <a href="/home">here</a>.</p>\n</div>\n';});
@@ -39385,29 +39395,27 @@ define('text!../templates/partials/user-info.html',[],function () { return '<sec
 define('text!../templates/partials/patient-list-item.html',[],function () { return '<li><a href="/patients/<%= id %>"><%= firstName %> <%= lastName %></a></li>\n';});
 
 
-define('text!../templates/partials/measurement-form.html',[],function () { return '<section>\n  <header>Add Measurement</header>\n  <form id="new-measurement-form" class="form-inline" novalidate>\n    <!--<div class="row">-->\n      <div class="form-group">\n        <label for="new-measurement-measured-at" class="sr-only">Date & Time</label>\n        <input id="new-measurement-measured-at" class="form-control new-measurement-measured-at" name="measuredAt" type="datetime" />\n      </div>\n      <div class="form-group">\n        <label for="new-measurement-temperature" class="sr-only">Temp</label>\n        <input id="new-measurement-temperature" class= "form-control new-measurement-temperature" name="temperature" type="number" step=".1" placeholder="Temp" />\n      </div>\n      <div class="form-group">\n        <label for="new-measurement-pulse" class="sr-only">Pulse</label>\n        <input id="new-measurement-pulse" class= "form-control new-measurement-pulse" name="pulse" type="number" placeholder="Pulse" />\n      </div>\n      <div class="form-group">\n        <label for="new-measurement-sbp" class="sr-only">SBP</label>\n        <input id="new-measurement-sbp" class= "form-control new-measurement-sbp" name="sbp" type="number" placeholder="SBP" />\n      </div>\n      <div class="form-group">\n        <label for="new-measurement-dbp" class="sr-only">DBP</label>\n        <input id="new-measurement-dbp" class= "form-control new-measurement-dbp" name="dbp" type="number" placeholder="DBP" />\n      </div>\n      <div class="form-group">\n        <label for="new-measurement-respirations" class="sr-only">Resp</label>\n        <input id="new-measurement-respirations" class= "form-control new-measurement-respirations" name="respirations" type="number" placeholder="Resp" />\n      </div>\n      <div class="form-group">\n        <label for="new-measurement-saturation" class="sr-only">O2 Sat</label>\n        <input id="new-measurement-saturation" class= "form-control new-measurement-saturation" name="saturation" type="number" placeholder="O2 Sat" />\n      </div>\n    <!--</div>-->\n  </form>\n  <button type="submit" class="btn" form="new-measurement-form">Submit</button>\n  <button type="reset" class="btn" form="new-measurement-form">Reset</button>\n</section>\n';});
+define('text!../templates/partials/measurement-form.html',[],function () { return '<section class="new-measurement-form">\n  <!--<div class="dropdown">-->\n    <!--<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">-->\n      <!--Dropdown-->\n      <!--<span class="caret"></span>-->\n    <!--</button>-->\n    <!--<form class="dropdown-menu">-->\n      <!--<input name="poop" type="text"/>-->\n      <!--<input type="number" name="doodoo"/>-->\n      <!--<button type="submit">Submit!</button>-->\n    <!--</form>-->\n    <!--&lt;!&ndash;<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">&ndash;&gt;-->\n      <!--&lt;!&ndash;<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Action</a></li>&ndash;&gt;-->\n      <!--&lt;!&ndash;<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Another action</a></li>&ndash;&gt;-->\n      <!--&lt;!&ndash;<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Something else here</a></li>&ndash;&gt;-->\n      <!--&lt;!&ndash;<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Separated link</a></li>&ndash;&gt;-->\n    <!--&lt;!&ndash;</ul>&ndash;&gt;-->\n  <!--</div>-->\n  <header>\n    <!--<button type="button" class="collapsed" data-toggle="collapse" data-target="#new-measurement-form">-->\n      <!--<span class="sr-only">Toggle Measurement Form</span>-->\n      <!--<span class="carat"></span>-->\n    <!--</button>-->\n    <h5>Add Measurement</h5>\n  </header>\n  <form id="new-measurement-form" class="form-inline" novalidate>\n    <!--<div class="row">-->\n      <div class="form-group new-measurement-datetime">\n        <label for="new-measurement-measured-at" class="sr-only">Date & Time</label>\n        <input id="new-measurement-measured-at" class="form-control" name="measuredAt" type="datetime" />\n      </div>\n      <div class="form-group new-measurement-number">\n        <label for="new-measurement-temperature" class="sr-only">Temp</label>\n        <input id="new-measurement-temperature" class="form-control" name="temperature" type="number" step=".1" placeholder="Temp" />\n      </div>\n      <div class="form-group new-measurement-number">\n        <label for="new-measurement-pulse" class="sr-only">Pulse</label>\n        <input id="new-measurement-pulse" class="form-control" name="pulse" type="number" placeholder="Pulse" />\n      </div>\n      <div class="form-group new-measurement-number">\n        <label for="new-measurement-sbp" class="sr-only">SBP</label>\n        <input id="new-measurement-sbp" class="form-control" name="sbp" type="number" placeholder="SBP" />\n      </div>\n      <div class="form-group new-measurement-number">\n        <label for="new-measurement-dbp" class="sr-only">DBP</label>\n        <input id="new-measurement-dbp" class="form-control" name="dbp" type="number" placeholder="DBP" />\n      </div>\n      <div class="form-group new-measurement-number">\n        <label for="new-measurement-respirations" class="sr-only">Resp</label>\n        <input id="new-measurement-respirations" class="form-control" name="respirations" type="number" placeholder="Resp" />\n      </div>\n      <div class="form-group new-measurement-number">\n        <label for="new-measurement-saturation" class="sr-only">O2 Sat</label>\n        <input id="new-measurement-saturation" class="form-control" name="saturation" type="number" placeholder="O2 Sat" />\n      </div>\n    <!--</div>-->\n  </form>\n  <div>\n    <ul class="list-inline">\n      <li>\n        <button type="submit" class="btn" form="new-measurement-form">Submit</button>\n      </li>\n      <li>\n        <button type="reset" class="btn" form="new-measurement-form">Reset</button>\n      </li>\n    </ul>\n  </div>\n</section>\n';});
 
 
-define('text!../templates/partials/measurements-graph.html',[],function () { return '<div></div>\n';});
+define('text!../templates/partials/measurements-graph.html',[],function () { return '<div>\n  <div id="rickshaw-graph-subview"></div>\n</div>\n';});
 
 
-define('text!../templates/partials/measurements-table.html',[],function () { return '<section>\n  <table class="table">\n    <colgroup>\n      <col class="hidden-col" />\n      <col class="measurement-date-col"/>\n      <col class="measurement-time-col"/>\n      <col class="measurement-temperature-col"/>\n      <col class="measurement-pulse-col"/>\n      <col class="measurement-sbp-col"/>\n      <col class="measurement-dbp-col"/>\n      <col class="measurement-respirations-col"/>\n      <col class="measurement-saturation-col"/>\n      <col class="button-col"/>\n      <col class="button-col"/>\n    </colgroup>\n    <thead>\n    <tr>\n      <td></td>\n      <td>Date</td>\n      <td>Time</td>\n      <td>Temp</td>\n      <td>Pulse</td>\n      <td>SBP</td>\n      <td>DBP</td>\n      <td>Resp</td>\n      <td>Sat</td>\n    </tr>\n    </thead>\n    <tbody>\n    </tbody>\n  </table>\n  <nav class="text-center">\n    <ul class="pagination">\n      <li><a href="#"><span aria-hidden="true">&laquo;</span><span class="sr-only">Previous</span></a></li>\n      <li><a href="#">1</a></li>\n      <li><a href="#">2</a></li>\n      <li><a href="#">3</a></li>\n      <li><a href="#">4</a></li>\n      <li><a href="#">5</a></li>\n      <li><a href="#"><span aria-hidden="true">&raquo;</span><span class="sr-only">Next</span></a></li>\n    </ul>\n  </nav>\n</section>\n';});
+define('text!../templates/partials/measurements-table.html',[],function () { return '<section>\n  <table class="table">\n    <colgroup>\n      <col class="hidden-col" />\n      <col class="measurement-date-col"/>\n      <col class="measurement-time-col"/>\n      <col class="measurement-temperature-col"/>\n      <col class="measurement-pulse-col"/>\n      <col class="measurement-sbp-col"/>\n      <col class="measurement-dbp-col"/>\n      <col class="measurement-respirations-col"/>\n      <col class="measurement-saturation-col"/>\n      <col class="button-col"/>\n      <col class="button-col"/>\n    </colgroup>\n    <thead>\n    <tr>\n      <td></td>\n      <td>Date</td>\n      <td>Time</td>\n      <td>Temp</td>\n      <td>Pulse</td>\n      <td>SBP</td>\n      <td>DBP</td>\n      <td>Resp</td>\n      <td>Sat</td>\n    </tr>\n    </thead>\n    <tbody>\n    </tbody>\n  </table>\n  <!--<nav class="text-center">-->\n    <!--<ul class="pagination">-->\n      <!--<li><a href="#"><span aria-hidden="true">&laquo;</span><span class="sr-only">Previous</span></a></li>-->\n      <!--<li><a href="#">1</a></li>-->\n      <!--<li><a href="#">2</a></li>-->\n      <!--<li><a href="#">3</a></li>-->\n      <!--<li><a href="#">4</a></li>-->\n      <!--<li><a href="#">5</a></li>-->\n      <!--<li><a href="#"><span aria-hidden="true">&raquo;</span><span class="sr-only">Next</span></a></li>-->\n    <!--</ul>-->\n  <!--</nav>-->\n</section>\n';});
 
 
 define('text!../templates/partials/measurement.html',[],function () { return '<tr>\n  <% if (isEditing) { %>\n  <td><form id="measurement-<%= cid %>-form"></form></td>\n  <td class="date-input">\n    <input class="measurement-input date-picker-input" name="measuredAt"\n           data-initial-value="<%= measuredAt.toJSON() %>" type="datetime"\n           form="measurement-<%= cid %>-form"\n      />\n  </td>\n  <td class="time-input">\n    <input class="measurement-input time-picker-input" name="measuredAt"\n           data-initial-value="<%= measuredAt.toJSON() %>" type="datetime"\n           form="measurement-<%= cid %>-form"\n      />\n  </td>\n  <td class="temperature-input">\n    <input class="measurement-input" name="temperature" type="number" step=".1" value="<%= temperature %>" form="measurement-<%= cid %>-form" />\n  </td>\n  <td class="pulse-input">\n    <input class="measurement-input" name="pulse" type="number" value="<%= pulse %>" form="measurement-<%= cid %>-form" />\n  </td>\n  <td class="sbp-input">\n    <input class="measurement-input" name="sbp" type="number" value="<%= sbp %>" form="measurement-<%= cid %>-form" />\n  </td>\n  <td class="dbp-input">\n    <input class="measurement-input" name="dbp" type="number" value="<%= dbp %>" form="measurement-<%= cid %>-form" />\n  </td>\n  <td class="respirations-input">\n    <input class="measurement-input" name="respirations" type="number" value="<%= respirations %>" form="measurement-<%= cid %>-form" />\n  </td>\n  <td class="saturation-input">\n    <input class="measurement-input" name="saturation" type="number" value="<%= saturation %>" form="measurement-<%= cid %>-form" />\n  </td>\n  <td>\n    <button class="btn btn-sm save-measurement" type="button">save</button>\n  </td>\n  <td>\n    <button class="btn btn-sm cancel-edit" type="button">cancel</button>\n  </td>\n  <% } else { %>\n  <td></td>\n  <td class="date-input"><%= measuredAt.format(\'MM/D/YYYY\') %></td>\n  <td class="time-input"><%= measuredAt.format(\'h:mm A\') %></td>\n  <td class="temperature-input"><%= temperature %></td>\n  <td class="pulse-input"><%= pulse %></td>\n  <td class="sbp-input"><%= sbp %></td>\n  <td class="dbp-input"><%= dbp %></td>\n  <td class="respirations-input"><%= respirations %></td>\n  <td class="saturation-input"><%= saturation %></td>\n  <td><a class="edit-measurement">edit</a></td>\n  <td><a class="delete-measurement">delete</a></td>\n  <% } %>\n</tr>\n';});
 
-define('templates',['require','underscore','text!../templates/app.html','text!../templates/app-header.html','text!../templates/app-content.html','text!../templates/app-footer.html','text!../templates/pages/landing-page.html','text!../templates/pages/register.html','text!../templates/pages/login.html','text!../templates/pages/about.html','text!../templates/pages/user-home.html','text!../templates/pages/patient-list.html','text!../templates/pages/patient.html','text!../templates/pages/logout.html','text!../templates/partials/user-info.html','text!../templates/partials/patient-list-item.html','text!../templates/partials/measurement-form.html','text!../templates/partials/measurements-graph.html','text!../templates/partials/measurements-table.html','text!../templates/partials/measurement.html'],function (require/*, exports, module*/) {
+define('templates',['require','underscore','text!../templates/app.html','text!../templates/partials/app-header.html','text!../templates/app-content.html','text!../templates/partials/app-footer.html','text!../templates/pages/landing-page.html','text!../templates/pages/register.html','text!../templates/pages/login.html','text!../templates/pages/about.html','text!../templates/pages/user-home.html','text!../templates/pages/patient-list.html','text!../templates/pages/patient.html','text!../templates/pages/logout.html','text!../templates/partials/user-info.html','text!../templates/partials/patient-list-item.html','text!../templates/partials/measurement-form.html','text!../templates/partials/measurements-graph.html','text!../templates/partials/measurements-table.html','text!../templates/partials/measurement.html'],function (require/*, exports, module*/) {
   'use strict';
 
   var _ = require('underscore');
 
-  //console.log(module);
-
   return {
     'app': _.template(require('text!../templates/app.html')),
-    'app-header': _.template(require('text!../templates/app-header.html')),
+    'app-header': _.template(require('text!../templates/partials/app-header.html')),
     'app-content': _.template(require('text!../templates/app-content.html')),
-    'app-footer': _.template(require('text!../templates/app-footer.html')),
+    'app-footer': _.template(require('text!../templates/partials/app-footer.html')),
     'pages/landing-page': _.template(require('text!../templates/pages/landing-page.html')),
     'pages/register': _.template(require('text!../templates/pages/register.html')),
     'pages/login': _.template(require('text!../templates/pages/login.html')),
@@ -40334,8 +40342,9 @@ define('appRouter',[
     options = _.clone(options) || {};
     // If the `force` option is set to true, we want the page to refresh regardless of the current location. To do
     // this, we temporarily redirect to a location that does not exist.
-    if (options.force) {
+    if (options.force && (route === Backbone.history.getFragment())) {
       // jshint bitwise: false
+      // If you have a URL like this in your app, you should rethink your app and your career.
       var tempRedirectUrl = 'temp-redirect-' + (Math.random() * 100000 >> 0);
       // jshint bitwise: true
       // We don't want this redirect to trigger, and we don't want it to be entered in the history. We therefore set
@@ -40349,6 +40358,9 @@ define('appRouter',[
       this._navigate(tempRedirectUrl, tempRedirectOptions);
     }
     this._navigate(route, options);
+    // Trigger a route:changed event on the appMediator
+    //console.log('triggering route:changed event');
+    appMediator.trigger('route:changed');
   };
 
   protoProps.initialize = function () {
@@ -40359,6 +40371,7 @@ define('appRouter',[
     appMediator.registerCommand('navigate', this.navigate, this);
     // This is a slightly higher-level function that assumes you'll want to trigger the routing function.
     appMediator.registerCommand('goTo', function (route) {
+      //console.log('goTo:' + route);
       this.navigate(route, {force: true, trigger: true});
     }, this);
 
@@ -40495,7 +40508,7 @@ define('views/Header',[
   };
 
   protoProps.events = {
-    'click .logout': function () {
+    'click .js-logout': function () {
       auth.logout();
     }
   };
@@ -40649,7 +40662,7 @@ define('controllers/userHome',[
     if (isAuthenticated) {
       //console.log(appState.user);
       var user = appMediator.execute('getUser');
-      console.log(user);
+      //console.log(user);
       this.show(new UserHomeView({model: user}));
     } else {
       appMediator.execute('goTo', 'home');
@@ -50380,7 +50393,7 @@ define('module_interfaces/d3Private',[
         root.Rickshaw = factory(d3);
     }
 }(this, function (d3) {
-/* jshint -W079 */ 
+/* jshint -W079 */
 
 var Rickshaw = {
 
@@ -50532,8 +50545,8 @@ function bind(fn, context) {
 var emptyFunction = function(){};
 
 var Class = (function() {
-  
-  // Some versions of JScript fail to enumerate over properties, names of which 
+
+  // Some versions of JScript fail to enumerate over properties, names of which
   // correspond to non-enumerable properties in the prototype chain
   var IS_DONTENUM_BUGGY = (function(){
     for (var p in { toString: 1 }) {
@@ -50542,7 +50555,7 @@ var Class = (function() {
     }
     return true;
   })();
-  
+
   function subclass() {};
   function create() {
     var parent = null, properties = [].slice.apply(arguments);
@@ -50830,7 +50843,7 @@ Rickshaw.Graph = function(args) {
 			if (!Array.isArray(s.data)) {
 				throw "series data is not an array: " + JSON.stringify(s.data);
 			}
-			
+
 			if (s.data.length > 0) {
 				var x = s.data[0].x;
 				var y = s.data[0].y;
@@ -51673,7 +51686,7 @@ Rickshaw.Graph.Annotate = function(args) {
 
 	var graph = this.graph = args.graph;
 	this.elements = { timeline: args.element };
-	
+
 	var self = this;
 
 	this.data = {};
@@ -51716,7 +51729,7 @@ Rickshaw.Graph.Annotate = function(args) {
 						if ( box.rangeElement ) box.rangeElement.classList.toggle('active');
 					});
 				}, false);
-					
+
 			}
 
 			annotation.element.style.left = left + 'px';
@@ -51835,9 +51848,9 @@ Rickshaw.Graph.Axis.Time = function(args) {
 		var offsets = this.tickOffsets();
 
 		offsets.forEach( function(o) {
-			
+
 			if (self.graph.x(o.value) > self.graph.x.range()[1]) return;
-	
+
 			var element = document.createElement('div');
 			element.style.left = self.graph.x(o.value) + 'px';
 			element.classList.add('x_tick');
@@ -52271,7 +52284,7 @@ Rickshaw.Graph.Behavior.Series.Order = function(args) {
 	});
 
 	//hack to make jquery-ui sortable behave
-	this.graph.onUpdate( function() { 
+	this.graph.onUpdate( function() {
 		var h = window.getComputedStyle(self.legend.element).height;
 		self.legend.element.style.height = h;
 	} );
@@ -52296,14 +52309,14 @@ Rickshaw.Graph.Behavior.Series.Toggle = function(args) {
 			if (line.series.disabled) {
 				line.series.enable();
 				line.element.classList.remove('disabled');
-			} else { 
+			} else {
 				if (this.graph.series.filter(function(s) { return !s.disabled }).length <= 1) return;
 				line.series.disable();
 				line.element.classList.add('disabled');
 			}
 
 		}.bind(this);
-		
+
                 var label = line.element.getElementsByTagName('span')[0];
                 label.onclick = function(e){
 
@@ -52380,13 +52393,13 @@ Rickshaw.Graph.Behavior.Series.Toggle = function(args) {
 	this._addBehavior = function() {
 
 		this.graph.series.forEach( function(s) {
-			
+
 			s.disable = function() {
 
 				if (self.graph.series.length <= 1) {
 					throw('only one series left');
 				}
-				
+
 				s.disabled = true;
 				self.graph.update();
 			};
@@ -52810,7 +52823,7 @@ Rickshaw.Graph.RangeSlider = Rickshaw.Class.create({
 				range: true,
 				min: domain[0],
 				max: domain[1],
-				values: [ 
+				values: [
 					domain[0],
 					domain[1]
 				],
@@ -52899,7 +52912,7 @@ Rickshaw.Graph.RangeSlider.Preview = Rickshaw.Class.create({
 		};
 
 		this.heightRatio = args.heightRatio || this.defaults.heightRatio;
-		this.defaults.gripperColor = d3.rgb(this.defaults.frameColor).darker().toString(); 
+		this.defaults.gripperColor = d3.rgb(this.defaults.frameColor).darker().toString();
 
 		this.configureCallbacks = [];
 		this.slideCallbacks = [];
@@ -53003,7 +53016,7 @@ Rickshaw.Graph.RangeSlider.Preview = Rickshaw.Class.create({
 
 			parent.onUpdate(function() { graph.render(); self.render() });
 
-			parent.onConfigure(function(args) { 
+			parent.onConfigure(function(args) {
 				// don't propagate height
 				delete args.height;
 				args.width = args.width - self.config.frameHandleThickness * 2;
@@ -53043,7 +53056,7 @@ Rickshaw.Graph.RangeSlider.Preview = Rickshaw.Class.create({
 
 		var currentWindow = [masterGraph.window.xMin, masterGraph.window.xMax];
 
-		this.currentFrame[0] = currentWindow[0] === undefined ? 
+		this.currentFrame[0] = currentWindow[0] === undefined ?
 			0 : Math.round(domainScale.invert(currentWindow[0]));
 
 		if (this.currentFrame[0] < 0) this.currentFrame[0] = 0;
@@ -53846,7 +53859,7 @@ Rickshaw.Graph.Renderer.ScatterPlot = Rickshaw.Class.create( Rickshaw.Graph.Rend
 			if (series.className) {
 				nodes.classed(series.className, true);
 			}
-			
+
 			Array.prototype.forEach.call(nodes[0], function(n) {
 				n.setAttribute('fill', series.color);
 			} );
@@ -53870,7 +53883,7 @@ Rickshaw.Graph.Renderer.Multi = Rickshaw.Class.create( Rickshaw.Graph.Renderer, 
 		return Rickshaw.extend( $super(), {
 			unstack: true,
 			fill: false,
-			stroke: true 
+			stroke: true
 		} );
 	},
 
@@ -53897,7 +53910,7 @@ Rickshaw.Graph.Renderer.Multi = Rickshaw.Class.create( Rickshaw.Graph.Renderer, 
 				.map( function(s) { return s.stack });
 
 			if (!data.length) return;
-			
+
 			var domain = null;
 			if (group.renderer && group.renderer.domain) {
 				domain = group.renderer.domain(data);
@@ -53948,7 +53961,7 @@ Rickshaw.Graph.Renderer.Multi = Rickshaw.Class.create( Rickshaw.Graph.Renderer, 
 					vis: d3.select(vis)
 				};
 			}
-				
+
 			renderGroups[series.renderer].series.push(series);
 
 		}, this);
@@ -54199,8 +54212,8 @@ Rickshaw.Series = Rickshaw.Class.create( Array, {
 
 		this.palette = new Rickshaw.Color.Palette(palette);
 
-		this.timeBase = typeof(options.timeBase) === 'undefined' ? 
-			Math.floor(new Date().getTime() / 1000) : 
+		this.timeBase = typeof(options.timeBase) === 'undefined' ?
+			Math.floor(new Date().getTime() / 1000) :
 			options.timeBase;
 
 		var timeInterval = typeof(options.timeInterval) == 'undefined' ?
@@ -54230,7 +54243,7 @@ Rickshaw.Series = Rickshaw.Class.create( Array, {
 			} );
 		} else if (item.data.length === 0) {
 			item.data.push({ x: this.timeBase - (this.timeInterval || 0), y: 0 });
-		} 
+		}
 
 		this.push(item);
 
@@ -54250,9 +54263,9 @@ Rickshaw.Series = Rickshaw.Class.create( Array, {
 		}, this );
 
 		this.forEach( function(item) {
-			item.data.push({ 
-				x: x || (index * this.timeInterval || 1) + this.timeBase, 
-				y: (data[item.name] || 0) 
+			item.data.push({
+				x: x || (index * this.timeInterval || 1) + this.timeBase,
+				y: (data[item.name] || 0)
 			});
 		}, this );
 	},
@@ -54338,7 +54351,7 @@ Rickshaw.Series.fill = function(series, fill) {
 
 	while ( i < Math.max.apply(null, data.map( function(d) { return d.length } )) ) {
 
-		x = Math.min.apply( null, 
+		x = Math.min.apply( null,
 			data
 				.filter(function(d) { return d[i] })
 				.map(function(d) { return d[i].x })
@@ -54437,9 +54450,494 @@ Rickshaw.Series.FixedDuration = Rickshaw.Class.create(Rickshaw.Series, {
 	return Rickshaw;
 }));
 
+define('module_interfaces/rickshaw/RickshawGraph',['require','underscore','backbone','d3','rickshaw'],function (require) {
+  'use strict';
+
+  var _ = require('underscore'),
+    Backbone = require('backbone'),
+    d3 = require('d3'),
+    Rickshaw = require('rickshaw'),
+    $ = Backbone.$;
+
+  // Terms:
+  // series: An array containing all the data and configuration info for the collection, formatted for Rickshaw. This
+  //  will be passed directly to the Rickshaw graph.
+  // attrSeries: A single element from the series, which contains all the data and configuration info for a single
+  //  attribute.
+  // attrData: The data array from an attrSeries.
+  // modelDatum: The model data associated with a single attribute. This consists of a time (x), a value (y), and the
+  //  model's cid.
+  // modelData: A concept more than a data structure, this represents all the data (the plural of datum, which is
+  //  what the term is emphasizing) associated with a single model. In practice, the model itself is what's passed
+  //  around.
+
+  // Utility function to get the data array from a named series
+  var getAttrData = function (series, attr) {
+    for (var i = series.length; i--;) {
+      var attrSeries = series[i];
+      if (attrSeries.attr === attr) {
+        return attrSeries.data;
+      }
+    }
+  };
+
+  // Utility function to get the index of a given datum within an array of series data
+  var findModelDatum = function (model, attrData) {
+    // Since Backbone generates a unique cid for every model, we can just use that to identify data from a given model
+    // within a series.
+    var cid = model.cid;
+    for (var i = attrData.length; i--;) {
+      var attrDatum = attrData[i];
+      if (attrDatum.cid === cid) {
+        return i;
+      }
+    }
+    return -1;
+  };
+
+  // Utility function to get the Rickshaw-formatted time from a datum (Rickshaw uses seconds instead of milliseconds)
+  var getModelDataTime = function (model, timeAttr) {
+    // jshint bitwise: false
+    return model.get(timeAttr).valueOf() / 1000 >> 0;
+    // jshint bitwise: true
+  };
+
+  // Comparator for data, used for sorting. We'll always want to sort a series by time, and Rickshaw uses the `x`
+  // property to represent that.
+  var comparator = function (a, b) {
+    return a.x - b.x;
+  };
+
+  // Function to check for existence
+  var exists = function (val) {
+    return val !== void 0 && val !== null;
+  };
+
+  // Constructor function for RickshawData
+  var RickshawData = function (collection, dataConfig) {
+    // Store a reference to the collection (may or may not really need this)
+    //this.collection = collection;
+
+    // The series is the only thing we're going to expose publicly
+    var series = this.series = [],
+      attrs = this._attrs = [],
+      self = this;
+
+    _.each(dataConfig, function (config) {
+      // Check to see if this is the time attribute
+      if (config.isTime) {
+        // If it is, set the timeAttr property on the instance and return
+        self._timeAttr = config.attr;
+        return;
+      }
+      // Otherwise, create a new data series using the configuration info
+      series.push({
+        color: config.color,
+        name: config.key,
+        data: [],
+        attr: config.attr
+      });
+      // Add the attribute to the list of series names (
+      attrs.push(config.attr);
+    });
+
+    // Add all the data
+    collection.forEach(function (model) {
+      // Don't sort initially
+      self._addModelData(model, {sort: false});
+    });
+
+    // Sort the data series
+    _.each(attrs, function (attr) {
+      getAttrData(series, attr).sort(comparator);
+    });
+
+    // Add a single listener
+    this.listenTo(collection, 'all', this._delegateEvent);
+  };
+
+  _.extend(RickshawData.prototype, Backbone.Events, {
+
+    // Check to see if there are any data in the series
+    hasData: function () {
+      var series = this.series;
+      // Loop through each attrSeries
+      for (var i = series.length; i--;) {
+        if (series[i].data.length) {
+          // If any of the attrData has a length, then the series contains data, so return true
+          return true;
+        }
+      }
+      // If we haven't returned by now, there's no data, so return false
+      return false;
+    },
+
+    // The sole event listener. You have to listen for `all` in order to get all the `change:whatever` events, so we
+    // might as well delegate all the events from here.
+    _delegateEvent: function () {
+      var eventName = arguments[0],
+        primaryEventName = eventName.split(':')[0],
+        args = [].slice.call(arguments, 1),
+        changedAttr;
+
+      switch (primaryEventName) {
+        case 'add':
+          // Delegate to addModelData for `add` events
+          this._addModelData.apply(this, args);
+          break;
+        case 'remove':
+          // Delegate to removeModelData for `remove` events
+          this._removeModelData.apply(this, args);
+          break;
+        case 'change':
+          // First check to see whether there is a changed attribute (ignore generic `change` event)
+          if ((changedAttr = eventName.split(':')[1])) {
+            if (_.contains(this._attrs, changedAttr)) {
+              // If the changedAttr matches one of the series names, call updateModelDatum with the modelData (args[0])
+              // and the attribute name
+              this._updateModelDatum(args[0], changedAttr);
+            } else if (changedAttr === this._timeAttr) {
+              // If the changed attribute is the time attribute, call updateModelDataTime with the modelData (args[0])
+              this._updateModelDataTime(args[0]);
+            }
+          }
+          break;
+      }
+    },
+
+    // Add data from a model to the series
+    _addModelData: function (model, options) {
+      var series = this.series,
+        modelDataTime = getModelDataTime(model, this._timeAttr),
+        doSort = true,
+        cid = model.cid,
+        i, attr, seriesData, val;
+      // jshint expr: true
+      options || (options = {});
+      // jshint expr: false
+      if (options.sort === false) {
+        // Don't sort if options.sort is explicitly set to false
+        doSort = false;
+      }
+      for (i = series.length; i--;) {
+        // The attribute for the series
+        attr = series[i].attr;
+        // The data array from the series
+        seriesData = series[i].data;
+        // The value of the attribute from the model
+        val = model.get(attr);
+        if (exists(val)) {
+          // If the model's value for this attribute is not null or undefined, push a new datum onto the data array
+          seriesData.push({
+            x: modelDataTime,
+            y: val,
+            cid: cid
+          });
+          // Sort here if we're sorting
+          if (doSort) {
+            seriesData.sort(comparator);
+          }
+        } else {
+          //// If the model's value for this attribute is not null or undefined, push a new datum onto the data array
+          //seriesData.push({
+          //  x: modelDataTime,
+          //  y: null,
+          //  cid: cid
+          //});
+          //// Sort here if we're sorting
+          //if (doSort) {
+          //  seriesData.sort(comparator);
+          //}
+        }
+      }
+      // Trigger an event to indicate that the data have been updated
+      this.trigger('rickshawdata:add');
+    },
+
+    // Update the model datum for a given attribute
+    _updateModelDatum: function (model, attr) {
+      var attrData = getAttrData(this.series, attr),
+        idx = findModelDatum(model, attrData),
+        val = model.get(attr);
+
+      if (exists(val)) { // If the value exists (i.e. is not null or undefined)
+        // jshint bitwise: false
+        if (~idx) { // If it is in the array ("~idx" means the index *does* exist), just update the value
+          // jshint bitwise: true
+          attrData[idx].y = val;
+        } else { // If it's not in the array, it should be added
+          attrData.push({
+            x: getModelDataTime(model, this._timeAttr),
+            y: val,
+            cid: model.cid
+          });
+          attrData.sort(comparator);
+        }
+      } else { // If the value does not exist
+        // jshint bitwise: false
+        if (~idx) { // If the datum is in the array, it should be removed
+          // jshint bitwise: true
+          attrData.splice(idx, 1);
+        }
+      }
+      this.trigger('rickshawdata:update');
+    },
+
+    // Update the time attribute of the the modelData. This requires looping through each attribute series, updating
+    // the modelDatum time, and sorting the series.
+    _updateModelDataTime: function (model) {
+      var series = this.series,
+        modelDataTime = getModelDataTime(model, this._timeAttr);
+      for (var i = series.length; i--;) {
+        var seriesData = series[i].data,
+          idx = findModelDatum(model, seriesData);
+        // jshint bitwise: false
+        if (~idx) { // If the modelDatum exists, update its time and sort the array
+          // jshint bitwise: true
+          seriesData[idx].x = modelDataTime;
+          seriesData.sort(comparator);
+        }
+      }
+      this.trigger('rickshawdata:update');
+    },
+
+    // Remove all the data associated with a model
+    _removeModelData: function (datum) {
+      var series = this.series;
+      for (var i = series.length; i--;) {
+        var seriesData = series[i].data,
+          idx = findModelDatum(datum, seriesData);
+        // jshint bitwise: false
+        if (~idx) { // If the modelDatum exists, remove it
+          // jshint bitwise: true
+          seriesData.splice(idx, 1);
+        }
+      }
+      this.trigger('rickshawdata:remove');
+    }
+  });
+
+  // Modified version of Rickshaw.Graph that overrides the built-in dataDomain method. The reason for doing this is
+  // that several Rickshaw add-ons call the graph's dataDomain method, but it throws an error if *any* of the series
+  // contain no data. This constructor will return a graph object that is identical to a native Rickshaw.Graph with the
+  // exception of its dataDomain method. If there are no data in any of the series, it will return [undefined, undefined],
+  // which will still probably produce an error, but as long as one of the series has data, everything should be okay.
+  var RickshawGraph = function () {
+    Rickshaw.Graph.apply(this, arguments);
+
+    this.dataDomain = function() {
+      var data = this.series.map( function(s) { return s.data; } );
+      var min = d3.min(data.map(function(d) {
+        var d0 = d[0];
+        return d0 && d0.x;
+      }));
+      var max = d3.max(data.map(function(d) {
+        var dTerm = d[d.length - 1];
+        return dTerm && dTerm.x;
+      }));
+
+      return [min, max];
+    };
+  };
+
+  var RickshawGraphView = Backbone.View.extend({
+
+    initialize: function (options) {
+      this._options = _.omit(options, 'dataConfig', 'collection');
+      // Create RickshawData instance. This will manage mapping the collection to the data series and will update
+      // whenever the collection does.
+      var rickshawData = this._rickshawData = new RickshawData(this.collection, options.dataConfig);
+      // Add listeners for adding or removing the slider. These (or at least _removeSlider) have to be added before
+      // the _updateGraph callback so that you don't get an error when you try to update a graph with no data.
+      if (options.rangeSlider) {
+        this.listenTo(rickshawData, 'rickshawdata:add', this._addSlider);
+        this.listenTo(rickshawData, 'rickshawdata:remove', this._removeSlider);
+      }
+      // Add a listener to update the graph whenever the data are updated
+      this.listenTo(rickshawData, 'rickshawdata:add rickshawdata:update rickshawdata:remove', this._updateGraph);
+    },
+
+    //
+    render: function () {
+      this._createGraph();
+      return this;
+    },
+
+    remove: function () {
+      // Remove listeners from RickshawData instance
+      this._rickshawData.stopListening();
+      // Destroy the graph. Not sure this is necessary, since we're already removing the element (by delegating to
+      // Backbone.View.remove), and there shouldn't be any listeners here.
+      this._destroyGraph();
+      // This will handle removing the event listeners from the view
+      return Backbone.View.prototype.remove.call(this);
+    },
+
+    // Method for resizing the graph
+    resize: function (size) {
+      var graph = this._rickshawObjects && this._rickshawObjects.graph;
+      if (graph) {
+        graph.configure(size);
+        graph.update();
+      }
+    },
+
+    _createGraph: function () {
+      var $graphEl = this.$el,
+        options = this._options,
+        graphConfig = {
+          element: $graphEl[0],
+          series: this._rickshawData.series,
+          renderer: options.renderer || 'lineplot',
+          interpolation: options.interpolation || 'linear'
+        },
+        graph,
+        rickshawObjects;
+
+      // Clean up the old graph if it exists
+      this._destroyGraph();
+
+      // Create basic graph
+      rickshawObjects = this._rickshawObjects = {};
+      graph = rickshawObjects.graph = new RickshawGraph(graphConfig);
+
+
+      // Add axes
+      //var time = new Rickshaw.Fixtures.Time();
+      rickshawObjects.xAxis = new Rickshaw.Graph.Axis.Time({
+        graph: graph
+        //timeUnit: time.unit('day')
+      });
+      rickshawObjects.yAxis = new Rickshaw.Graph.Axis.Y({
+        graph: graph
+      });
+
+      // Legend
+      // Add basic legend
+      var legend = rickshawObjects.legend = new Rickshaw.Graph.Legend({
+        graph: graph,
+        element: $('<div>').appendTo($graphEl)[0]
+      });
+
+      // Add hover detail
+      if (options.hover) {
+        rickshawObjects.hoverDetail = new Rickshaw.Graph.HoverDetail({
+          graph: graph
+          //,
+          //xFormatter: function(x) { return x + "seconds" },
+          //yFormatter: function(y) { return Math.floor(y) + " percent" }
+        });
+      }
+      // Add toggle behavior
+      if (options.toggle) {
+        rickshawObjects.toggle = new Rickshaw.Graph.Behavior.Series.Toggle({
+          graph: graph,
+          legend: legend
+        });
+      }
+      // Add highlight behavior
+      if (options.highlight) {
+        rickshawObjects.highlight = new Rickshaw.Graph.Behavior.Series.Highlight({
+          graph: graph,
+          legend: legend
+        });
+      }
+      // Add slider bar
+      if (options.rangeSlider) {
+        // The rangeSlider will break if you try to use it on a graph with no data, so you have to do some work to
+        // prevent that from happening. There are listeners on the rickshawData already for adding and removing the
+        // rangeSlider when data are added and removed, but if you start with a collection that already has all of its
+        // data (and therefore won't trigger the `rickshawdata:add` event), you need to add the rangeSlider manually,
+        // which is what happens here.
+        if (this._rickshawData.hasData()) {
+          this._addSlider();
+        }
+      }
+
+      // Render graph and axes
+      graph.render();
+    },
+
+    _addSlider: function () {
+      //console.log('_addSlider');
+      var rickshawObjects = this._rickshawObjects;
+      // If the graph hasn't been created, or if the rangeSlider already exists, return now
+      if (!rickshawObjects || rickshawObjects.rangeSlider) {
+        return;
+      }
+      var graph = rickshawObjects.graph,
+        graphUpdateCallbacks = graph.updateCallbacks,
+        callbackIdx = graphUpdateCallbacks.length,
+        $graphEl = $(graph.element),
+        $sliderEl = $('<div>').appendTo($graphEl),
+        origCallback;
+      // Create the RangeSlider instance and store a reference so we can remove it later
+      var rangeSlider = rickshawObjects.rangeSlider = new Rickshaw.Graph.RangeSlider({
+        graph: graph,
+        element: $sliderEl[0]
+      });
+      // Get the callback that was just created
+      origCallback = graphUpdateCallbacks[callbackIdx];
+      // Create a new wrapped callback that will also resize the slider bar. Store a reference to it so we can remove
+      // it later.
+      var graphUpdateCallback = rangeSlider.graphUpdateCallback = function () {
+        // Call the original callback
+        origCallback();
+        // Resize the rangeSlider
+        $sliderEl.width(graph.width, 'px');
+      };
+      // Replace the original callback in the graph's updateCallbacks array
+      graphUpdateCallbacks.splice(callbackIdx, 1, graphUpdateCallback);
+    },
+
+    _removeSlider: function () {
+      var rickshawObjects = this._rickshawObjects,
+        rickshawData = this._rickshawData;
+      // If the graph hasn't been created, or if there are still data, return now
+      if (!rickshawObjects || rickshawData.hasData()) {
+        return;
+      }
+      var graphUpdateCallbacks = rickshawObjects.graph.updateCallbacks,
+        rangeSlider = rickshawObjects.rangeSlider,
+        callbackIdx = graphUpdateCallbacks.indexOf(rangeSlider.graphUpdateCallback),
+        $sliderEl = $(rangeSlider.element);
+      // Remove the update callback for the slider
+      graphUpdateCallbacks.splice(callbackIdx, 1);
+      // Remove the slider element
+      $sliderEl.remove();
+      // Delete the reference to the slider
+      delete rickshawObjects.rangeSlider;
+    },
+
+    _updateGraph: function () {
+      // jshint expr: true
+      // Check that the graph exists and, if so, update it
+      this._rickshawObjects && this._rickshawObjects.graph && this._rickshawObjects.graph.update();
+      // jshint expr: false
+    },
+
+    // This should essentially undo anything that was done by _createGraph
+    _destroyGraph: function () {
+      // Get a reference to the graph's element (which is also the view's element)
+      var $graphEl = this.$el;
+      // Right now, all the elements related to the graph are children of the top-level element. Therefore, emptying
+      // the top-level element will delete all of them.
+      $graphEl.empty();
+      // The only other change made by Rickshaw is that it adds this class to the graph element
+      $graphEl.removeClass('rickshaw_graph');
+      // Delete the reference to the rickshaw objects
+      delete this._rickshawObjects;
+    }
+
+  }, {});
+
+  return RickshawGraphView;
+});
+
 define('module_interfaces/rickshawPrivate',[
-  'rickshaw'
-], function (Rickshaw) {
+  'rickshaw',
+  'module_interfaces/rickshaw/RickshawGraph'
+], function (Rickshaw, RickshawGraphView) {
   'use strict';
 
   // For the sake of parity, calling this `root`
@@ -54448,6 +54946,9 @@ define('module_interfaces/rickshawPrivate',[
   // Now set root.Rickshaw to undefined
   root.Rickshaw = void 0;
 
+  // Add-ons
+  Rickshaw.RickshawGraphView = RickshawGraphView;
+
   // And return Rickshaw
   return Rickshaw;
 });
@@ -54455,253 +54956,107 @@ define('module_interfaces/rickshawPrivate',[
 var measurementsGraph;
 define('views/partials/MeasurementsGraph',[
   'underscore',
+  'backbone',
   'rickshaw',
   'views/View',
-  'templates'
-], function (_, Rickshaw, View, templates) {
+  'templates',
+  'appMediator'
+], function (_, Backbone, Rickshaw, View, templates, appMediator) {
   'use strict';
 
   var protoProps = {},
-    staticProps = {},
-    $ = View.$;
+    staticProps = {};
 
-  var dataConfig = [
-    {
-      attr: 'temperature',
-      color: 'red',
-      key: 'Temp'
-    },
-    {
-      attr: 'pulse',
-      color: 'orange',
-      key: 'Pulse'
-    },
-    {
-      attr: 'sbp',
-      color: 'yellow',
-      key: 'SBP'
-    },
-    {
-      attr: 'dbp',
-      color: 'green',
-      key: 'DBP'
-    },
-    {
-      attr: 'respirations',
-      color: 'blue',
-      key: 'Resp'
-    },
-    {
-      attr: 'saturation',
-      color: 'indigo',
-      key: 'O2Sat'
-    }
-  ];
-
-  var getSeriesData = function (series, measurementName) {
-    return series[_.pluck(series, 'attr').indexOf(measurementName)].data;
-  };
-
-  var findMeasurement = function (data, measurement) {
-    return _.pluck(data, 'cid').indexOf(measurement.cid);
-  };
-
-  var getMeasurementTime = function (measurement) {
-    // jshint bitwise: false
-    return measurement.get('measuredAt').valueOf() / 1000 >> 0;
-    // jshint bitwise: true
-  };
-
-  var measurementComparator = function (a, b) {
-    return a.x - b.x;
+  var graphOptions = {
+    renderer: 'lineplot',
+    interpolation: 'linear',
+    toggle: true,
+    highlight: true,
+    hover: true,
+    //defaultRange: 20,
+    rangeSlider: true,
+    dataConfig: [
+      {
+        attr: 'temperature',
+        color: 'red',
+        key: 'Temp'
+      },
+      {
+        attr: 'pulse',
+        color: 'orange',
+        key: 'Pulse'
+      },
+      {
+        attr: 'sbp',
+        color: 'yellow',
+        key: 'SBP'
+      },
+      {
+        attr: 'dbp',
+        color: 'green',
+        key: 'DBP'
+      },
+      {
+        attr: 'respirations',
+        color: 'blue',
+        key: 'Resp'
+      },
+      {
+        attr: 'saturation',
+        color: 'indigo',
+        key: 'O2Sat'
+      },
+      {
+        attr: 'measuredAt',
+        isTime: true
+      }
+    ]
   };
 
   protoProps.template = templates['partials/measurements-graph'];
 
-
   protoProps.initialize = function () {
-    this.initializePlotData();
-    this.listenTo(this.collection, 'add', this.addMeasurement);
+    //
+    this.listenTo(appMediator, 'route:changed window:resize', this._resizeGraph);
+    this.listenTo(this, 'parent:rendered', this._resizeGraph);
     measurementsGraph = this;
   };
 
-  // Initialize the plotData
-  protoProps.initializePlotData = function () {
-    var plotData = this.plotData = [],
-      measurementNames = this.measurementNames = [],
-      self = this;
+  protoProps._getGraphSize = function () {
 
-    _.each(dataConfig, function (config) {
-      plotData.push({
-        color: config.color,
-        name: config.key,
-        data: [],
-        attr: config.attr
-      });
-      measurementNames.push(config.attr);
-    });
+    // d0ne: Fix this. We need to set this thing up with some dimensions going into the render cycle.
+    // Very confusing. _createGraph is called by _onRender, so at this point, we should have updated this.$el (using
+    // setElement) and replaced the old element in the DOM (using replaceWith). So I don't understand why the parent
+    // seems not to exist at this point. Wait, no, I get it now. It's because this is a subview, so it won't become
+    // part of the DOM until after it's rendered. So how to give it some dimensions? Hmmm....
 
-    // Add all the measurements
-    this.collection.forEach(function (measurement) {
-      self.addMeasurement(measurement, {sort: false});
-    });
-  };
+    var ASPECT_RATIO = 1.8;
 
-  //
-  protoProps.updateMeasurement = function (measurement, attr) {
-    var plotData = getSeriesData(this.plotData, attr),
-      graph = this.graph,
-      idx = findMeasurement(plotData, measurement),
-      val = measurement.get(attr);
-
-    // If the value is undefined and the measurement is in the array, it should be removed
-    if (_.isUndefined(val)) {
+    var graphWidth = this.$el.width(),
       // jshint bitwise: false
-      if (~idx) {
-        // jshint bitwise: true
-        plotData.splice(idx, 1);
-      }
-    } else { // If the value is defined
-      // jshint bitwise: false
-      if (~idx) { // If it's not in the array, it should be added
-        // jshint bitwise: true
-        plotData[idx].y = val;
-      } else { // If it is in the array, just update the value
-        plotData.push({
-          x: getMeasurementTime(measurement),
-          y: val,
-          cid: measurement.cid
-        });
-        plotData.sort(measurementComparator);
-      }
-    }
-    graph.update();
+      graphHeight = (graphWidth / ASPECT_RATIO) >> 0;
+      // jshint bitwise: true
+
+    return {
+      width: graphWidth,
+      height: graphHeight
+    };
   };
 
-  //
-  protoProps.updateMeasurementTime = function (measurement) {
-    var plotData = this.plotData,
-      graph = this.graph,
-      measuredAt = getMeasurementTime(measurement);
-    for (var i = 0, len = plotData.length; i < len; i++) {
-      var seriesData = plotData[i].data,
-        idx = findMeasurement(seriesData, measurement);
-      // jshint bitwise: false
-      if (~idx) {
-        // jshint bitwise: true
-        seriesData[idx].x = measuredAt;
-        seriesData.sort(measurementComparator);
-      }
-    }
-    graph.update();
-  };
-
-  protoProps.removeMeasurement = function (measurement) {
-    var plotData = this.plotData;
-    for (var i = 0, len = plotData.length; i < len; i++) {
-      var seriesData = plotData[i].data,
-        idx = findMeasurement(seriesData, measurement);
-      // jshint bitwise: false
-      if (~idx) {
-        // jshint bitwise: true
-        seriesData.splice(idx, 1);
-      }
+  protoProps._resizeGraph = function () {
+    var rickshawGraphView = this.subviews && this.subviews.rickshawGraph,
+      newSize = this._getGraphSize();
+    if (rickshawGraphView) {
+      rickshawGraphView.resize(newSize);
     }
   };
 
-  protoProps.addMeasurement = function (measurement, options) {
-    //console.log('adding');
-    var plotData = this.plotData,
-      graph = this.graph,
-      measuredAt = getMeasurementTime(measurement),
-      doSort = true;
-    // jshint expr: true
-    options || (options = {});
-    // jshint expr: false
-    if (options.sort === false) {
-      doSort = false;
-    }
-    for (var i = 0, len = plotData.length; i < len; i++) {
-      var measurementName = plotData[i].attr,
-        seriesData = plotData[i].data,
-        val = measurement.get(measurementName);
-      if (!_.isUndefined(val)) {
-        seriesData.push({
-          x: measuredAt,
-          y: val,
-          cid: measurement.cid
-        });
-        if (doSort) {
-          seriesData.sort(measurementComparator);
-        }
-      }
-    }
-    graph.update();
-  };
-
-  // Default _onRender method. It just returns the view.
-  protoProps._onRender = function () {
-    var graphConfig = {},
-      graph;
-
-    graphConfig.renderer = 'lineplot';
-
-    graphConfig.element = this.el;
-
-    //console.log(this.$el);
-
-    graphConfig.series = this.plotData;
-    graphConfig.interpolation = 'linear';
-    //console.log(this.data);
-
-    // Create basic graph
-    graph = this.graph = new Rickshaw.Graph(graphConfig);
-
-    // Add hover detail
-    new Rickshaw.Graph.HoverDetail({
-      graph: graph
-      //,
-      //xFormatter: function(x) { return x + "seconds" },
-      //yFormatter: function(y) { return Math.floor(y) + " percent" }
-    });
-
-    // Legend
-    // Make the element
-    $('<div>')
-      .addClass('legend')
-      .appendTo(this.$el)
-    ;
-    // Add basic legend
-    var legend = new Rickshaw.Graph.Legend({
-      graph: graph,
-      element: this.$('.legend')[0]
-    });
-    // Add toggle behavior
-    new Rickshaw.Graph.Behavior.Series.Toggle({
-      graph: graph,
-      legend: legend
-    });
-    // Add highlight behavior
-    new Rickshaw.Graph.Behavior.Series.Highlight({
-      graph: graph,
-      legend: legend
-    });
-
-    // Add axes
-    //var time = new Rickshaw.Fixtures.Time();
-    var xAxis = new Rickshaw.Graph.Axis.Time({
-      graph: graph
-      //timeUnit: time.unit('day')
-    });
-    var yAxis = new Rickshaw.Graph.Axis.Y({
-      graph: graph
-    });
-
-    // Render graph and axes
-    graph.render();
-    xAxis.render();
-    yAxis.render();
-
+  protoProps._createSubviews = function () {
+    var RickshawGraphView = Rickshaw.RickshawGraphView;
+    var rickshawGraphOpts = _.extend({}, {collection: this.collection}, graphOptions);
+    this.subviews = {
+      rickshawGraph: new RickshawGraphView(rickshawGraphOpts)
+    };
     return this;
   };
 
@@ -55026,6 +55381,7 @@ define('views/pages/Patient',[
 
   protoProps.initialize = function () {
     this.listenTo(this.model, 'change', this.render);
+
     //this.listenTo(this.model.measurements, 'change', this.render);
   };
 
@@ -55036,9 +55392,18 @@ define('views/pages/Patient',[
   protoProps._createSubviews = function () {
     this.subviews = {
       measurementForm: new MeasurementFormView({collection: this.model.measurements}),
-      measurementGraph: new MeasurementsGraphView({collection: this.model.measurements}),
+      measurementsGraph: new MeasurementsGraphView({collection: this.model.measurements}),
       measurementsTable: new MeasurementsTableView({collection: this.model.measurements})
     };
+    return this;
+  };
+
+  protoProps._onRender = function () {
+    //var subviews = this.subviews;
+    //if (subviews) {
+    //
+    //}
+    this.subviews.measurementsGraph.trigger('parent:rendered');
     return this;
   };
 
@@ -55153,8 +55518,11 @@ define('app',[
     Backbone.history.start();
     var currentLocation = Backbone.history.getFragment();
     if (currentLocation === '') {
-      appMediator.execute('goTo', 'home');
+      //appMediator.execute('goTo', 'home');
+      currentLocation = 'home';
     }
+    // Force a refresh of the page
+    appMediator.execute('goTo', currentLocation);
   };
 
   protoProps._createSubviews = function () {
@@ -55237,6 +55605,9 @@ requirejs.config({
     'module_interfaces/d3Private': {
       d3: 'd3'
     },
+    'module_interfaces/rickshaw/RickshawGraph': {
+      rickshaw: 'rickshaw'
+    },
     'module_interfaces/rickshawPrivate': {
       rickshaw: 'rickshaw'
     },
@@ -55265,6 +55636,7 @@ requirejs.config({
     'bootstrap-datetimepicker': '../bower_components/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker',
     appConfig: 'prodConfig',
     d3: '../bower_components/d3/d3',
+    hammer: '../bower_components/hammerjs/hammer',
     jquery: '../bower_components/jquery/dist/jquery',
     'jquery-ui': '../bower_components/jquery-ui/jquery-ui',
     moment: '../bower_components/moment/moment',
@@ -55272,7 +55644,6 @@ requirejs.config({
     text: '../bower_components/text/text',
     underscore: '../bower_components/underscore/underscore',
     'underscore.string': '../bower_components/underscore.string/lib/underscore.string'
-
   },
   // So all this does is delay the loading of these files until jQuery loads. Meaning the tags shouldn't get appended
   // to head until jQuery is registered. By logging document.head.lastChild in the define function for jqueryPrivate,
