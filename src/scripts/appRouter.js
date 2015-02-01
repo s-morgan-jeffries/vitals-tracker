@@ -33,7 +33,7 @@ define([
     options = _.clone(options) || {};
     // If the `force` option is set to true, we want the page to refresh regardless of the current location. To do
     // this, we temporarily redirect to a location that does not exist.
-    if (options.force) {
+    if (options.force && (route === Backbone.history.getFragment())) {
       // jshint bitwise: false
       // If you have a URL like this in your app, you should rethink your app and your career.
       var tempRedirectUrl = 'temp-redirect-' + (Math.random() * 100000 >> 0);
